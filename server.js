@@ -26,7 +26,7 @@ const publicRootFiles = new Set([
   "manifest.webmanifest",
   "sw.js"
 ]);
-const publicDirectories = new Set(["Asset", "about", "faq", "login", "settings", "privacy"]);
+const publicDirectories = new Set(["app", "Asset", "about", "faq", "login", "settings", "privacy"]);
 
 const server = http.createServer((request, response) => {
   if (request.method !== "GET" && request.method !== "HEAD") {
@@ -41,6 +41,12 @@ const server = http.createServer((request, response) => {
   } catch {
     response.writeHead(400);
     response.end("Invalid URL");
+    return;
+  }
+
+  if (pathname === "/") {
+    response.writeHead(301, { Location: "/app/" });
+    response.end();
     return;
   }
 

@@ -48,7 +48,7 @@
   }
 
   function redirectToLogin(reason) {
-    const loginPath = authPage === "dashboard" ? "login/" : "../login/";
+    const loginPath = authPage === "dashboard" ? "../login/" : "../login/";
     const loginUrl = new URL(loginPath, window.location.href);
     if (reason) loginUrl.searchParams.set("reason", reason);
     window.location.replace(loginUrl.href);
