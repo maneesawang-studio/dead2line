@@ -128,19 +128,45 @@
       return Promise.resolve();
     }
 
-    return new Promise((resolve, reject) => {
-      const script = document.createElement("script");
-      script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
-      script.onload = () => {
-        if (window.supabase && typeof window.supabase.createClient === "function") {
-          resolve();
-        } else {
-          reject(new Error(message("sdkMissing")));
+    const sources = [
+      "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.2/dist/umd/supabase.js",
+      "https://unpkg.com/@supabase/supabase-js@2.119.2/dist/umd/supabase.js"
+    ];
+    const failures = [];
+
+    function loadSource(index) {
+      if (index >= sources.length) {
+        return Promise.reject(new Error(`${message("sdkMissing")} ${failures.join(" ")}`));
+      }
+
+      return new Promise(resolve => {
+        const script = document.createElement("script");
+        script.src = sources[index];
+        script.onload = () => {
+          if (window.supabase && typeof window.supabase.createClient === "function") {
+            resolve(true);
+            return;
+          }
+          failures.push(`Loaded ${sources[index]} without the expected Supabase API.`);
+          script.remove();
+          resolve(false);
+        };
+        script.onerror = () => {
+          failures.push(`Could not load ${sources[index]}.`);
+          script.remove();
+          resolve(false);
+        };
+        document.head.appendChild(script);
+      }).then(loaded => {
+        if (loaded) return;
+        if (index + 1 < sources.length) {
+          console.warn("Supabase SDK CDN failed; trying the fallback source.");
         }
-      };
-      script.onerror = () => reject(new Error(message("sdkMissing")));
-      document.head.appendChild(script);
-    });
+        return loadSource(index + 1);
+      });
+    }
+
+    return loadSource(0);
   }
 
   if (!supabaseUrl || !publishableKey) {
