@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A calmer way to organize tasks, track progress, and stay ahead of deadlines.">
+  <meta name="theme-color" content="#0099ff">
+  <link rel="icon" href="Asset/Deadline-512.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>Deadline. - Plan clearly. Finish confidently.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="site-page landing-page" data-auth-page="landing" data-site-title="homeTitle">
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a class="logo" href="/" aria-label="Deadline">
+        <img src="Asset/Deadline-512.png" alt="">
+        <span class="logo-name">Deadline<span class="logo-dot">.</span></span>
+      </a>
+      <div class="landing-nav-actions">
+        <a class="landing-nav-link" href="about/" data-site-i18n="aboutNav">About</a>
+        <a class="landing-nav-link" href="faq/" data-site-i18n="faqNav">FAQ</a>
+        <a class="landing-nav-login" id="landingLoginLink" href="login/" data-site-i18n="signIn">Sign in</a>
+        <a class="landing-nav-login" id="landingDashboardLink" href="app/" data-site-i18n="openDashboard" hidden>Open dashboard</a>
+        <div class="profile-wrapper">
+          <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open profile menu">
+            <div class="avatar"><img class="avatar-img" src="Asset/MNSW New Profile.png" alt="User profile"></div>
+            <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="profile-menu" id="profileMenu">
+            <div class="profile-account">
+              <span data-site-i18n="account">Account</span>
+              <strong id="accountEmail" data-site-i18n="previewAccount">Preview mode (not authenticated)</strong>
+            </div>
+            <p class="auth-status" id="authStatus" role="status" aria-live="polite" hidden></p>
+            <button type="button" class="profile-row theme-row" id="themeToggle">
+              <span data-site-i18n="theme">Theme</span><span class="theme-state" id="themeState">Light</span>
+            </button>
+            <button type="button" class="profile-row theme-row" id="languageToggle">
+              <span data-site-i18n="language">Language</span><span class="theme-state" id="languageState">English</span>
+            </button>
+            <a class="profile-row profile-row-link" href="settings/" data-site-i18n="settings">Settings</a>
+            <hr>
+            <a class="profile-row profile-row-link" href="about/" data-site-i18n="aboutMenu">About Deadline</a>
+            <a class="profile-row profile-row-link" href="faq/" data-site-i18n="faqNav">FAQ</a>
+            <a class="profile-row profile-row-link" href="privacy/" data-site-i18n="privacy">Privacy</a>
+            <button type="button" class="profile-row sign-out" id="signOutButton" data-site-i18n="signOut" hidden>Sign out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <p class="auth-status landing-auth-status" id="landingAuthStatus" role="status" aria-live="polite" hidden></p>
+  <main class="landing-main">
+    <section class="landing-hero">
+      <div class="landing-copy">
+        <p class="landing-eyebrow" data-site-i18n="homeEyebrow">YOUR WORK, IN GOOD TIME</p>
+        <h1 data-auth-view="guest" data-site-i18n="homeHeadline">Plan clearly.<br>Finish confidently.</h1>
+        <h1 data-auth-view="authenticated" id="landingGreeting" hidden></h1>
+        <p class="landing-lead" data-auth-view="guest" data-site-i18n="homeLead">A calm, focused space for your tasks and deadlines. See what needs attention, break big work into small steps, and keep moving.</p>
+        <p class="landing-lead" data-auth-view="authenticated" data-site-i18n="homeSignedInLead" hidden>Your workspace is ready. Jump back into your tasks and keep your next deadline in sight.</p>
+        <div class="landing-actions" data-auth-view="guest">
+          <a class="landing-primary" href="login/" data-site-i18n="getStarted">Get started</a>
+          <a class="landing-secondary" href="#preview" data-site-i18n="seePreview">Explore the preview</a>
+        </div>
+        <div class="landing-actions" data-auth-view="authenticated" hidden>
+          <a class="landing-primary" href="app/" data-site-i18n="openDashboard">Open my dashboard</a>
+          <a class="landing-secondary" href="#preview" data-site-i18n="seePreview">Explore the preview</a>
+        </div>
+        <p class="landing-caption" data-site-i18n="homeCaption">Simple by design. Useful every day.</p>
+      </div>
+
+      <div class="landing-preview" aria-label="Deadline dashboard preview">
+        <div class="preview-window">
+          <div class="preview-window-top"><span></span><span></span><span></span><strong>Deadline.</strong></div>
+          <div class="preview-window-body">
+            <div class="preview-heading">
+              <div><small data-site-i18n="previewToday">YOUR WEEK, AT A GLANCE</small><h2 data-site-i18n="previewDashboard">Manage deadlines</h2></div>
+              <span class="preview-add">+</span>
+            </div>
+            <div class="preview-stats">
+              <div><small data-site-i18n="homeInProgress">In progress</small><strong>04</strong></div>
+              <div><small data-site-i18n="previewDueSoon">Due soon</small><strong class="preview-red">02</strong></div>
+              <div><small data-site-i18n="homeFinished">Finished</small><strong class="preview-green">08</strong></div>
+            </div>
+            <div class="preview-tabs"><b data-site-i18n="homeInProgress">In progress</b><span data-site-i18n="homeFinished">Finished</span></div>
+            <article class="preview-task">
+              <div class="preview-date"><small data-site-i18n="previewMonday">MON</small><b>24</b><small data-site-i18n="previewNovember">NOV</small></div>
+              <div class="preview-task-content"><span class="preview-tag" data-site-i18n="homeStudy">STUDY</span><strong data-site-i18n="previewTaskOne">Research presentation</strong><small data-site-i18n="previewTaskOneMeta">Outline key ideas and gather sources</small><i><span style="width: 68%"></span></i></div>
+              <span class="preview-check">✓</span>
+            </article>
+            <article class="preview-task">
+              <div class="preview-date preview-date-blue"><small data-site-i18n="previewWednesday">WED</small><b>26</b><small data-site-i18n="previewNovember">NOV</small></div>
+              <div class="preview-task-content"><span class="preview-tag preview-tag-blue" data-site-i18n="homeWork">WORK</span><strong data-site-i18n="previewTaskTwo">Weekly team update</strong><small data-site-i18n="previewTaskTwoMeta">Share progress and next steps</small><i><span style="width: 35%"></span></i></div>
+              <span class="preview-check preview-check-empty"></span>
+            </article>
+            <div class="preview-footer"><span>◷</span><span data-site-i18n="previewFooter">A little more focus. A lot less overwhelm.</span></div>
+          </div>
+        </div>
+        <div class="preview-float" aria-hidden="true">✓ <span data-site-i18n="previewDone">One step at a time</span></div>
+      </div>
+    </section>
+
+    <section class="landing-features" id="preview">
+      <article><span>01</span><h2 data-site-i18n="featureTasksTitle">See what matters</h2><p data-site-i18n="featureTasksText">Review work in progress, finished tasks, and upcoming deadlines in one place.</p></article>
+      <article><span>02</span><h2 data-site-i18n="featureStepsTitle">Make progress visible</h2><p data-site-i18n="featureStepsText">Break larger work into small steps and see how far you have come.</p></article>
+      <article><span>03</span><h2 data-site-i18n="featurePersonalTitle">Make it yours</h2><p data-site-i18n="featurePersonalText">Switch between English and Thai, choose a light or dark theme, and organize work by category.</p></article>
+    </section>
+    <section class="landing-bottom-cta">
+      <h2 data-site-i18n="homeClosing">Make room for the work that matters.</h2>
+      <a class="landing-primary" href="login/" data-auth-view="guest" data-site-i18n="getStarted">Get started</a>
+      <a class="landing-primary" href="app/" data-auth-view="authenticated" hidden data-site-i18n="openDashboard">Open my dashboard</a>
+    </section>
+  </main>
+  <footer class="site-footer"><span data-site-i18n="footerNote">A clearer way to keep deadlines in sight.</span> · <a href="privacy/" data-site-i18n="privacy">Privacy</a></footer>
+
+  <script src="site-pages.js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="supabase-auth.js"></script>
+</body>
+</html>

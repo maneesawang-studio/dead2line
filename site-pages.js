@@ -48,16 +48,41 @@ const siteTranslations = {
     faqLoginAnswer: "Sign-in uses Supabase Auth. Use the account created for this workspace.",
     faqDataQuestion: "Are my tasks saved to the cloud?",
     faqDataAnswer: "Yes. Tasks are stored in Supabase and protected by per-user access rules.",
-    backToTasks: "Back to tasks",
-    footerNote: "A clearer way to keep deadlines in sight."
-    ,
+    backToTasks: "Back to home",
+    footerNote: "A clearer way to keep deadlines in sight.",
     settingsHeading: "Settings",
     appearanceHeading: "Appearance",
     privacyHeading: "Privacy",
     privacyDataHeading: "Your data",
     privacyDataText: "Deadline stores task data in Supabase and associates it with your authenticated account. Theme and language preferences are stored in your browser.",
     privacyControlHeading: "Your control",
-    privacyControlText: "You can edit or delete your tasks at any time. Signing out does not delete your tasks. To request account deletion, contact the account administrator."
+    privacyControlText: "You can edit or delete your tasks at any time. Signing out does not delete your tasks. To request account deletion, contact the account administrator.",
+    homeTitle: "Plan clearly. Finish confidently.",
+    homeEyebrow: "YOUR WORK, IN GOOD TIME",
+    homeHeadline: "Plan clearly. Finish confidently.",
+    homeLead: "A calm, focused space for your tasks and deadlines. See what needs attention, break big work into small steps, and keep moving.",
+    homeSignedInLead: "Your workspace is ready. Jump back into your tasks and keep your next deadline in sight.",
+    homeCaption: "Simple by design. Useful every day.",
+    getStarted: "Get started",
+    seePreview: "Explore the preview",
+    openDashboard: "Open my dashboard",
+    previewToday: "PRODUCT PREVIEW · SAMPLE TASKS",
+    previewDashboard: "Manage deadlines",
+    homeInProgress: "In progress",
+    homeFinished: "Finished",
+    previewDueSoon: "Due soon",
+    previewTaskOne: "Research presentation",
+    previewTaskOneMeta: "Outline key ideas and gather sources",
+    previewTaskTwo: "Weekly team update",
+    previewTaskTwoMeta: "Share progress and next steps",
+    previewFooter: "A little more focus. A lot less overwhelm.",
+    previewDone: "One step at a time",
+    previewMonday: "MON",
+    previewWednesday: "WED",
+    previewNovember: "NOV",
+    homeStudy: "STUDY",
+    homeWork: "WORK",
+    homeClosing: "Make room for the work that matters."
   },
   th: {
     dashboard: "รายการงาน",
@@ -108,16 +133,41 @@ const siteTranslations = {
     faqLoginAnswer: "ระบบเข้าสู่ระบบใช้ Supabase Auth กรุณาใช้บัญชีที่สร้างไว้สำหรับพื้นที่ใช้งานนี้",
     faqDataQuestion: "งานถูกบันทึกบนคลาวด์หรือไม่?",
     faqDataAnswer: "ใช่ ข้อมูลงานถูกเก็บใน Supabase และปกป้องด้วยสิทธิ์แยกตามผู้ใช้",
-    backToTasks: "กลับไปหน้ารายการงาน",
-    footerNote: "มองเห็นทุกกำหนดส่งได้ชัดเจนขึ้น"
-    ,
+    backToTasks: "กลับหน้าหลัก",
+    footerNote: "มองเห็นทุกกำหนดส่งได้ชัดเจนขึ้น",
     settingsHeading: "การตั้งค่า",
     appearanceHeading: "หน้าตา",
     privacyHeading: "ความเป็นส่วนตัว",
     privacyDataHeading: "ข้อมูลของคุณ",
     privacyDataText: "Deadline เก็บข้อมูลงานใน Supabase และเชื่อมกับบัญชีที่เข้าสู่ระบบ ธีมและภาษาถูกเก็บในเบราว์เซอร์",
     privacyControlHeading: "สิทธิ์ควบคุมของคุณ",
-    privacyControlText: "คุณแก้ไขหรือลบงานได้ทุกเมื่อ การออกจากระบบไม่ได้ลบงาน หากต้องการลบบัญชี โปรดติดต่อผู้ดูแลบัญชี"
+    privacyControlText: "คุณแก้ไขหรือลบงานได้ทุกเมื่อ การออกจากระบบไม่ได้ลบงาน หากต้องการลบบัญชี โปรดติดต่อผู้ดูแลบัญชี",
+    homeTitle: "วางแผนชัดเจน ทำงานเสร็จอย่างมั่นใจ",
+    homeEyebrow: "จัดการงานให้ทันทุกกำหนด",
+    homeHeadline: "วางแผนชัดเจน ทำงานเสร็จอย่างมั่นใจ",
+    homeLead: "พื้นที่เรียบง่ายสำหรับจัดการงานและกำหนดส่ง เห็นสิ่งที่ควรทำ แบ่งงานใหญ่เป็นขั้นตอนเล็ก ๆ แล้วเดินหน้าต่อ",
+    homeSignedInLead: "พื้นที่ทำงานของคุณพร้อมแล้ว กลับไปดูงานและกำหนดส่งถัดไปได้เลย",
+    homeCaption: "เรียบง่ายตั้งใจ ใช้ได้ทุกวัน",
+    getStarted: "เริ่มต้นใช้งาน",
+    seePreview: "ดูตัวอย่าง",
+    openDashboard: "เปิดหน้ารายการงาน",
+    previewToday: "ตัวอย่างหน้ารายการงาน",
+    previewDashboard: "จัดการกำหนดส่ง",
+    homeInProgress: "กำลังทำ",
+    homeFinished: "เสร็จแล้ว",
+    previewDueSoon: "ใกล้ถึงกำหนด",
+    previewTaskOne: "เตรียมงานนำเสนอ",
+    previewTaskOneMeta: "วางโครงเรื่องและรวบรวมแหล่งข้อมูล",
+    previewTaskTwo: "สรุปความคืบหน้าทีม",
+    previewTaskTwoMeta: "แจ้งความคืบหน้าและขั้นตอนถัดไป",
+    previewFooter: "มีสมาธิมากขึ้น กังวลน้อยลง",
+    previewDone: "ค่อย ๆ ทำทีละขั้น",
+    previewMonday: "จ.",
+    previewWednesday: "พ.",
+    previewNovember: "พ.ย.",
+    homeStudy: "เรียน",
+    homeWork: "งาน",
+    homeClosing: "มีพื้นที่ให้กับงานที่สำคัญ"
   }
 };
 
@@ -144,15 +194,26 @@ function applySitePreferences() {
   if (themeState) themeState.textContent = siteText(siteTheme);
   if (languageState) languageState.textContent = siteText("languageName");
   if (profileButton) profileButton.setAttribute("aria-label", siteText("openProfileMenu"));
+  window.dispatchEvent(new Event("deadline-preferences-changed"));
 }
 
-document.getElementById("themeToggle").addEventListener("click", () => {
+const themeToggle = document.getElementById("themeToggle");
+const languageToggle = document.getElementById("languageToggle");
+if (themeToggle) themeToggle.addEventListener("click", () => {
   siteTheme = siteTheme === "light" ? "dark" : "light";
   localStorage.setItem("deadline-theme", siteTheme);
   applySitePreferences();
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js").catch(error => {
+        console.error("Service worker registration failed:", error);
+      });
+    });
+  }
 });
 
-document.getElementById("languageToggle").addEventListener("click", () => {
+if (languageToggle) languageToggle.addEventListener("click", () => {
   siteLanguage = siteLanguage === "en" ? "th" : "en";
   localStorage.setItem("deadline-language", siteLanguage);
   applySitePreferences();
@@ -161,23 +222,23 @@ document.getElementById("languageToggle").addEventListener("click", () => {
 const profileButton = document.getElementById("btnProfile");
 const profileMenu = document.getElementById("profileMenu");
 
-profileButton.addEventListener("click", event => {
+if (profileButton && profileMenu) profileButton.addEventListener("click", event => {
   event.stopPropagation();
   const isOpen = profileMenu.classList.toggle("show");
   profileButton.setAttribute("aria-expanded", String(isOpen));
 });
 
 document.addEventListener("click", event => {
-  if (!profileMenu.contains(event.target) && !profileButton.contains(event.target)) {
-    profileMenu.classList.remove("show");
-    profileButton.setAttribute("aria-expanded", "false");
+  if (profileMenu && profileButton && !profileMenu.contains(event.target) && !profileButton.contains(event.target)) {
+    if (profileMenu) profileMenu.classList.remove("show");
+    if (profileButton) profileButton.setAttribute("aria-expanded", "false");
   }
 });
 
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") {
-    profileMenu.classList.remove("show");
-    profileButton.setAttribute("aria-expanded", "false");
+    if (profileMenu) profileMenu.classList.remove("show");
+    if (profileButton) profileButton.setAttribute("aria-expanded", "false");
   }
 });
 

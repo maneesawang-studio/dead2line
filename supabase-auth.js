@@ -5,10 +5,12 @@
   const authPage = document.body.dataset.authPage;
   const loginForm = document.getElementById("loginForm");
   const loginButton = document.getElementById("loginSubmit");
-  const status = document.getElementById("loginStatus") || document.getElementById("authStatus");
+  const status = document.getElementById("loginStatus") || document.getElementById("landingAuthStatus") || document.getElementById("authStatus");
   const accountEmail = document.getElementById("accountEmail");
   const loginMenuLink = document.getElementById("loginMenuLink");
   const signOutButton = document.getElementById("signOutButton");
+  const landingLoginLink = document.getElementById("landingLoginLink");
+  const landingDashboardLink = document.getElementById("landingDashboardLink");
 
   const messages = {
     en: {
@@ -55,7 +57,70 @@
   }
 
   function redirectToDashboard() {
-    window.location.replace(new URL("../", window.location.href).href);
+    window.location.replace(new URL("/app/", window.location.origin).href);
+  }
+
+  function redirectToHome() {
+    window.location.replace(new URL("/", window.location.origin).href);
+  }
+
+  function applyUserProfile(user) {
+    const metadata = user.user_metadata || {};
+    const identityImage = (user.identities || [])
+      .map(identity => identity.identity_data && (identity.identity_data.avatar_url || identity.identity_data.picture))
+      .find(Boolean);
+    const imageUrl = metadata.avatar_url || metadata.picture || metadata.profile_image_url || metadata.avatar || identityImage;
+    if (typeof imageUrl === "string" && imageUrl.trim()) {
+      try {
+        const parsed = new URL(imageUrl, window.location.href);
+        if (parsed.protocol === "https:" || parsed.protocol === "http:") {
+          document.querySelectorAll(".avatar-img").forEach(image => {
+            if (!image.dataset.fallbackSrc) image.dataset.fallbackSrc = image.getAttribute("src") || "";
+            image.onerror = () => {
+              image.onerror = null;
+              if (image.dataset.fallbackSrc) image.src = image.dataset.fallbackSrc;
+            };
+            image.src = parsed.href;
+          });
+        }
+      } catch (error) {
+        console.warn("Ignoring invalid profile image URL.");
+      }
+    }
+
+    document.querySelectorAll(".avatar-img").forEach(image => {
+      image.alt = metadata.full_name || metadata.name || user.email || "User profile";
+    });
+
+    const greeting = document.getElementById("landingGreeting");
+    if (greeting) {
+      const name = metadata.full_name || metadata.name || metadata.nickname || (user.email || "").split("@")[0];
+      greeting.textContent = `${language() === "th" ? "ยินดีต้อนรับกลับ" : "Welcome back"}, ${name}`;
+    }
+  }
+
+  function updateLandingView(isAuthenticated) {
+    document.querySelectorAll("[data-auth-view='guest']").forEach(element => {
+      element.hidden = isAuthenticated;
+    });
+    document.querySelectorAll("[data-auth-view='authenticated']").forEach(element => {
+      element.hidden = !isAuthenticated;
+    });
+    if (landingLoginLink) landingLoginLink.hidden = isAuthenticated;
+    if (landingDashboardLink) landingDashboardLink.hidden = !isAuthenticated;
+    if (!isAuthenticated) {
+      window.deadlineUser = null;
+      if (accountEmail) {
+        accountEmail.dataset.siteI18n = "previewAccount";
+        accountEmail.textContent = language() === "th" ? "โหมดตัวอย่าง (ยังไม่ได้เข้าสู่ระบบ)" : "Preview mode (not authenticated)";
+      }
+      if (signOutButton) signOutButton.hidden = true;
+      document.querySelectorAll(".avatar-img").forEach(image => {
+        image.onerror = null;
+        if (image.dataset.fallbackSrc) image.src = image.dataset.fallbackSrc;
+        image.alt = "User profile";
+      });
+    }
   }
 
   function loadSupabaseSdk() {
@@ -99,7 +164,7 @@
         return;
       }
       showStatus(`${message("authUnavailable")} ${error.message}`);
-      setLoginReady(false);
+      if (loginForm) setLoginReady(false);
     });
 
   async function initializeAuth(client) {
@@ -155,13 +220,15 @@
     }
 
     if (authPage === "dashboard" && !session) {
-      redirectToLogin();
+      redirectToHome();
       return;
     }
 
+    if (authPage === "landing") updateLandingView(Boolean(session));
+
     if (session) {
+      window.deadlineUser = session.user;
       if (authPage === "dashboard") {
-        window.deadlineUser = session.user;
         if (typeof window.loadDeadlineTasks === "function") {
           await window.loadDeadlineTasks(client, session.user);
         }
@@ -175,6 +242,7 @@
         accountEmail.removeAttribute("data-site-i18n");
         accountEmail.textContent = session.user.email || session.user.id;
       }
+      applyUserProfile(session.user);
       if (loginMenuLink) loginMenuLink.hidden = true;
       if (signOutButton) signOutButton.hidden = false;
     }
@@ -185,7 +253,7 @@
         try {
           const { error } = await client.auth.signOut();
           if (error) throw error;
-          redirectToLogin();
+          redirectToHome();
         } catch (error) {
           console.error("Supabase sign-out failed:", error);
           showStatus(`${message("signOutFailed")} ${error.message || ""}`);
@@ -197,11 +265,21 @@
 
     client.auth.onAuthStateChange((event, nextSession) => {
       if (event === "SIGNED_OUT" || !nextSession) {
-        if (authPage === "dashboard") redirectToLogin("session-ended");
+        if (authPage === "dashboard") redirectToHome();
+        if (authPage === "landing") updateLandingView(false);
+      }
+      if (event === "SIGNED_IN" && nextSession) {
+        if (authPage === "landing") updateLandingView(true);
+        applyUserProfile(nextSession.user);
       }
       if (event === "TOKEN_REFRESHED" && nextSession) {
         window.deadlineUser = nextSession.user;
+        applyUserProfile(nextSession.user);
       }
+    });
+
+    window.addEventListener("deadline-preferences-changed", () => {
+      if (window.deadlineUser) applyUserProfile(window.deadlineUser);
     });
   }
 })();

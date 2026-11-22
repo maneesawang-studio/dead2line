@@ -20,10 +20,10 @@
   <!-- แถบเมนูด้านบน -->
   <nav class="navbar">
     <div class="navbar-inner">
-    <div class="logo">
+    <a class="logo" href="/" aria-label="Deadline home">
       <img src="../Asset/Deadline-512.png" alt="Deadline">
       <span class="logo-name">Deadline<span class="logo-dot">.</span></span>
-    </div>
+    </a>
     <div class="profile-wrapper">
       <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open profile menu">
         <div class="avatar">
@@ -60,7 +60,7 @@
           <span class="theme-state" id="languageState">English</span>
         </button>
         <a class="profile-row profile-row-link" href="../settings/" data-i18n="settings">Settings</a>
-        <a class="profile-row profile-row-link" id="loginMenuLink" href="../login/" data-i18n="Sign in">Sign in</a>
+        <a class="profile-row profile-row-link" id="loginMenuLink" href="../login/" data-i18n="signIn">Sign in</a>
         <hr>
         <a class="profile-row profile-row-link" href="../about/" data-i18n="about">About Deadline</a>
         <a class="profile-row profile-row-link" href="../faq/" data-i18n="faq">FAQ</a>
@@ -209,10 +209,5 @@
   <script src="../supabase-config.js"></script>
   <script src="../script.js"></script>
   <script src="../supabase-auth.js"></script>
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => navigator.serviceWorker.register("../sw.js").catch(() => {}));
-    }
-  </script>
 </body>
 </html>

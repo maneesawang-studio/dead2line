@@ -1063,6 +1063,14 @@ renderTasks();
 applyTheme();
 applyLanguage();
 
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(error => {
+      console.error("Service worker registration failed:", error);
+    });
+  });
+}
+
 setInterval(() => {
   const today = new Date(`${localDateString()}T00:00:00`);
   if (today.getTime() !== REFERENCE_TODAY.getTime()) {

@@ -1,6 +1,7 @@
-const CACHE_NAME = "deadline-v1";
+const CACHE_NAME = "deadline-v2";
 const CORE_ASSETS = [
   "/",
+  "/app/",
   "/style.css",
   "/script.js",
   "/manifest.webmanifest",

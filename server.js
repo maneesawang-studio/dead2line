@@ -12,8 +12,7 @@ const contentTypes = {
   ".png": "image/png",
   ".sql": "text/plain; charset=utf-8",
   ".svg": "image/svg+xml",
-  ".yml": "text/plain; charset=utf-8"
-  ,
+  ".yml": "text/plain; charset=utf-8",
   ".webmanifest": "application/manifest+json; charset=utf-8"
 };
 const publicRootFiles = new Set([
@@ -41,12 +40,6 @@ const server = http.createServer((request, response) => {
   } catch {
     response.writeHead(400);
     response.end("Invalid URL");
-    return;
-  }
-
-  if (pathname === "/") {
-    response.writeHead(301, { Location: "/app/" });
-    response.end();
     return;
   }
 
@@ -103,7 +96,7 @@ const server = http.createServer((request, response) => {
         "Referrer-Policy": "strict-origin-when-cross-origin",
         "X-Frame-Options": "DENY",
         "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
-        "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co"
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co"
       });
       response.end(request.method === "HEAD" ? undefined : contents);
     });
