@@ -1,4 +1,9 @@
 (() => {
+  const scriptUrl = document.currentScript && document.currentScript.src;
+  const siteRoot = new URL("./", scriptUrl || document.baseURI);
+  const siteUrl = path => typeof window.deadlineSiteUrl === "function"
+    ? window.deadlineSiteUrl(path)
+    : new URL(String(path || "").replace(/^\/+/, ""), siteRoot).href;
   const config = window.DEADLINE_SUPABASE_CONFIG || {};
   const supabaseUrl = typeof config.url === "string" ? config.url.trim() : "";
   const publishableKey = typeof config.publishableKey === "string" ? config.publishableKey.trim() : "";
@@ -55,18 +60,17 @@
   }
 
   function redirectToLogin(reason) {
-    const loginPath = authPage === "dashboard" ? "../login/" : "../login/";
-    const loginUrl = new URL(loginPath, window.location.href);
+    const loginUrl = new URL(siteUrl("login/"));
     if (reason) loginUrl.searchParams.set("reason", reason);
     window.location.replace(loginUrl.href);
   }
 
   function redirectToDashboard() {
-    window.location.replace(new URL("/app/", window.location.origin).href);
+    window.location.replace(siteUrl("app/"));
   }
 
   function redirectToHome() {
-    window.location.replace(new URL("/", window.location.origin).href);
+    window.location.replace(siteUrl(""));
   }
 
   function applyUserProfile(user) {
@@ -122,7 +126,7 @@
     });
     if (landingLoginLink) landingLoginLink.hidden = isAuthenticated;
     if (landingDashboardLink) landingDashboardLink.hidden = !isAuthenticated;
-    if (tasksNavLink) tasksNavLink.href = isAuthenticated ? "/app/" : "/login/";
+    if (tasksNavLink) tasksNavLink.href = siteUrl(isAuthenticated ? "app/" : "login/");
     if (!isAuthenticated) {
       window.deadlineUser = null;
       if (accountEmail) {
@@ -144,7 +148,7 @@
     }
 
     const sources = [
-      "/Asset/supabase-js-2.119.2.js",
+      siteUrl("Asset/supabase-js-2.119.2.js"),
       "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.2/dist/umd/supabase.js",
       "https://unpkg.com/@supabase/supabase-js@2.119.2/dist/umd/supabase.js"
     ];
@@ -272,7 +276,7 @@
 
     if (authPage === "landing") updateLandingView(Boolean(session));
     else if (tasksNavLink && authPage !== "dashboard") {
-      tasksNavLink.href = session ? "/app/" : "/login/";
+      tasksNavLink.href = siteUrl(session ? "app/" : "login/");
     }
 
     if (session) {
@@ -317,12 +321,12 @@
         setAuthenticatedNavigation(false);
         if (authPage === "dashboard") redirectToHome();
         if (authPage === "landing") updateLandingView(false);
-        else if (tasksNavLink && authPage !== "dashboard") tasksNavLink.href = "/login/";
+        else if (tasksNavLink && authPage !== "dashboard") tasksNavLink.href = siteUrl("login/");
       }
       if (event === "SIGNED_IN" && nextSession) {
         setAuthenticatedNavigation(true);
         if (authPage === "landing") updateLandingView(true);
-        else if (tasksNavLink && authPage !== "dashboard") tasksNavLink.href = "/app/";
+        else if (tasksNavLink && authPage !== "dashboard") tasksNavLink.href = siteUrl("app/");
         applyUserProfile(nextSession.user);
       }
       if (event === "TOKEN_REFRESHED" && nextSession) {

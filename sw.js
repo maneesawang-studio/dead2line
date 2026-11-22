@@ -1,16 +1,17 @@
-const CACHE_NAME = "deadline-v4";
+const CACHE_NAME = "deadline-v5";
+const BASE_URL = new URL("./", self.location.href);
 const CORE_ASSETS = [
-  "/",
-  "/app/",
-  "/style.css",
-  "/script.js",
-  "/site-pages.js",
-  "/supabase-auth.js",
-  "/supabase-config.js",
-  "/Asset/supabase-js-2.119.2.js",
-  "/manifest.webmanifest",
-  "/Asset/Deadline-512.png"
-];
+  "",
+  "app/",
+  "style.css",
+  "script.js",
+  "site-pages.js",
+  "supabase-auth.js",
+  "supabase-config.js",
+  "Asset/supabase-js-2.119.2.js",
+  "manifest.webmanifest",
+  "Asset/Deadline-512.png"
+].map(path => new URL(path, BASE_URL).href);
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(CORE_ASSETS)));

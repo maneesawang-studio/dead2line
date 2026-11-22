@@ -1,4 +1,10 @@
 (() => {
+const scriptUrl = document.currentScript && document.currentScript.src;
+const siteRoot = new URL("./", scriptUrl || window.location.href);
+const siteUrl = path => new URL(String(path || "").replace(/^\/+/, ""), siteRoot).href;
+const sitePath = path => new URL(siteUrl(path)).pathname;
+window.deadlineSiteUrl = siteUrl;
+
 const nav = document.getElementById("siteNavigation") || document.querySelector(".navbar");
 if (nav) {
   const activePage = document.body.dataset.navActive || "";
@@ -7,17 +13,17 @@ if (nav) {
   let inner = nav.querySelector(".navbar-inner");
 
   function linksMarkup() {
-    const tasksHref = authPage === "dashboard" ? "/app/" : "/login/";
+    const tasksHref = siteUrl(authPage === "dashboard" ? "app/" : "login/");
     const currentPage = name => activePage === name ? ' aria-current="page"' : "";
     return `
       <button type="button" class="site-nav-toggle" id="siteNavToggle" aria-expanded="false" aria-controls="primaryNavigation" aria-label="Open navigation">
         <span></span><span></span><span></span>
       </button>
       <div class="site-nav-links" id="primaryNavigation">
-        <a class="site-nav-link" href="/"${currentPage("home")}><span data-i18n="homeNav" data-site-i18n="homeNav">Home</span></a>
+        <a class="site-nav-link" href="${siteUrl("")}"${currentPage("home")}><span data-i18n="homeNav" data-site-i18n="homeNav">Home</span></a>
         <a class="site-nav-link" id="tasksNavLink" href="${tasksHref}"${currentPage("tasks")}><span data-i18n="tasksNav" data-site-i18n="tasksNav">Tasks</span></a>
-        <a class="site-nav-link" href="/about/"${currentPage("about")}><span data-i18n="aboutNav" data-site-i18n="aboutNav">About</span></a>
-        <a class="site-nav-link" href="/faq/"${currentPage("faq")}><span data-i18n="faqNav" data-site-i18n="faqNav">FAQ</span></a>
+        <a class="site-nav-link" href="${siteUrl("about/")}"${currentPage("about")}><span data-i18n="aboutNav" data-site-i18n="aboutNav">About</span></a>
+        <a class="site-nav-link" href="${siteUrl("faq/")}"${currentPage("faq")}><span data-i18n="faqNav" data-site-i18n="faqNav">FAQ</span></a>
       </div>`;
   }
 
@@ -34,7 +40,7 @@ if (nav) {
     return `
       <div class="profile-wrapper">
         <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open profile menu" hidden>
-          <div class="avatar"><img class="avatar-img" src="/Asset/MNSW New Profile.png" alt="User profile"></div>
+          <div class="avatar"><img class="avatar-img" src="${siteUrl("Asset/MNSW New Profile.png")}" alt="User profile"></div>
           <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
         <div class="profile-menu" id="profileMenu">
@@ -44,10 +50,10 @@ if (nav) {
           </div>
           <p class="auth-status" id="authStatus" role="status" aria-live="polite" hidden></p>
           ${preferences}
-          <a class="profile-row profile-row-link" href="/settings/" data-i18n="settings" data-site-i18n="settings">Settings</a>
+          <a class="profile-row profile-row-link" href="${siteUrl("settings/")}" data-i18n="settings" data-site-i18n="settings">Settings</a>
           <hr>
-          <a class="profile-row profile-row-link" href="/privacy/" data-i18n="privacy" data-site-i18n="privacy">Privacy</a>
-          <a class="profile-row profile-row-link" id="loginMenuLink" href="/login/" data-i18n="signIn" data-site-i18n="signIn">Sign in</a>
+          <a class="profile-row profile-row-link" href="${siteUrl("privacy/")}" data-i18n="privacy" data-site-i18n="privacy">Privacy</a>
+          <a class="profile-row profile-row-link" id="loginMenuLink" href="${siteUrl("login/")}" data-i18n="signIn" data-site-i18n="signIn">Sign in</a>
           <button type="button" class="profile-row sign-out" id="signOutButton" data-i18n="signOut" data-site-i18n="signOut" hidden>Sign out</button>
         </div>
       </div>`;
@@ -57,15 +63,15 @@ if (nav) {
     nav.className = "navbar";
     nav.innerHTML = `
       <div class="navbar-inner">
-        <a class="logo" href="/" aria-label="Deadline home">
-          <img src="/Asset/Deadline-512.png" alt="">
+        <a class="logo" href="${siteUrl("")}" aria-label="Deadline home">
+          <img src="${siteUrl("Asset/Deadline-512.png")}" alt="">
           <span class="logo-name">Deadline<span class="logo-dot">.</span></span>
         </a>
         ${linksMarkup()}
         <div class="site-nav-actions">
           ${isLanding ? `
-            <a class="landing-nav-login" id="landingLoginLink" href="/login/" data-i18n="signIn" data-site-i18n="signIn">Sign in</a>
-            <a class="landing-nav-login" id="landingDashboardLink" href="/app/" data-i18n="openDashboard" data-site-i18n="openDashboard" hidden>Open dashboard</a>
+            <a class="landing-nav-login" id="landingLoginLink" href="${siteUrl("login/")}" data-i18n="signIn" data-site-i18n="signIn">Sign in</a>
+            <a class="landing-nav-login" id="landingDashboardLink" href="${siteUrl("app/")}" data-i18n="openDashboard" data-site-i18n="openDashboard" hidden>Open dashboard</a>
           ` : ""}
           ${profileMarkup(true)}
         </div>
@@ -106,7 +112,7 @@ if (nav) {
     guestLoginLink = document.createElement("a");
     guestLoginLink.id = "siteGuestLoginLink";
     guestLoginLink.className = "landing-nav-login";
-    guestLoginLink.href = "/login/";
+    guestLoginLink.href = siteUrl("login/");
     guestLoginLink.dataset.i18n = "signIn";
     guestLoginLink.dataset.siteI18n = "signIn";
     guestLoginLink.textContent = "Sign in";
@@ -119,13 +125,13 @@ if (nav) {
   const profileMenu = document.getElementById("profileMenu");
   if (toggle) {
     const activePaths = {
-      home: "/",
-      tasks: "/app/",
-      about: "/about/",
-      faq: "/faq/",
-      settings: "/settings/",
-      privacy: "/privacy/",
-      login: "/login/"
+      home: sitePath(""),
+      tasks: sitePath("app/"),
+      about: sitePath("about/"),
+      faq: sitePath("faq/"),
+      settings: sitePath("settings/"),
+      privacy: sitePath("privacy/"),
+      login: sitePath("login/")
     };
     const primaryPages = ["home", "tasks", "about", "faq"];
     const currentLinks = nav.querySelectorAll(primaryPages.includes(activePage)
@@ -479,7 +485,7 @@ if (!isDashboard) {
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("/sw.js").catch(error => {
+      navigator.serviceWorker.register(siteUrl("sw.js")).catch(error => {
         console.error("Service worker registration failed:", error);
       });
     });
