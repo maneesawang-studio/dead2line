@@ -1,0 +1,1551 @@
+/* =========================================
+   1. ตั้งค่าพื้นฐาน & ตัวแปรสี (Variables & Reset)
+   ========================================= */
+:root {
+  --bg-page: #F2F2F7;
+  --bg-white: #FFFFFF;
+  --primary-blue: #0099ff;
+  --primary-blue-hover: #0073D9;
+  --badge-blue-bg: #09f;
+  --badge-red-bg: #EF4444;
+  --badge-gray-bg: #E2E8F0;
+  
+  --text-dark: #0F172A;
+  --text-body: #334155;
+  --text-muted: #888888;
+  --text-light: #94A3B8;
+  
+  --color-red: #EF4444;
+  --color-green: #16A34A;
+  --border-color: #E2E8F0;
+  --shadow-soft: 0 2px 10px rgba(15, 23, 42, 0.03);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  background-color: var(--bg-page);
+  color: var(--text-dark);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 769px) {
+  html {
+    overflow-y: scroll;
+  }
+}
+
+html[lang="th"] body {
+  font-family: 'Noto Sans Thai', 'Inter', sans-serif;
+}
+
+body.modal-open {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* =========================================
+   2. แถบเมนูด้านบน (Navbar - Desktop Only)
+   ========================================= */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background-color: var(--bg-white);
+  transition: transform 0.2s ease;
+}
+
+.navbar-inner {
+  width: 100%;
+  max-width: 1440px;
+  height: 54px;
+  padding: 0 24px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo img {
+  display: block;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-dark);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.logo-dot {
+  color: var(--primary-blue);
+}
+
+.user-profile {
+  height: 44px;
+  background-color: var(--bg-white);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px 4px;
+}
+
+.profile-wrapper {
+  position: relative;
+  z-index: 110;
+}
+
+.profile-menu {
+  display: none;
+  position: absolute;
+  top: 52px;
+  right: 0;
+  width: 280px;
+  gap: 8px;
+  padding: 16px 8px;
+  border-radius: 16px;
+  background: var(--bg-white);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.14);
+  font-size: 14px;
+  z-index: 120;
+}
+
+.profile-menu.show {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-account {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+  color: #94A3B8;
+  font-size: 12px;
+  padding: 0px 8px;
+}
+
+.profile-account strong {
+  color: var(--text-dark);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.profile-row {
+  width: 100%;
+  min-height: 40px;
+  padding: 0px 8px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+  color: var(--text-dark);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.profile-row:hover {
+  background: #F8FAFC;
+}
+
+.theme-row {
+  gap: 8px;
+}
+
+.theme-icon {
+  display: flex;
+}
+
+.theme-state {
+  margin-left: auto;
+  color: #94A3B8;
+  font-size: 12px;
+}
+
+.profile-menu hr {
+  border: 0;
+  border-top: 1px solid #EDF0F4;
+  margin: 5px 0;
+}
+
+.profile-row.sign-out {
+  color: var(--color-red);
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* =========================================
+   3. โครงสร้างหลัก & ส่วนหัว (Container & Header)
+   ========================================= */
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 36px 24px 60px;
+}
+
+.page-header {
+  margin-bottom: 16px;
+}
+
+.current-date {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-dark);
+  letter-spacing: -0.5px;
+}
+
+/* =========================================
+   4. แถบสรุปสถานะ & ปุ่ม Add (Summary Bar)
+   ========================================= */
+.summary-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.stats-card {
+  height: 54px;
+  background-color: var(--bg-white);
+  border-radius: 999px;
+  padding: 0px 8px;
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  box-shadow: var(--shadow-soft);
+}
+
+.stat-item {
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.stat-label.blue { color: var(--primary-blue); }
+.stat-label.red { color: var(--color-red); }
+.stat-label.green { color: var(--color-green); }
+
+.stat-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.stat-divider {
+  width: 1px;
+  height: 30px;
+  background-color: #E2E8F0;
+  margin: 0 8px;
+}
+
+.btn-add {
+  max-height: 40px;
+  background-color: var(--primary-blue);
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(0, 136, 255, 0.25);
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-add:hover {
+  background-color: var(--primary-blue-hover);
+}
+
+.btn-add:active {
+  transform: scale(0.98);
+}
+
+.btn-add:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.btn-add-icon {
+  font-size: 24px;
+  font-weight: 200;
+  line-height: 1;
+}
+.btn-add > span:last-child {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* =========================================
+   5. แถบควบคุม: แท็บสถานะ & ค้นหา (Controls Bar)
+   ========================================= */
+.controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+body.dark-mode {
+  color-scheme: dark;
+  --bg-page: #000000;
+  --bg-white: #1F1F1F;
+  --primary-blue: #0099FF;
+  --primary-blue-hover: #1688D5;
+  --badge-blue-bg: #0099ff;
+  --badge-red-bg: #EF4444;
+  --badge-gray-bg: #303030;
+  --text-dark: #F5F5F5;
+  --text-body: #D0D0D0;
+  --text-muted: #A0A0A0;
+  --text-light: #777777;
+  --color-red: #FF6262;
+  --color-green: #35C978;
+  --border-color: #333333;
+  --shadow-soft: none;
+}
+
+@media (min-width: 769px) {
+  body.dark-mode .navbar {
+    background-color: #050505;
+  }
+}
+
+body.dark-mode .profile-menu {
+  background-color: #1F1F1F;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
+
+body.dark-mode .profile-menu hr,
+body.dark-mode .task-card {
+  border-color: #2C2C2C;
+}
+
+body.dark-mode .profile-row:hover,
+body.dark-mode .btn-more:hover {
+  background-color: #303030;
+}
+
+body.dark-mode .task-card:hover {
+  background-color: #242424;
+}
+
+body.dark-mode .task-date-col {
+  background-color: #2B2B2B;
+}
+
+body.dark-mode .stat-divider,
+body.dark-mode .progress-bar-bg {
+  background-color: #353535;
+}
+
+body.dark-mode .badge.urgent {
+  color: #FFFFFF;
+}
+
+body.dark-mode .badge.category {
+  background-color: #303030;
+  color: #B5B5B5;
+}
+
+body.dark-mode .checkmark,
+body.dark-mode .subtask-form-check:not(:checked) {
+  background-color: #4A4A4A;
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group select,
+body.dark-mode .form-group textarea,
+body.dark-mode .subtask-form-input,
+body.dark-mode .btn-add-step,
+body.dark-mode .btn-cancel {
+  background-color: #292929;
+  border-color: #3A3A3A;
+  color: var(--text-dark);
+  box-shadow: none;
+}
+
+body.dark-mode .btn-add-step {
+  border-style: dashed;
+  color: #A0A0A0;
+}
+
+body.dark-mode .form-group input::placeholder,
+body.dark-mode .form-group textarea::placeholder,
+body.dark-mode .subtask-form-input::placeholder {
+  color: #8A8A8A;
+}
+
+.status-tabs {
+  background-color: var(--bg-white);
+  border-radius: 999px;
+  padding: 4px;
+  display: flex;
+  width: 340px;
+  box-shadow: var(--shadow-soft);
+}
+
+.tab-btn {
+  height: 40px;
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  background-color: var(--primary-blue);
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.search-sort-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-box {
+  height: 40px;
+  background-color: var(--bg-white);
+  border-radius: 999px;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 280px;
+  box-shadow: var(--shadow-soft);
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-dark);
+}
+
+.search-box input::placeholder {
+  color: var(--text-light);
+}
+
+.btn-sort {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--bg-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-soft);
+  transition: background-color 0.2s;
+}
+
+.btn-sort:hover {
+  background-color: #F8FAFC;
+}
+
+body.dark-mode .btn-sort:hover {
+  background-color: #303030;
+}
+
+/* =========================================
+   6. ตัวกรองหมวดหมู่ (Filter Pills)
+   ========================================= */
+.filter-pills {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  scrollbar-width: none; /* ซ่อน Scrollbar ใน Firefox */
+}
+
+.filter-pills::-webkit-scrollbar {
+  display: none; /* ซ่อน Scrollbar ใน Chrome/Safari */
+}
+
+.pill {
+  height: 32px;
+  background-color: var(--bg-white);
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0px 16px;
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: var(--shadow-soft);
+  transition: all 0.2s;
+}
+
+.pill:hover {
+  color: var(--text-dark);
+}
+
+.pill.active {
+  background-color: var(--primary-blue);
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+/* =========================================
+   7. กล่องรายการงาน (Task List Container)
+   ========================================= */
+.task-list-container {
+  background-color: var(--bg-white);
+  border-radius: 24px;
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.task-card {
+  display: flex;
+  align-items: flex-start;
+  padding: 24px 16px;
+  gap: 24px;
+  border-bottom: 1px solid #F1F5F9;
+  transition: background-color 0.15s;
+}
+
+.task-card:last-child {
+  border-bottom: none;
+}
+
+.task-card:hover {
+  background-color: #FAFBFD;
+}
+
+/* คอลัมน์ซ้าย: วันที่กำหนดส่ง */
+.task-date-col {
+  background-color: var(--bg-page);
+  width: 80px;
+  min-height: 80px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-radius: 16px;
+  padding: 8px 0px;
+}
+
+.deadline-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-light);
+  margin-bottom: 2px;
+}
+
+.deadline-day {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary-blue);
+  line-height: 1.2;
+}
+
+.deadline-day.urgent {
+  color: var(--color-red);
+}
+
+.deadline-year,
+.deadline-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* คอลัมน์กลาง: รายละเอียดงาน */
+.task-content-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-badges {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.task-badge-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.badge.urgent {
+  background-color: var(--badge-red-bg);
+  color: var(--bg-white);
+}
+
+.badge.normal {
+  background-color: var(--badge-blue-bg);
+  color: #FFFFFF;
+}
+
+.badge.category {
+  background-color: #F1F5F9;
+  color: var(--text-muted);
+}
+
+.task-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.task-desc {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+/* ส่วนงานย่อย (Sub-progress) */
+.sub-progress-section {
+  margin-top: 16px;
+  padding-top: 12px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.progress-percent {
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 5px;
+  background-color: #E2E8F0;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: var(--primary-blue);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.subtask-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.custom-checkbox input {
+  display: none;
+}
+
+.checkmark {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #CBD5E1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.custom-checkbox input:checked + .checkmark {
+  background-color: var(--primary-blue);
+}
+
+.custom-checkbox input:checked + .checkmark::after {
+  content: "";
+  width: 4px;
+  height: 8px;
+  border: solid rgb(255, 255, 255);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-bottom: 2px;
+}
+
+.custom-checkbox.done {
+  text-decoration: line-through;
+  color: var(--text-light);
+}
+
+/* คอลัมน์ขวา: ปุ่มจัดการ (Check / More) */
+.task-actions-col {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.btn-check {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #0099ff;
+  color: var(--primary-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-check:hover,
+.btn-check.completed {
+  background-color: var(--primary-blue);
+  border-color: var(--primary-blue);
+  color: #FFFFFF;
+}
+
+.btn-more {
+  width: 40px;
+  height: 40px;
+  color: var(--text-light);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.btn-more:hover {
+  background-color: #F1F5F9;
+  color: var(--text-dark);
+}
+
+/* ข้อความเมื่อไม่พบรายการ */
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+/* =========================================
+8. หน้าต่างเพิ่มงานใหม่ (Modal)
+========================================= */
+.modal-overlay {
+position: fixed;
+inset: 0;
+background-color: rgba(0, 0, 0, 0.75);
+display: none;
+align-items: center;
+justify-content: center;
+padding: 16px;
+z-index: 1000;
+overscroll-behavior: contain;
+}
+.modal-overlay.show {
+display: flex;
+}
+.modal-content {
+background-color: var(--bg-white);
+border-radius: 24px;
+width: 100%;
+max-width: 800px;
+max-height: calc(90vh - 64px);
+overflow-y: auto;
+overscroll-behavior: contain;
+-webkit-overflow-scrolling: touch;
+padding: 24px;
+box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+.modal-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 28px;
+}
+.modal-header h3 {
+font-size: 24px;
+font-weight: 700;
+}
+.btn-close-modal {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+font-size: 24px;
+color: var(--text-light);
+line-height: 1;
+}
+.form-group {
+margin-bottom: 18px;
+}
+.form-group label {
+display: block;
+font-size: 14px;
+font-weight: 600;
+color: var(--text-body);
+margin-bottom: 10px;
+}
+.required {
+color: #ff5f67;
+}
+.form-group input,
+.form-group select {
+width: 100%;
+height: 48px;
+padding: 0px 18px;
+border: 1px solid #edf0f4;
+border-radius: 24px;
+background: #fff;
+font-size: 16px;
+font-weight: 400;
+outline: none;
+box-shadow: 0 3px 10px rgba(15, 23, 42, 0.035);
+}
+.form-group textarea {
+width: 100%;
+height: 120px;
+padding: 14px 18px;
+border: 1px solid #edf0f4;
+border-radius: 16px;
+background: #fff;
+font-size: 16px;
+font-weight: 400;
+line-height: 1.5;
+outline: none;
+resize: vertical;
+min-height: 120px;
+box-shadow: 0 3px 10px rgba(15, 23, 42, 0.035);
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+color: #9da5af;
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+border-color: var(--primary-blue);
+}
+.form-row {
+display: grid;
+grid-template-columns: 1fr;
+gap: 12px;
+}
+.split-row {
+grid-template-columns: 1fr 1fr;
+}
+.sub-progress-form {
+margin-top: 4px;
+}
+.sub-progress-form > label {
+display: block;
+font-size: 16px;
+font-weight: 600;
+margin-bottom: 10px;
+}
+.btn-add-step {
+width: 100%;
+height: 40px;
+border: 1px dashed #dfe3e8;
+border-radius: 24px;
+background: #fff;
+color: #999;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 12px;
+font-size: 14px;
+font-weight: 500;
+}
+.subtask-form-input {
+width: 100%;
+padding: 12px 14px;
+border: 1px solid #edf0f4;
+border-radius: 24px;
+font-size: 14px;
+font-weight: 400;
+}
+.subtask-form-row {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-bottom: 8px;
+}
+.subtask-form-check {
+appearance: none;
+width: 18px;
+height: 18px;
+border: 0;
+border-radius: 50%;
+background-color: #CBD5E1;
+flex-shrink: 0;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+transition: background-color 0.2s;
+}
+.subtask-form-check::after {
+content: "";
+width: 4px;
+height: 8px;
+border: solid #fff;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+margin-bottom: 2px;
+opacity: 0;
+}
+.subtask-form-check:checked {
+background-color: var(--primary-blue);
+}
+.subtask-form-check:checked::after {
+opacity: 1;
+}
+.subtask-form-check:checked + .subtask-form-input {
+text-decoration: line-through;
+color: var(--text-light);
+}
+.modal-footer {
+display: flex;
+justify-content: flex-end;
+gap: 16px;
+margin-top: 28px;
+}
+.btn-delete {
+margin-right: auto;
+min-width: 80px;
+height: 40px;
+font-size: 14px;
+font-weight: 500;
+color: var(--color-red);
+}
+.btn-cancel {
+min-width: 80px;
+height: 40px;
+border-radius: 999px;
+font-size: 14px;
+font-weight: 500;
+color: #111827;
+background-color: #fff;
+border: 1px solid #edf0f4;
+}
+.btn-submit {
+min-width: 80px;
+height: 40px;
+border-radius: 999px;
+font-size: 14px;
+font-weight: 600;
+color: #FFFFFF;
+background: #1597ff;
+}
+
+@media (max-width: 640px) {
+  .modal-content {
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    padding: 24px 20px;
+  }
+  .modal-header h3 {
+    font-size: 20px;
+  }
+  .modal-footer {
+    gap: 10px;
+  }
+  .btn-cancel,
+  .btn-submit {
+    min-width: 0;
+    flex: 1;
+  }
+}
+
+/* =========================================
+9. การปรับหน้าจอมือถือ (Mobile Responsive - รูปที่ 1)
+========================================= */
+
+@media (max-width: 768px) {
+
+body {
+font-size: 14px;
+}
+.navbar {
+position: sticky;
+top: 0;
+margin: 16px 16px 0;
+background-color: transparent;
+z-index: 20;
+}
+.navbar-inner {
+height: 44px;
+padding: 0;
+justify-content: space-between;
+}
+.logo-name {
+display: none;
+}
+.profile-wrapper {
+position: relative;
+}
+.profile-menu {
+top: 52px;
+right: 0;
+width: 270px;
+}
+.navbar.navbar-hidden {
+transform: translateY(calc(-100% - 16px));
+}
+
+.container {
+padding: 16px;
+}
+.task-list-container {
+margin-left: -8px;
+margin-right: -8px;
+width: calc(100% + 16px);
+}
+.current-date {
+font-size: 12px;
+}
+.page-title {
+font-size: 20px;
+}
+.summary-bar {
+gap: 8px;
+width: 100%;
+}
+.stats-card {
+width: 100%;
+flex: 1;
+min-width: 0;
+height: 54px;
+padding: 8px;
+gap: 0;
+justify-content: space-around;
+}
+.stat-item {
+width: auto;
+min-width: 0;
+flex: 1;
+}
+.stat-label {
+font-size: 12px;
+white-space: nowrap;
+}
+.stat-value {
+font-size: 14px;
+line-height: 1.25;
+}
+.stat-divider {
+height: 28px;
+margin: 0 2px;
+flex-shrink: 0;
+}
+.btn-add {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 80px;
+height: 40px;
+flex-shrink: 0;
+padding: 0 14px;
+}
+.controls-bar {
+flex-direction: column;
+align-items: stretch;
+gap: 12px;
+}
+.status-tabs {
+width: 100%;
+}
+.tab-btn {
+font-size: 14px;
+}
+.search-sort-group {
+width: 100%;
+}
+.search-box {
+flex: 1;
+width: auto;
+}
+.search-box input {
+font-size: 14px;
+}
+.pill {
+font-size: 12px;
+}
+.badge {
+font-size: 10px;
+}
+.task-card {
+padding: 16px 8px;
+gap: 8px;
+}
+.task-title {
+font-size: 14px;
+font-weight: 600;
+}
+.task-desc {
+font-size: 12px;
+font-weight: 400;
+}
+.task-date-col {
+width: 80px;
+}
+.deadline-day {
+font-size: 14px;
+}
+.task-actions-col {
+gap: 6px;
+}
+.custom-checkbox {
+font-size: 12px;
+}
+.form-group label {
+font-size: 12px;
+}
+.sub-progress-form > label {
+font-size: 14px;
+}
+.btn-add-step,
+.btn-delete,
+.btn-cancel,
+.btn-submit {
+font-size: 12px;
+}
+.profile-row {
+font-size: 12px;
+}
+.profile-account strong {
+font-size: 12px;
+}
+.modal-content {
+  max-height: calc(80vh - 32px);
+  overflow-y: auto;
+  padding: 24px 20px;
+}
+.modal-overlay {
+  padding: 16px;
+}
+.modal-header h3 {
+  font-size: 20px;
+} 
+
+
+}
+
+.profile-row-link {
+  text-decoration: none;
+}
+
+.task-operation-status {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border: 1px solid #FECACA;
+  border-radius: 12px;
+  background-color: #FEF2F2;
+  color: #B91C1C;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.task-operation-status[hidden] {
+  display: none;
+}
+
+body.dark-mode .task-operation-status {
+  border-color: #7F1D1D;
+  background-color: #3B1717;
+  color: #FECACA;
+}
+
+.auth-status {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border: 1px solid #FECACA;
+  border-radius: 12px;
+  background-color: #FEF2F2;
+  color: #B91C1C;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.auth-status[hidden] {
+  display: none;
+}
+
+.auth-status[data-kind="pending"] {
+  border-color: #BFDBFE;
+  background-color: #EFF6FF;
+  color: #1D4ED8;
+}
+
+body.dark-mode .auth-status {
+  border-color: #7F1D1D;
+  background-color: #3B1717;
+  color: #FECACA;
+}
+
+body.dark-mode .auth-status[data-kind="pending"] {
+  border-color: #1E40AF;
+  background-color: #172554;
+  color: #BFDBFE;
+}
+
+.site-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-page .logo {
+  text-decoration: none;
+}
+
+.site-main {
+  width: min(100% - 32px, 880px);
+  margin: 0 auto;
+  padding: 48px 0;
+  flex: 1;
+}
+
+.site-page-header {
+  margin: 0 0 28px;
+}
+
+.site-eyebrow {
+  margin-bottom: 8px;
+  color: var(--primary-blue);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.site-page-header h1,
+.login-card h1 {
+  color: var(--text-dark);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.site-lead {
+  margin-top: 12px;
+  color: var(--text-body);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.site-card {
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  background-color: var(--bg-white);
+  box-shadow: var(--shadow-soft);
+}
+
+.site-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.site-feature-card {
+  padding: 22px;
+}
+
+.site-feature-number {
+  display: inline-block;
+  margin-bottom: 22px;
+  color: var(--primary-blue);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.site-feature-card h2,
+.site-notice-card h2 {
+  margin-bottom: 8px;
+  color: var(--text-dark);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.site-feature-card p,
+.site-notice-card p {
+  color: var(--text-body);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.site-notice-card {
+  margin-top: 16px;
+  padding: 20px 22px;
+}
+
+.site-back-link {
+  display: inline-block;
+  margin-top: 24px;
+  color: var(--primary-blue);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.site-back-link:hover,
+.site-inline-links a:hover {
+  text-decoration: underline;
+}
+
+.site-footer {
+  padding: 20px 16px;
+  color: var(--text-muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+.faq-main {
+  max-width: 760px;
+}
+
+.faq-list {
+  display: grid;
+  gap: 12px;
+}
+
+.faq-item {
+  padding: 18px 20px;
+}
+
+.faq-item summary {
+  color: var(--text-dark);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.faq-item p {
+  margin-top: 12px;
+  color: var(--text-body);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.login-main {
+  display: grid;
+  place-items: center;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 32px;
+}
+
+.login-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  color: var(--text-dark);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.login-brand img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.login-card h1 {
+  font-size: 26px;
+}
+
+.login-card .site-lead {
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.login-form {
+  display: grid;
+  gap: 16px;
+}
+
+.site-form-group {
+  display: grid;
+  gap: 7px;
+}
+
+.site-form-group label {
+  color: var(--text-dark);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.site-form-group input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background-color: var(--bg-white);
+  color: var(--text-dark);
+  font-size: 14px;
+}
+
+.site-form-group input:focus {
+  outline: 2px solid rgba(0, 153, 255, 0.25);
+  border-color: var(--primary-blue);
+}
+
+.site-primary-button {
+  min-height: 44px;
+  border-radius: 999px;
+  background-color: var(--primary-blue);
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.site-primary-button:hover:not(:disabled) {
+  background-color: var(--primary-blue-hover);
+}
+
+.site-primary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.login-note {
+  margin-top: 18px;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.site-inline-links {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.site-inline-links a {
+  color: var(--primary-blue);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+body.dark-mode .site-feature-card,
+body.dark-mode .site-notice-card,
+body.dark-mode .faq-item,
+body.dark-mode .login-card {
+  border-color: #303030;
+}
+
+@media (max-width: 768px) {
+  .site-main {
+    padding: 32px 0;
+  }
+
+  .site-page-header h1 {
+    font-size: 26px;
+  }
+
+  .site-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .site-feature-card {
+    padding: 18px;
+  }
+
+  .site-feature-number {
+    margin-bottom: 12px;
+  }
+
+  .login-card {
+    padding: 24px 20px;
+  }
+}
