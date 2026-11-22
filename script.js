@@ -255,7 +255,7 @@ const translations = {
   }
 };
 let currentLanguage = localStorage.getItem("deadline-language") === "th" ? "th" : "en";
-let currentTheme = localStorage.getItem("deadline-theme") === "dark" ? "dark" : "light";
+let currentTheme = window.deadlineGetThemePreference();
 
 // =========================================
 // 3. อ้างอิง Elements จาก HTML
@@ -306,6 +306,7 @@ function t(key, ...args) {
 }
 
 function applyTheme() {
+  window.deadlineApplyDocumentTheme(currentTheme);
   document.body.classList.toggle("dark-mode", currentTheme === "dark");
   if (typeof window.deadlineApplyLogoTheme === "function") {
     window.deadlineApplyLogoTheme(currentTheme);
@@ -954,6 +955,18 @@ themeToggle.addEventListener("click", () => {
   localStorage.setItem("deadline-theme", currentTheme);
   applyTheme();
 });
+const systemThemePreference = window.matchMedia("(prefers-color-scheme: dark)");
+const syncSystemTheme = event => {
+  const savedTheme = localStorage.getItem("deadline-theme");
+  if (savedTheme === "dark" || savedTheme === "light") return;
+  currentTheme = event.matches ? "dark" : "light";
+  applyTheme();
+};
+if (systemThemePreference.addEventListener) {
+  systemThemePreference.addEventListener("change", syncSystemTheme);
+} else if (systemThemePreference.addListener) {
+  systemThemePreference.addListener(syncSystemTheme);
+}
 languageToggle.addEventListener("click", () => {
   currentLanguage = currentLanguage === "en" ? "th" : "en";
   localStorage.setItem("deadline-language", currentLanguage);
@@ -969,7 +982,9 @@ btnOpenModal.addEventListener("click", () => {
   addTaskForm.reset();
   subtaskFormList.innerHTML = "";
   addStepNumber.textContent = "1";
-  document.getElementById("taskDateInput").min = localDateString();
+  const today = localDateString();
+  document.getElementById("taskDateInput").min = today;
+  document.getElementById("taskDateInput").value = today;
   modalDirty = false;
   showTaskModal();
 });

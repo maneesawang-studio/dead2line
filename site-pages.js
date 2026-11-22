@@ -487,7 +487,25 @@ const siteTranslations = {
 };
 
 let siteLanguage = localStorage.getItem("deadline-language") === "th" ? "th" : "en";
-let siteTheme = localStorage.getItem("deadline-theme") === "dark" ? "dark" : "light";
+const systemThemePreference = window.matchMedia
+  ? window.matchMedia("(prefers-color-scheme: dark)")
+  : null;
+
+function getThemePreference() {
+  const savedTheme = localStorage.getItem("deadline-theme");
+  if (savedTheme === "dark" || savedTheme === "light") return savedTheme;
+  return systemThemePreference && systemThemePreference.matches ? "dark" : "light";
+}
+
+function applyDocumentTheme(theme) {
+  document.documentElement.style.colorScheme = theme;
+  const themeColor = document.querySelector('meta[name="theme-color"]');
+  if (themeColor) themeColor.content = theme === "dark" ? "#000000" : "#F2F2F7";
+}
+
+let siteTheme = getThemePreference();
+window.deadlineGetThemePreference = getThemePreference;
+window.deadlineApplyDocumentTheme = applyDocumentTheme;
 
 function applyLogoTheme(theme) {
   document.querySelectorAll(".logo img, .login-brand img").forEach(image => {
@@ -527,6 +545,7 @@ function updatePreviewDates() {
 
 function applySitePreferences() {
   document.documentElement.lang = siteLanguage;
+  applyDocumentTheme(siteTheme);
   document.body.classList.toggle("dark-mode", siteTheme === "dark");
   applyLogoTheme(siteTheme);
   document.querySelectorAll("[data-site-i18n]").forEach(element => {
@@ -676,6 +695,19 @@ function installActionConfirmation() {
 installActionConfirmation();
 
 const isDashboard = document.body.dataset.authPage === "dashboard";
+if (!isDashboard && systemThemePreference) {
+  const syncSystemTheme = event => {
+    const savedTheme = localStorage.getItem("deadline-theme");
+    if (savedTheme === "dark" || savedTheme === "light") return;
+    siteTheme = event.matches ? "dark" : "light";
+    applySitePreferences();
+  };
+  if (systemThemePreference.addEventListener) {
+    systemThemePreference.addEventListener("change", syncSystemTheme);
+  } else if (systemThemePreference.addListener) {
+    systemThemePreference.addListener(syncSystemTheme);
+  }
+}
 const guestThemeToggle = document.getElementById("guestThemeToggle");
 const guestLanguageToggle = document.getElementById("guestLanguageToggle");
 if (guestThemeToggle) guestThemeToggle.addEventListener("click", () => {
