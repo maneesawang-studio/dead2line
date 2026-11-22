@@ -1,0 +1,33 @@
+name: Keep Supabase active
+
+on:
+  schedule:
+    - cron: "10 1 * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+    steps:
+      - name: Validate Supabase settings
+        run: |
+          if [ -z "$SUPABASE_URL" ]; then
+            echo "::error::Set the SUPABASE_URL repository secret."
+            exit 1
+          fi
+          if [ -z "$SUPABASE_PUBLISHABLE_KEY" ]; then
+            echo "::error::Set the SUPABASE_PUBLISHABLE_KEY repository secret."
+            exit 1
+          fi
+
+      - name: Call the keepalive function
+        run: |
+          curl --fail-with-body --silent --show-error \
+            --request POST "${SUPABASE_URL%/}/rest/v1/rpc/deadline_keepalive" \
+            --header "apikey: $SUPABASE_PUBLISHABLE_KEY" \
+            --header "Content-Type: application/json" \
+            --data '{}'
