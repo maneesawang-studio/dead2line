@@ -1,8 +1,9 @@
-const CACHE_NAME = "deadline-v5";
+const CACHE_NAME = "deadline-v16";
 const BASE_URL = new URL("./", self.location.href);
 const CORE_ASSETS = [
   "",
   "app/",
+  "signup/",
   "style.css",
   "script.js",
   "site-pages.js",
@@ -10,7 +11,8 @@ const CORE_ASSETS = [
   "supabase-config.js",
   "Asset/supabase-js-2.119.2.js",
   "manifest.webmanifest",
-  "Asset/Deadline-512.png"
+  "Asset/Deadline-512.png",
+  "Asset/Deadline-white-512.png"
 ].map(path => new URL(path, BASE_URL).href);
 
 self.addEventListener("install", event => {

@@ -25,7 +25,7 @@ const publicRootFiles = new Set([
   "manifest.webmanifest",
   "sw.js"
 ]);
-const publicDirectories = new Set(["app", "Asset", "about", "faq", "login", "settings", "privacy"]);
+const publicDirectories = new Set(["app", "Asset", "about", "faq", "login", "signup", "settings", "privacy"]);
 
 const server = http.createServer((request, response) => {
   if (request.method !== "GET" && request.method !== "HEAD") {

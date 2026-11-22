@@ -72,7 +72,7 @@
       <h1 id="loginHeading" data-site-i18n="loginHeading">Welcome back</h1>
       <p class="site-lead" data-site-i18n="loginLead">Sign in to continue to your deadlines.</p>
 
-      <form id="loginForm" class="login-form">
+      <form id="loginForm" class="login-form" method="post">
         <div class="site-form-group">
           <label for="loginEmail" data-site-i18n="email">Email</label>
           <input type="email" id="loginEmail" name="email" autocomplete="email" required>
@@ -85,7 +85,10 @@
         <button class="site-primary-button" id="loginSubmit" type="submit" data-site-i18n="signInButton">Sign in</button>
       </form>
 
-      <p class="login-note" data-site-i18n="loginNote">Use an account that has been created in Supabase Auth.</p>
+      <p class="login-note">
+        <span data-site-i18n="needAccount">Don't have an account?</span>
+        <a href="../signup/" data-site-i18n="signUpLink">Sign up</a>
+      </p>
       <div class="site-inline-links">
         <a href="../about/" data-site-i18n="aboutNav">About</a>
         <a href="../faq/" data-site-i18n="faqNav">FAQ</a>

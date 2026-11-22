@@ -9,12 +9,14 @@
   const publishableKey = typeof config.publishableKey === "string" ? config.publishableKey.trim() : "";
   const authPage = document.body.dataset.authPage;
   const loginForm = document.getElementById("loginForm");
+  const signUpForm = document.getElementById("signUpForm");
   const loginButton = document.getElementById("loginSubmit");
-  const status = authPage === "login"
+  const signUpButton = document.getElementById("signUpSubmit");
+  const status = authPage === "login" || authPage === "signup"
     ? document.getElementById("authStatus")
     : authPage === "landing"
       ? document.getElementById("landingAuthStatus")
-      : document.getElementById("taskOperationStatus") || document.getElementById("authStatus");
+      : document.getElementById("taskOperationStatus") || document.getElementById("profileAuthStatus") || document.getElementById("authStatus");
   const accountEmail = document.getElementById("accountEmail");
   const profileEmail = document.getElementById("profileEmail");
   const loginMenuLink = document.getElementById("loginMenuLink");
@@ -30,8 +32,17 @@
       sessionFailed: "Couldn't verify your session.",
       signingIn: "Signing in...",
       signInFailed: "Sign-in failed.",
+      signingUp: "Creating your account...",
+      signUpFailed: "Sign-up failed.",
+      passwordMismatch: "The passwords don't match.",
+      signUpCheckEmail: "Account created. Check your email for a confirmation link before signing in.",
+      signUpMissingUser: "Supabase didn't return the new account.",
       noSession: "Supabase didn't return a session. Check your Auth settings.",
       signOutFailed: "Sign-out failed.",
+      signOutConfirmTitle: "Sign out?",
+      signOutConfirmMessage: "Are you sure you want to sign out?",
+      confirmSignOut: "Sign out",
+      cancel: "Cancel",
       authUnavailable: "Couldn't connect to Supabase. Check the project URL and network, then try again."
     },
     th: {
@@ -40,8 +51,17 @@
       sessionFailed: "ตรวจสอบสถานะการเข้าสู่ระบบไม่สำเร็จ",
       signingIn: "กำลังเข้าสู่ระบบ...",
       signInFailed: "เข้าสู่ระบบไม่สำเร็จ",
+      signingUp: "กำลังสร้างบัญชี...",
+      signUpFailed: "สมัครสมาชิกไม่สำเร็จ",
+      passwordMismatch: "รหัสผ่านทั้งสองช่องไม่ตรงกัน",
+      signUpCheckEmail: "สร้างบัญชีแล้ว กรุณาตรวจสอบอีเมลและกดยืนยันก่อนเข้าสู่ระบบ",
+      signUpMissingUser: "Supabase ไม่ได้ส่งข้อมูลบัญชีใหม่กลับมา",
       noSession: "Supabase ไม่ได้ส่ง session กลับมา กรุณาตรวจสอบการตั้งค่า Auth",
       signOutFailed: "ออกจากระบบไม่สำเร็จ",
+      signOutConfirmTitle: "ต้องการออกจากระบบหรือไม่?",
+      signOutConfirmMessage: "คุณสามารถเข้าสู่ระบบอีกครั้งได้ทุกเมื่อ",
+      confirmSignOut: "ออกจากระบบ",
+      cancel: "ยกเลิก",
       authUnavailable: "เชื่อมต่อ Supabase ไม่สำเร็จ กรุณาตรวจสอบ Project URL และเครือข่าย"
     }
   };
@@ -56,8 +76,9 @@
     status.textContent = text;
   }
 
-  function setLoginReady(ready) {
+  function setAuthReady(ready) {
     if (loginButton) loginButton.disabled = !ready;
+    if (signUpButton) signUpButton.disabled = !ready;
   }
 
   function redirectToLogin(reason) {
@@ -220,9 +241,9 @@
   }
 
   if (!supabaseUrl || !publishableKey) {
-    if (loginForm) {
+    if (loginForm || signUpForm) {
       showStatus(message("configMissing"));
-      setLoginReady(false);
+      setAuthReady(false);
     } else if (authPage === "dashboard") {
       redirectToLogin("config-missing");
     }
@@ -242,7 +263,7 @@
         return;
       }
       showStatus(message("authUnavailable"));
-      if (loginForm) setLoginReady(false);
+      if (loginForm || signUpForm) setAuthReady(false);
     });
 
   async function initializeAuth(client) {
@@ -258,42 +279,78 @@
         return;
       }
       showStatus(message("sessionFailed"));
-      setLoginReady(false);
+      setAuthReady(false);
       return;
     }
 
-    if (loginForm) {
+    if (loginForm || signUpForm) {
       if (session) {
         redirectToDashboard();
         return;
       }
       const reason = new URLSearchParams(window.location.search).get("reason");
-      if (reason === "auth-unavailable") showStatus(message("authUnavailable"));
-      setLoginReady(true);
-      loginForm.addEventListener("submit", async event => {
-        event.preventDefault();
-        setLoginReady(false);
-        showStatus(message("signingIn"), "pending");
+      if (reason === "auth-unavailable" && loginForm) showStatus(message("authUnavailable"));
+      setAuthReady(true);
 
-        try {
-          const { data, error } = await client.auth.signInWithPassword({
-            email: document.getElementById("loginEmail").value.trim(),
-            password: document.getElementById("loginPassword").value
-          });
-          if (error) {
-            showStatus(`${message("signInFailed")} ${error.message}`);
-          } else if (data.session) {
-            redirectToDashboard();
-          } else {
-            showStatus(message("noSession"));
+      if (loginForm) {
+        loginForm.addEventListener("submit", async event => {
+          event.preventDefault();
+          setAuthReady(false);
+          showStatus(message("signingIn"), "pending");
+
+          try {
+            const { data, error } = await client.auth.signInWithPassword({
+              email: document.getElementById("loginEmail").value.trim(),
+              password: document.getElementById("loginPassword").value
+            });
+            if (error) {
+              showStatus(`${message("signInFailed")} ${error.message}`);
+            } else if (data.session) {
+              redirectToDashboard();
+            } else {
+              showStatus(message("noSession"));
+            }
+          } catch (error) {
+            console.error("Supabase sign-in failed:", error);
+            showStatus(`${message("signInFailed")} ${error.message || ""}`);
+          } finally {
+            setAuthReady(true);
           }
-        } catch (error) {
-          console.error("Supabase sign-in failed:", error);
-          showStatus(`${message("signInFailed")} ${error.message || ""}`);
-        } finally {
-          setLoginReady(true);
-        }
-      });
+        });
+      }
+
+      if (signUpForm) {
+        signUpForm.addEventListener("submit", async event => {
+          event.preventDefault();
+          const email = document.getElementById("signUpEmail").value.trim();
+          const password = document.getElementById("signUpPassword").value;
+          const passwordConfirm = document.getElementById("signUpPasswordConfirm").value;
+          if (password !== passwordConfirm) {
+            showStatus(message("passwordMismatch"));
+            return;
+          }
+
+          setAuthReady(false);
+          showStatus(message("signingUp"), "pending");
+          try {
+            const { data, error } = await client.auth.signUp({ email, password });
+            if (error) throw error;
+            if (data && data.session) {
+              redirectToDashboard();
+            } else if (data && data.user) {
+              showStatus(message("signUpCheckEmail"), "success");
+            } else {
+              throw new Error(message("signUpMissingUser"));
+            }
+          } catch (error) {
+            console.error("Supabase sign-up failed:", error);
+            showStatus(`${message("signUpFailed")} ${error.message || ""}`);
+          } finally {
+            setAuthReady(true);
+          }
+        });
+      }
+
       return;
     }
 
@@ -332,6 +389,20 @@
 
     if (signOutButton && session) {
       signOutButton.addEventListener("click", async () => {
+        if (typeof window.deadlineConfirmAction !== "function") {
+          console.error("The shared confirmation dialog is unavailable.");
+          showStatus(message("signOutFailed"));
+          return;
+        }
+        const confirmed = await window.deadlineConfirmAction({
+          title: message("signOutConfirmTitle"),
+          message: message("signOutConfirmMessage"),
+          confirmLabel: message("confirmSignOut"),
+          cancelLabel: message("cancel"),
+          destructive: true
+        });
+        if (!confirmed) return;
+
         signOutButton.disabled = true;
         try {
           const { error } = await client.auth.signOut();

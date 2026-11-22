@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create a Deadline account.">
+  <title>Deadline. - Sign up</title>
+  <link rel="icon" href="../Asset/Deadline-512.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="site-page" data-auth-page="signup" data-site-title="signUpTitle">
+  <nav class="navbar" id="siteNavigation"></nav>
+
+  <main class="site-main login-main">
+    <section class="site-card login-card" aria-labelledby="signUpHeading">
+      <div class="login-brand">
+        <img src="../Asset/Deadline-512.png" alt="">
+        <span>Deadline<span class="logo-dot">.</span></span>
+      </div>
+      <h1 id="signUpHeading" data-site-i18n="signUpHeading">Create your account</h1>
+      <p class="site-lead" data-site-i18n="signUpLead">Create an account to start organizing your deadlines.</p>
+
+      <form id="signUpForm" class="login-form" method="post">
+        <div class="site-form-group">
+          <label for="signUpEmail" data-site-i18n="email">Email</label>
+          <input type="email" id="signUpEmail" name="email" autocomplete="email" required>
+        </div>
+        <div class="site-form-group">
+          <label for="signUpPassword" data-site-i18n="password">Password</label>
+          <input type="password" id="signUpPassword" name="password" autocomplete="new-password" required>
+        </div>
+        <div class="site-form-group">
+          <label for="signUpPasswordConfirm" data-site-i18n="confirmPassword">Confirm password</label>
+          <input type="password" id="signUpPasswordConfirm" name="password-confirm" autocomplete="new-password" required>
+        </div>
+        <p class="auth-status" id="authStatus" role="status" aria-live="polite" hidden></p>
+        <button class="site-primary-button" id="signUpSubmit" type="submit" data-site-i18n="signUpButton">Create account</button>
+      </form>
+
+      <p class="login-note">
+        <span data-site-i18n="alreadyAccount">Already have an account?</span>
+        <a href="../login/" data-site-i18n="signIn">Sign in</a>
+      </p>
+    </section>
+  </main>
+
+  <script src="../site-pages.js"></script>
+  <script src="../supabase-config.js"></script>
+  <script src="../supabase-auth.js"></script>
+</body>
+</html>

@@ -116,7 +116,9 @@ const translations = {
     todayFilter: "Today",
     sortAscending: "Sort by earliest deadline",
     sortDescending: "Sort by latest deadline",
-    unsavedChanges: "You have unsaved changes.",
+    confirmDiscardTitle: "Discard unsaved changes?",
+    confirmDiscardMessage: "Your changes will be lost.",
+    discard: "Discard",
     titleRequired: "Enter a task title.",
     loadingTasks: "Loading your tasks...",
     loadTasksFailed: "Couldn't load your tasks:",
@@ -162,7 +164,13 @@ const translations = {
     faq: "FAQ",
     privacy: "Privacy",
     signOut: "Sign out",
-    confirmDelete: "Do you want to delete this deadline?"
+    confirmDeleteTitle: "Delete this task?",
+    confirmDeleteMessage: "This action can't be undone.",
+    confirmFinishTitle: "Mark this task as finished?",
+    confirmFinishMessage: "It will move to Finished and be automatically deleted 15 days after confirmation.",
+    confirmRestoreTitle: "This task isn't finished yet?",
+    confirmRestoreMessage: "It will move back to In progress.",
+    confirm: "Confirm"
   },
   th: {
     homeNav: "หน้าหลัก",
@@ -189,7 +197,9 @@ const translations = {
     todayFilter: "วันนี้",
     sortAscending: "เรียงกำหนดส่งเร็วที่สุด",
     sortDescending: "เรียงกำหนดส่งช้าที่สุด",
-    unsavedChanges: "คุณมีข้อมูลที่ยังไม่ได้บันทึก",
+    confirmDiscardTitle: "ต้องการทิ้งการเปลี่ยนแปลงที่ยังไม่ได้บันทึกหรือไม่?",
+    confirmDiscardMessage: "การเปลี่ยนแปลงที่ทำไว้จะหายไป",
+    discard: "ทิ้งการเปลี่ยนแปลง",
     titleRequired: "กรุณากรอกหัวข้องาน",
     loadingTasks: "กำลังโหลดรายการงาน...",
     loadTasksFailed: "โหลดรายการงานไม่สำเร็จ:",
@@ -235,7 +245,13 @@ const translations = {
     faq: "คำถามที่พบบ่อย",
     privacy: "ความเป็นส่วนตัว",
     signOut: "ออกจากระบบ",
-    confirmDelete: "ต้องการลบกำหนดการนี้หรือไม่?"
+    confirmDeleteTitle: "ต้องการลบงานนี้หรือไม่?",
+    confirmDeleteMessage: "งานนี้จะถูกลบถาวรและไม่สามารถกู้คืนได้",
+    confirmFinishTitle: "ยืนยันว่าทำงานเสร็จแล้วใช่ไหม?",
+    confirmFinishMessage: "งานจะย้ายไปที่เสร็จแล้ว และระบบจะลบอัตโนมัติเมื่อครบ 15 วันหลังยืนยัน",
+    confirmRestoreTitle: "งานนี้ยังไม่เสร็จใช่ไหม?",
+    confirmRestoreMessage: "งานจะถูกย้ายกลับไปที่กำลังดำเนินการ",
+    confirm: "ยืนยัน"
   }
 };
 let currentLanguage = localStorage.getItem("deadline-language") === "th" ? "th" : "en";
@@ -259,6 +275,7 @@ const addModal = document.getElementById("addModal");
 const btnOpenModal = document.getElementById("btnOpenModal");
 const btnCloseModal = document.getElementById("btnCloseModal");
 const btnCancelModal = document.getElementById("btnCancelModal");
+const actionConfirmModal = document.getElementById("actionConfirmModal");
 const addTaskForm = document.getElementById("addTaskForm");
 const btnAddStep = document.getElementById("btnAddStep");
 const subtaskFormList = document.getElementById("subtaskFormList");
@@ -266,11 +283,12 @@ const addStepNumber = document.getElementById("addStepNumber");
 const btnDeleteModal = document.getElementById("btnDeleteModal");
 const btnProfile = document.getElementById("btnProfile");
 const profileMenu = document.getElementById("profileMenu");
-const navbar = document.querySelector(".navbar");
 const themeToggle = document.getElementById("themeToggle");
 const themeState = document.getElementById("themeState");
+const guestThemeToggle = document.getElementById("guestThemeToggle");
 const languageToggle = document.getElementById("languageToggle");
 const languageState = document.getElementById("languageState");
+const guestLanguageToggle = document.getElementById("guestLanguageToggle");
 const taskOperationStatus = document.getElementById("taskOperationStatus");
 
 let editingTaskId = null;
@@ -289,6 +307,9 @@ function t(key, ...args) {
 
 function applyTheme() {
   document.body.classList.toggle("dark-mode", currentTheme === "dark");
+  if (typeof window.deadlineApplyLogoTheme === "function") {
+    window.deadlineApplyLogoTheme(currentTheme);
+  }
   themeState.textContent = t(currentTheme);
 }
 
@@ -320,6 +341,14 @@ function applyLanguage() {
   document.getElementById("themeLabel").textContent = t("switchTheme");
   document.getElementById("languageLabel").textContent = t("language");
   languageState.textContent = t("languageName");
+  if (guestThemeToggle) {
+    guestThemeToggle.setAttribute("aria-label", t("switchTheme"));
+    guestThemeToggle.title = t("switchTheme");
+  }
+  if (guestLanguageToggle) {
+    guestLanguageToggle.setAttribute("aria-label", t("language"));
+    guestLanguageToggle.title = t("language");
+  }
   document.getElementById("addStepLabel").textContent = t("addStep");
   document.getElementById("modalTitle").textContent = t(editingTaskId === null ? "addSchedule" : "editSchedule");
   themeState.textContent = t(currentTheme);
@@ -357,8 +386,13 @@ function showTaskModal() {
   requestAnimationFrame(() => document.getElementById("taskTitleInput").focus());
 }
 
-function hideTaskModal() {
-  if (modalDirty && !window.confirm(t("unsavedChanges"))) return;
+async function hideTaskModal() {
+  if (modalDirty && !await showActionConfirm({
+    titleKey: "confirmDiscardTitle",
+    messageKey: "confirmDiscardMessage",
+    confirmLabelKey: "discard",
+    destructive: true
+  })) return;
   addModal.classList.remove("show");
   addModal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
@@ -369,20 +403,18 @@ function hideTaskModal() {
   if (modalPreviousFocus instanceof HTMLElement) modalPreviousFocus.focus();
 }
 
-let previousScrollY = window.scrollY;
-window.addEventListener("scroll", () => {
-  const currentScrollY = window.scrollY;
-  if (window.matchMedia("(max-width: 768px)").matches) {
-    if (currentScrollY <= 24 || currentScrollY < previousScrollY - 2) {
-      navbar.classList.remove("navbar-hidden");
-    } else if (currentScrollY > previousScrollY + 2) {
-      navbar.classList.add("navbar-hidden");
-    }
-  } else {
-    navbar.classList.remove("navbar-hidden");
+function showActionConfirm({ titleKey, messageKey, confirmLabelKey = "confirm", destructive = false }) {
+  if (typeof window.deadlineConfirmAction !== "function") {
+    throw new Error("The shared confirmation dialog is unavailable.");
   }
-  previousScrollY = currentScrollY;
-}, { passive: true });
+  return window.deadlineConfirmAction({
+    title: t(titleKey),
+    message: t(messageKey),
+    confirmLabel: t(confirmLabelKey),
+    cancelLabel: t("cancel"),
+    destructive
+  });
+}
 
 // =========================================
 // 4. ฟังก์ชันคำนวณวันและจัดรูปแบบ (Helpers)
@@ -674,7 +706,7 @@ function renderTasks() {
                       data-action="toggle-status" data-task-id="${escapeHtml(task.id)}"
                       title="${escapeHtml(task.status === "in-progress" ? t("markFinished") : t("moveToProgress"))}"
                       aria-label="${escapeHtml(task.status === "in-progress" ? t("markFinished") : t("moveToProgress"))}">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </button>
@@ -704,12 +736,21 @@ window.toggleTaskStatus = async function(taskId) {
   const task = findTaskById(taskId);
   if (!task) return;
 
-  const status = task.status === "in-progress" ? "finish" : "in-progress";
+  const isFinishing = task.status === "in-progress";
+  const confirmed = await showActionConfirm(isFinishing
+    ? { titleKey: "confirmFinishTitle", messageKey: "confirmFinishMessage" }
+    : { titleKey: "confirmRestoreTitle", messageKey: "confirmRestoreMessage" });
+  if (!confirmed) return;
+
+  const status = isFinishing ? "finish" : "in-progress";
   if (isDatabaseMode()) {
     try {
       const { error } = await window.deadlineSupabase
         .from("tasks")
-        .update({ status })
+        .update({
+          status,
+          finished_at: isFinishing ? new Date().toISOString() : null
+        })
         .eq("id", task.id)
         .eq("user_id", window.deadlineUser.id)
         .select("id")
@@ -761,10 +802,14 @@ window.toggleSubtask = async function(taskId, subtaskId) {
 };
 
 window.deleteTask = async function(taskId) {
-  if (!confirm(t("confirmDelete"))) return false;
-
   const task = findTaskById(taskId);
   if (!task) return false;
+  const confirmed = await showActionConfirm({
+    titleKey: "confirmDeleteTitle",
+    messageKey: "confirmDeleteMessage",
+    destructive: true
+  });
+  if (!confirmed) return false;
 
   if (isDatabaseMode()) {
     try {
@@ -952,6 +997,7 @@ btnProfile.addEventListener("click", (e) => {
   btnProfile.setAttribute("aria-expanded", String(isOpen));
 });
 document.addEventListener("click", (e) => {
+  if (actionConfirmModal.contains(e.target)) return;
   if (!profileMenu.contains(e.target) && !btnProfile.contains(e.target)) {
     profileMenu.classList.remove("show");
     btnProfile.setAttribute("aria-expanded", "false");
@@ -975,7 +1021,7 @@ subtaskFormList.addEventListener("change", () => {
 });
 
 document.addEventListener("keydown", event => {
-  if (!addModal.classList.contains("show")) return;
+  if (!addModal.classList.contains("show") || actionConfirmModal.classList.contains("show")) return;
   if (event.key === "Escape") {
     event.preventDefault();
     hideTaskModal();
