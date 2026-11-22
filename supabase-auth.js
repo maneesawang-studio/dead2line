@@ -16,6 +16,7 @@
       ? document.getElementById("landingAuthStatus")
       : document.getElementById("taskOperationStatus") || document.getElementById("authStatus");
   const accountEmail = document.getElementById("accountEmail");
+  const profileEmail = document.getElementById("profileEmail");
   const loginMenuLink = document.getElementById("loginMenuLink");
   const signOutButton = document.getElementById("signOutButton");
   const landingLoginLink = document.getElementById("landingLoginLink");
@@ -75,6 +76,20 @@
 
   function applyUserProfile(user) {
     const metadata = user.user_metadata || {};
+    const userEmail = typeof user.email === "string" ? user.email.trim() : "";
+    if (profileEmail) profileEmail.textContent = userEmail;
+    const emailName = userEmail.split("@")[0].trim();
+    const avatarInitial = Array.from(emailName)[0] || "U";
+    document.querySelectorAll(".avatar-initials").forEach(element => {
+      element.textContent = avatarInitial.toLocaleUpperCase();
+    });
+    document.querySelectorAll(".avatar-img").forEach(image => {
+      image.hidden = true;
+      image.onerror = null;
+      image.onload = null;
+      const initials = image.closest(".avatar").querySelector(".avatar-initials");
+      if (initials) initials.hidden = false;
+    });
     const identityImage = (user.identities || [])
       .map(identity => identity.identity_data && (identity.identity_data.avatar_url || identity.identity_data.picture))
       .find(Boolean);
@@ -84,10 +99,18 @@
         const parsed = new URL(imageUrl, window.location.href);
         if (parsed.protocol === "https:" || parsed.protocol === "http:") {
           document.querySelectorAll(".avatar-img").forEach(image => {
-            if (!image.dataset.fallbackSrc) image.dataset.fallbackSrc = image.getAttribute("src") || "";
+            const initials = image.closest(".avatar").querySelector(".avatar-initials");
             image.onerror = () => {
+              image.hidden = true;
+              if (initials) initials.hidden = false;
               image.onerror = null;
-              if (image.dataset.fallbackSrc) image.src = image.dataset.fallbackSrc;
+              image.onload = null;
+            };
+            image.onload = () => {
+              image.hidden = false;
+              if (initials) initials.hidden = true;
+              image.onerror = null;
+              image.onload = null;
             };
             image.src = parsed.href;
           });
@@ -114,6 +137,7 @@
     }
     if (loginMenuLink) loginMenuLink.hidden = isAuthenticated;
     if (signOutButton) signOutButton.hidden = !isAuthenticated;
+    if (!isAuthenticated && profileEmail) profileEmail.textContent = "";
   }
 
   function updateLandingView(isAuthenticated) {
@@ -136,7 +160,13 @@
       if (signOutButton) signOutButton.hidden = true;
       document.querySelectorAll(".avatar-img").forEach(image => {
         image.onerror = null;
-        if (image.dataset.fallbackSrc) image.src = image.dataset.fallbackSrc;
+        image.onload = null;
+        image.hidden = true;
+        const initials = image.closest(".avatar").querySelector(".avatar-initials");
+        if (initials) {
+          initials.textContent = "U";
+          initials.hidden = false;
+        }
         image.alt = "User profile";
       });
     }

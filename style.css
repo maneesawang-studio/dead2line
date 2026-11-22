@@ -32,7 +32,7 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Inter', 'Noto Sans Thai', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 16px;
   background-color: var(--bg-page);
   color: var(--text-dark);
@@ -44,10 +44,6 @@ body {
   html {
     overflow-y: scroll;
   }
-}
-
-html[lang="th"] body {
-  font-family: 'Noto Sans Thai', 'Inter', sans-serif;
 }
 
 body.modal-open {
@@ -180,7 +176,7 @@ button {
   font-size: 24px;
   font-weight: 700;
   letter-spacing: -0.5px;
-  underline: none;
+  text-decoration: none;
 }
 
 .logo-dot {
@@ -196,6 +192,16 @@ button {
   gap: 4px;
   cursor: pointer;
   padding: 4px 4px;
+}
+
+.profile-email {
+  max-width: 220px;
+  overflow: hidden;
+  color: var(--text-dark);
+  font-size: 13px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .profile-wrapper {
@@ -224,32 +230,6 @@ button {
 .profile-menu.show {
   display: flex;
   flex-direction: column;
-}
-
-.profile-menu .profile-primary-links {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin: 0;
-  padding: 0;
-}
-
-.profile-menu .profile-primary-links .site-nav-link {
-  width: 100%;
-  min-height: 40px;
-  justify-content: flex-start;
-  padding: 0 8px;
-  border-radius: 24px;
-  font-size: 14px;
-}
-
-.profile-menu .profile-primary-links .site-nav-link:hover {
-  background: var(--bg-page);
-}
-
-.profile-menu .profile-primary-links .site-nav-link[aria-current="page"] {
-  background: rgba(0, 153, 255, 0.1);
-  color: var(--primary-blue);
 }
 
 .profile-account {
@@ -316,6 +296,21 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  background: #DBEAFE;
+  color: var(--primary-blue);
+}
+
+.avatar-initials {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .avatar-img {
@@ -339,14 +334,14 @@ button {
 }
 
 .current-date {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-muted);
   font-weight: 400;
   margin-bottom: 4px;
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--text-dark);
   letter-spacing: -0.5px;
@@ -404,7 +399,7 @@ button {
 }
 
 .btn-add {
-  max-height: 40px;
+  max-height: 44px;
   background-color: var(--primary-blue);
   color: #FFFFFF;
   font-size: 14px;
@@ -551,7 +546,7 @@ body.dark-mode .subtask-form-input::placeholder {
 }
 
 .tab-btn {
-  height: 40px;
+  height: 44px;
   flex: 1;
   padding: 10px 16px;
   border-radius: 999px;
@@ -574,7 +569,7 @@ body.dark-mode .subtask-form-input::placeholder {
 }
 
 .search-box {
-  height: 40px;
+  height: 44px;
   background-color: var(--bg-white);
   border-radius: 999px;
   padding: 10px 18px;
@@ -600,8 +595,8 @@ body.dark-mode .subtask-form-input::placeholder {
 }
 
 .btn-sort {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background-color: var(--bg-white);
   display: flex;
@@ -640,7 +635,7 @@ body.dark-mode .btn-sort:hover {
   background-color: var(--bg-white);
   color: var(--text-muted);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   padding: 0px 16px;
   border-radius: 999px;
   white-space: nowrap;
@@ -748,10 +743,9 @@ body.dark-mode .btn-sort:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 24px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
-  padding: 3px 10px;
+  padding: 4px 10px;
   border-radius: 999px;
 }
 
@@ -881,10 +875,10 @@ body.dark-mode .btn-sort:hover {
 }
 
 .btn-check {
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  border: 2px solid #0099ff;
+  border: 1.5px solid #0099ff;
   color: var(--primary-blue);
   display: flex;
   align-items: center;
@@ -900,8 +894,8 @@ body.dark-mode .btn-sort:hover {
 }
 
 .btn-more {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   color: var(--text-light);
   padding: 4px;
   display: flex;
@@ -1179,6 +1173,9 @@ display: none;
 .profile-wrapper {
 position: relative;
 }
+.profile-email {
+display: none;
+}
 .profile-menu {
 top: 52px;
 right: 0;
@@ -1197,10 +1194,10 @@ margin-right: -8px;
 width: calc(100% + 16px);
 }
 .current-date {
-font-size: 12px;
+font-size: 14px;
 }
 .page-title {
-font-size: 20px;
+font-size: 24px;
 }
 .summary-bar {
 gap: 8px;
@@ -1251,12 +1248,14 @@ gap: 12px;
 width: 100%;
 }
 .tab-btn {
+height: 40px;
 font-size: 14px;
 }
 .search-sort-group {
 width: 100%;
 }
 .search-box {
+height: 40px;
 flex: 1;
 width: auto;
 }
@@ -1267,7 +1266,8 @@ font-size: 14px;
 font-size: 12px;
 }
 .badge {
-font-size: 10px;
+font-size: 11px;
+padding: 5px 12px;
 }
 .task-card {
 padding: 16px 8px;
@@ -2214,9 +2214,7 @@ body.dark-mode .preview-window {
     margin-bottom: 32px;
     padding: 22px;
   }
-}
 
-@media (max-width: 768px) {
   .site-main {
     padding: 32px 0;
   }
@@ -2239,5 +2237,15 @@ body.dark-mode .preview-window {
 
   .login-card {
     padding: 24px 20px;
+  }
+
+  .btn-check {
+    width: 36px;
+    height: 36px;
+  }
+
+  .btn-more {
+    width: 36px;
+    height: 36px;
   }
 }

@@ -40,7 +40,8 @@ if (nav) {
     return `
       <div class="profile-wrapper">
         <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open profile menu" hidden>
-          <div class="avatar"><img class="avatar-img" src="${siteUrl("Asset/MNSW New Profile.png")}" alt="User profile"></div>
+          <div class="avatar"><span class="avatar-initials" aria-hidden="true">U</span><img class="avatar-img" alt="User profile" hidden></div>
+          <span class="profile-email" id="profileEmail"></span>
           <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
         <div class="profile-menu" id="profileMenu">
@@ -123,6 +124,28 @@ if (nav) {
   const toggle = document.getElementById("siteNavToggle");
   const profileButton = document.getElementById("btnProfile");
   const profileMenu = document.getElementById("profileMenu");
+  if (profileMenu) {
+    const privacyPath = sitePath("privacy/");
+    const privacyLink = Array.from(profileMenu.querySelectorAll(".profile-row-link"))
+      .find(link => new URL(link.href, window.location.href).pathname === privacyPath);
+    [
+      { id: "profileAboutLink", page: "about", key: "aboutNav", text: "About" },
+      { id: "profileFaqLink", page: "faq", key: "faqNav", text: "FAQ" }
+    ].forEach(({ id, page, key, text }) => {
+      if (document.getElementById(id)) return;
+      const link = document.createElement("a");
+      link.id = id;
+      link.className = "profile-row profile-row-link";
+      link.href = siteUrl(`${page}/`);
+      link.dataset.i18n = key;
+      link.dataset.siteI18n = key;
+      link.textContent = text;
+      if (activePage === page) link.setAttribute("aria-current", "page");
+      if (privacyLink) profileMenu.insertBefore(link, privacyLink);
+      else profileMenu.appendChild(link);
+    });
+  }
+
   if (toggle) {
     const activePaths = {
       home: sitePath(""),
@@ -179,23 +202,11 @@ if (nav) {
         toggle.hidden = true;
         toggle.setAttribute("aria-expanded", "false");
       }
-      if (primaryLinks && profileMenu && primaryLinks.parentElement !== profileMenu) {
-        primaryLinks.classList.remove("site-nav-links");
-        primaryLinks.classList.add("profile-primary-links");
-        const account = profileMenu.querySelector(".profile-account");
-        profileMenu.insertBefore(primaryLinks, account ? account.nextSibling : profileMenu.firstChild);
-        const divider = document.createElement("hr");
-        divider.className = "profile-nav-divider";
-        primaryLinks.after(divider);
-      }
+      if (primaryLinks) primaryLinks.remove();
     } else {
       if (profileMenu) profileMenu.classList.remove("show");
       if (profileButton) profileButton.setAttribute("aria-expanded", "false");
-      if (primaryLinks && profileMenu && primaryLinks.parentElement === profileMenu) {
-        const divider = profileMenu.querySelector(".profile-nav-divider");
-        if (divider) divider.remove();
-        primaryLinks.classList.remove("profile-primary-links");
-        primaryLinks.classList.add("site-nav-links");
+      if (primaryLinks && !primaryLinks.parentElement) {
         const brand = inner.querySelector(".logo");
         if (brand) brand.after(toggle, primaryLinks);
         else inner.prepend(toggle, primaryLinks);
