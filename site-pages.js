@@ -1,6 +1,150 @@
+(() => {
+const nav = document.getElementById("siteNavigation") || document.querySelector(".navbar");
+if (nav) {
+  const activePage = document.body.dataset.navActive || "";
+  const authPage = document.body.dataset.authPage || "";
+  const isLanding = authPage === "landing";
+  const inner = nav.querySelector(".navbar-inner");
+
+  function linksMarkup() {
+    const tasksHref = authPage === "dashboard" ? "/app/" : "/login/";
+    const currentPage = name => activePage === name ? ' aria-current="page"' : "";
+    return `
+      <button type="button" class="site-nav-toggle" id="siteNavToggle" aria-expanded="false" aria-controls="primaryNavigation" aria-label="Open navigation">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="site-nav-links" id="primaryNavigation">
+        <a class="site-nav-link" href="/"${currentPage("home")}><span data-i18n="homeNav" data-site-i18n="homeNav">Home</span></a>
+        <a class="site-nav-link" id="tasksNavLink" href="${tasksHref}"${currentPage("tasks")}><span data-i18n="tasksNav" data-site-i18n="tasksNav">Tasks</span></a>
+        <a class="site-nav-link" href="/about/"${currentPage("about")}><span data-i18n="aboutNav" data-site-i18n="aboutNav">About</span></a>
+        <a class="site-nav-link" href="/faq/"${currentPage("faq")}><span data-i18n="faqNav" data-site-i18n="faqNav">FAQ</span></a>
+      </div>`;
+  }
+
+  function profileMarkup(includePreferences) {
+    const preferences = includePreferences ? `
+      <button type="button" class="profile-row theme-row" id="themeToggle">
+        <span id="themeLabel" data-i18n="switchTheme" data-site-i18n="switchTheme">Switch theme</span>
+        <span class="theme-state" id="themeState">Light</span>
+      </button>
+      <button type="button" class="profile-row theme-row" id="languageToggle">
+        <span id="languageLabel" data-i18n="language" data-site-i18n="language">Language</span>
+        <span class="theme-state" id="languageState">English</span>
+      </button>` : "";
+    return `
+      <div class="profile-wrapper">
+        <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open profile menu">
+          <div class="avatar"><img class="avatar-img" src="/Asset/MNSW New Profile.png" alt="User profile"></div>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <div class="profile-menu" id="profileMenu">
+          <div class="profile-account">
+            <span id="accountLabel" data-i18n="loggedInAccount" data-site-i18n="account">Account</span>
+            <strong id="accountEmail" data-i18n="previewAccount" data-site-i18n="previewAccount">Preview mode (not authenticated)</strong>
+          </div>
+          <p class="auth-status" id="authStatus" role="status" aria-live="polite" hidden></p>
+          ${preferences}
+          <a class="profile-row profile-row-link" href="/settings/" data-i18n="settings" data-site-i18n="settings">Settings</a>
+          <hr>
+          <a class="profile-row profile-row-link" href="/privacy/" data-i18n="privacy" data-site-i18n="privacy">Privacy</a>
+          <a class="profile-row profile-row-link" id="loginMenuLink" href="/login/" data-i18n="signIn" data-site-i18n="signIn">Sign in</a>
+          <button type="button" class="profile-row sign-out" id="signOutButton" data-i18n="signOut" data-site-i18n="signOut" hidden>Sign out</button>
+        </div>
+      </div>`;
+  }
+
+  if (!inner) {
+    nav.className = "navbar";
+    nav.innerHTML = `
+      <div class="navbar-inner">
+        <a class="logo" href="/" aria-label="Deadline home">
+          <img src="/Asset/Deadline-512.png" alt="">
+          <span class="logo-name">Deadline<span class="logo-dot">.</span></span>
+        </a>
+        ${linksMarkup()}
+        <div class="site-nav-actions">
+          ${isLanding ? `
+            <a class="landing-nav-login" id="landingLoginLink" href="/login/" data-i18n="signIn" data-site-i18n="signIn">Sign in</a>
+            <a class="landing-nav-login" id="landingDashboardLink" href="/app/" data-i18n="openDashboard" data-site-i18n="openDashboard" hidden>Open dashboard</a>
+          ` : ""}
+          ${profileMarkup(true)}
+        </div>
+      </div>`;
+  } else {
+    const brand = inner.querySelector(".logo");
+    const profile = inner.querySelector(".profile-wrapper");
+    if (!inner.querySelector(".site-nav-links")) {
+      const links = document.createElement("div");
+      links.innerHTML = linksMarkup();
+      const toggle = links.firstElementChild;
+      const primaryLinks = links.lastElementChild;
+      if (brand) brand.after(toggle, primaryLinks);
+      else inner.prepend(toggle, primaryLinks);
+    }
+
+    if (!profile) {
+      const actions = document.createElement("div");
+      actions.className = "site-nav-actions";
+      const preferencesAlreadyOnPage = Boolean(document.getElementById("themeToggle") || document.getElementById("languageToggle"));
+      actions.innerHTML = profileMarkup(!preferencesAlreadyOnPage);
+      inner.appendChild(actions);
+    }
+  }
+
+  const toggle = document.getElementById("siteNavToggle");
+  if (toggle) {
+    const activePaths = {
+      home: "/",
+      tasks: "/app/",
+      about: "/about/",
+      faq: "/faq/",
+      settings: "/settings/",
+      privacy: "/privacy/",
+      login: "/login/"
+    };
+    const primaryPages = ["home", "tasks", "about", "faq"];
+    const currentLinks = nav.querySelectorAll(primaryPages.includes(activePage)
+      ? ".site-nav-link[href]"
+      : ".profile-row-link[href]");
+    currentLinks.forEach(link => {
+      if (new URL(link.href, window.location.href).pathname === activePaths[activePage]) {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+
+    function setExpanded(expanded) {
+      nav.classList.toggle("nav-open", expanded);
+      toggle.setAttribute("aria-expanded", String(expanded));
+      const language = document.documentElement.lang === "th";
+      toggle.setAttribute("aria-label", expanded
+        ? (language ? "ปิดเมนูนำทาง" : "Close navigation")
+        : (language ? "เปิดเมนูนำทาง" : "Open navigation"));
+    }
+
+    toggle.addEventListener("click", event => {
+      event.stopPropagation();
+      setExpanded(toggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    document.addEventListener("click", event => {
+      if (!nav.contains(event.target)) setExpanded(false);
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") setExpanded(false);
+    });
+  }
+}
+
 const siteTranslations = {
   en: {
     dashboard: "Tasks",
+    homeNav: "Home",
+    tasksNav: "Tasks",
+    openNavigation: "Open navigation",
+    closeNavigation: "Close navigation",
     aboutNav: "About",
     aboutMenu: "About Deadline",
     faqNav: "FAQ",
@@ -39,7 +183,7 @@ const siteTranslations = {
     faqAddQuestion: "How do I add a task?",
     faqAddAnswer: "Open the Tasks page and select + Add. Enter a title and deadline; category, time, notes, and subtasks are optional.",
     faqProgressQuestion: "How do I mark a task as finished?",
-    faqProgressAnswer: "Select the check button on a task card. Use the In progress and Finish tabs to switch between task lists.",
+    faqProgressAnswer: "Select the check button on a task card. Use the In progress and Finished tabs to switch between task lists.",
     faqUrgentQuestion: "What does the urgent label mean?",
     faqUrgentAnswer: "It marks an in-progress task whose deadline is within three days.",
     faqThemeQuestion: "How do I change the theme or language?",
@@ -86,6 +230,10 @@ const siteTranslations = {
   },
   th: {
     dashboard: "รายการงาน",
+    homeNav: "หน้าหลัก",
+    tasksNav: "รายการงาน",
+    openNavigation: "เปิดเมนูนำทาง",
+    closeNavigation: "ปิดเมนูนำทาง",
     aboutNav: "เกี่ยวกับ",
     aboutMenu: "เกี่ยวกับ Deadline",
     faqNav: "คำถามที่พบบ่อย",
@@ -178,12 +326,33 @@ function siteText(key) {
   return siteTranslations[siteLanguage][key];
 }
 
+function updatePreviewDates() {
+  const previewDates = [
+    { offset: 1, weekday: "previewWeekdayOne", day: "previewDayOne", month: "previewMonthOne" },
+    { offset: 3, weekday: "previewWeekdayTwo", day: "previewDayTwo", month: "previewMonthTwo" }
+  ];
+  const locale = siteLanguage === "th" ? "th-TH" : "en-US";
+
+  previewDates.forEach(({ offset, weekday, day, month }) => {
+    const date = new Date();
+    date.setHours(12, 0, 0, 0);
+    date.setDate(date.getDate() + offset);
+    const weekdayElement = document.getElementById(weekday);
+    const dayElement = document.getElementById(day);
+    const monthElement = document.getElementById(month);
+    if (weekdayElement) weekdayElement.textContent = new Intl.DateTimeFormat(locale, { weekday: "short" }).format(date);
+    if (dayElement) dayElement.textContent = new Intl.DateTimeFormat(locale, { day: "numeric" }).format(date);
+    if (monthElement) monthElement.textContent = new Intl.DateTimeFormat(locale, { month: "short" }).format(date);
+  });
+}
+
 function applySitePreferences() {
   document.documentElement.lang = siteLanguage;
   document.body.classList.toggle("dark-mode", siteTheme === "dark");
   document.querySelectorAll("[data-site-i18n]").forEach(element => {
     element.textContent = siteText(element.dataset.siteI18n);
   });
+  updatePreviewDates();
 
   const titleKey = document.body.dataset.siteTitle;
   if (titleKey) document.title = `Deadline. - ${siteText(titleKey)}`;
@@ -194,14 +363,53 @@ function applySitePreferences() {
   if (themeState) themeState.textContent = siteText(siteTheme);
   if (languageState) languageState.textContent = siteText("languageName");
   if (profileButton) profileButton.setAttribute("aria-label", siteText("openProfileMenu"));
+  const navToggle = document.getElementById("siteNavToggle");
+  if (navToggle) {
+    navToggle.setAttribute("aria-label", navToggle.getAttribute("aria-expanded") === "true"
+      ? siteText("closeNavigation")
+      : siteText("openNavigation"));
+  }
   window.dispatchEvent(new Event("deadline-preferences-changed"));
 }
 
-const themeToggle = document.getElementById("themeToggle");
-const languageToggle = document.getElementById("languageToggle");
-if (themeToggle) themeToggle.addEventListener("click", () => {
-  siteTheme = siteTheme === "light" ? "dark" : "light";
-  localStorage.setItem("deadline-theme", siteTheme);
+const isDashboard = document.body.dataset.authPage === "dashboard";
+if (!isDashboard) {
+  const themeToggle = document.getElementById("themeToggle");
+  const languageToggle = document.getElementById("languageToggle");
+  if (themeToggle) themeToggle.addEventListener("click", () => {
+    siteTheme = siteTheme === "light" ? "dark" : "light";
+    localStorage.setItem("deadline-theme", siteTheme);
+    applySitePreferences();
+  });
+
+  if (languageToggle) languageToggle.addEventListener("click", () => {
+    siteLanguage = siteLanguage === "en" ? "th" : "en";
+    localStorage.setItem("deadline-language", siteLanguage);
+    applySitePreferences();
+  });
+
+  const profileButton = document.getElementById("btnProfile");
+  const profileMenu = document.getElementById("profileMenu");
+  if (profileButton && profileMenu) profileButton.addEventListener("click", event => {
+    event.stopPropagation();
+    const isOpen = profileMenu.classList.toggle("show");
+    profileButton.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  document.addEventListener("click", event => {
+    if (profileMenu && profileButton && !profileMenu.contains(event.target) && !profileButton.contains(event.target)) {
+      profileMenu.classList.remove("show");
+      profileButton.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      if (profileMenu) profileMenu.classList.remove("show");
+      if (profileButton) profileButton.setAttribute("aria-expanded", "false");
+    }
+  });
+
   applySitePreferences();
 
   if ("serviceWorker" in navigator) {
@@ -211,35 +419,5 @@ if (themeToggle) themeToggle.addEventListener("click", () => {
       });
     });
   }
-});
-
-if (languageToggle) languageToggle.addEventListener("click", () => {
-  siteLanguage = siteLanguage === "en" ? "th" : "en";
-  localStorage.setItem("deadline-language", siteLanguage);
-  applySitePreferences();
-});
-
-const profileButton = document.getElementById("btnProfile");
-const profileMenu = document.getElementById("profileMenu");
-
-if (profileButton && profileMenu) profileButton.addEventListener("click", event => {
-  event.stopPropagation();
-  const isOpen = profileMenu.classList.toggle("show");
-  profileButton.setAttribute("aria-expanded", String(isOpen));
-});
-
-document.addEventListener("click", event => {
-  if (profileMenu && profileButton && !profileMenu.contains(event.target) && !profileButton.contains(event.target)) {
-    if (profileMenu) profileMenu.classList.remove("show");
-    if (profileButton) profileButton.setAttribute("aria-expanded", "false");
-  }
-});
-
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape") {
-    if (profileMenu) profileMenu.classList.remove("show");
-    if (profileButton) profileButton.setAttribute("aria-expanded", "false");
-  }
-});
-
-applySitePreferences();
+}
+})();

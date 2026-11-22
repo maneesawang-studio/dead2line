@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css">
 </head>
-<body class="site-page" data-auth-page="login" data-site-title="loginTitle">
+<body class="site-page" data-auth-page="login" data-site-title="loginTitle" data-nav-active="login">
   <nav class="navbar">
     <div class="navbar-inner">
       <a class="logo" href="../" aria-label="Deadline">
@@ -31,7 +31,6 @@
             <span data-site-i18n="account">Account</span>
             <strong id="accountEmail" data-site-i18n="previewAccount">Preview mode (not authenticated)</strong>
           </div>
-          <p class="auth-status" id="loginStatus" role="status" aria-live="polite" hidden></p>
           <button type="button" class="profile-row theme-row" id="themeToggle">
             <span class="theme-icon" aria-hidden="true">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -55,8 +54,6 @@
           <a class="profile-row profile-row-link" href="../settings/" data-site-i18n="settings">Settings</a>
           <a class="profile-row profile-row-link" href="../login/" id="loginMenuLink" data-site-i18n="signIn">Sign in</a>
           <hr>
-          <a class="profile-row profile-row-link" href="../about/" data-site-i18n="aboutMenu">About Deadline</a>
-          <a class="profile-row profile-row-link" href="../faq/" data-site-i18n="faqNav">FAQ</a>
           <a class="profile-row profile-row-link" href="../privacy/" data-site-i18n="privacy">Privacy</a>
           <button type="button" class="profile-row sign-out" id="signOutButton" data-site-i18n="signOut" hidden>Sign out</button>
         </div>

@@ -13,46 +13,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="site-page landing-page" data-auth-page="landing" data-site-title="homeTitle">
-  <nav class="navbar">
-    <div class="navbar-inner">
-      <a class="logo" href="/" aria-label="Deadline">
-        <img src="Asset/Deadline-512.png" alt="">
-        <span class="logo-name">Deadline<span class="logo-dot">.</span></span>
-      </a>
-      <div class="landing-nav-actions">
-        <a class="landing-nav-link" href="about/" data-site-i18n="aboutNav">About</a>
-        <a class="landing-nav-link" href="faq/" data-site-i18n="faqNav">FAQ</a>
-        <a class="landing-nav-login" id="landingLoginLink" href="login/" data-site-i18n="signIn">Sign in</a>
-        <a class="landing-nav-login" id="landingDashboardLink" href="app/" data-site-i18n="openDashboard" hidden>Open dashboard</a>
-        <div class="profile-wrapper">
-          <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open profile menu">
-            <div class="avatar"><img class="avatar-img" src="Asset/MNSW New Profile.png" alt="User profile"></div>
-            <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-          </button>
-          <div class="profile-menu" id="profileMenu">
-            <div class="profile-account">
-              <span data-site-i18n="account">Account</span>
-              <strong id="accountEmail" data-site-i18n="previewAccount">Preview mode (not authenticated)</strong>
-            </div>
-            <p class="auth-status" id="authStatus" role="status" aria-live="polite" hidden></p>
-            <button type="button" class="profile-row theme-row" id="themeToggle">
-              <span data-site-i18n="theme">Theme</span><span class="theme-state" id="themeState">Light</span>
-            </button>
-            <button type="button" class="profile-row theme-row" id="languageToggle">
-              <span data-site-i18n="language">Language</span><span class="theme-state" id="languageState">English</span>
-            </button>
-            <a class="profile-row profile-row-link" href="settings/" data-site-i18n="settings">Settings</a>
-            <hr>
-            <a class="profile-row profile-row-link" href="about/" data-site-i18n="aboutMenu">About Deadline</a>
-            <a class="profile-row profile-row-link" href="faq/" data-site-i18n="faqNav">FAQ</a>
-            <a class="profile-row profile-row-link" href="privacy/" data-site-i18n="privacy">Privacy</a>
-            <button type="button" class="profile-row sign-out" id="signOutButton" data-site-i18n="signOut" hidden>Sign out</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </nav>
+<body class="site-page landing-page" data-auth-page="landing" data-site-title="homeTitle" data-nav-active="home">
+  <nav id="siteNavigation" aria-label="Main navigation"></nav>
 
   <p class="auth-status landing-auth-status" id="landingAuthStatus" role="status" aria-live="polite" hidden></p>
   <main class="landing-main">
@@ -89,12 +51,12 @@
             </div>
             <div class="preview-tabs"><b data-site-i18n="homeInProgress">In progress</b><span data-site-i18n="homeFinished">Finished</span></div>
             <article class="preview-task">
-              <div class="preview-date"><small data-site-i18n="previewMonday">MON</small><b>24</b><small data-site-i18n="previewNovember">NOV</small></div>
+              <div class="preview-date"><small id="previewWeekdayOne">MON</small><b id="previewDayOne">24</b><small id="previewMonthOne">NOV</small></div>
               <div class="preview-task-content"><span class="preview-tag" data-site-i18n="homeStudy">STUDY</span><strong data-site-i18n="previewTaskOne">Research presentation</strong><small data-site-i18n="previewTaskOneMeta">Outline key ideas and gather sources</small><i><span style="width: 68%"></span></i></div>
               <span class="preview-check">✓</span>
             </article>
             <article class="preview-task">
-              <div class="preview-date preview-date-blue"><small data-site-i18n="previewWednesday">WED</small><b>26</b><small data-site-i18n="previewNovember">NOV</small></div>
+              <div class="preview-date preview-date-blue"><small id="previewWeekdayTwo">WED</small><b id="previewDayTwo">26</b><small id="previewMonthTwo">NOV</small></div>
               <div class="preview-task-content"><span class="preview-tag preview-tag-blue" data-site-i18n="homeWork">WORK</span><strong data-site-i18n="previewTaskTwo">Weekly team update</strong><small data-site-i18n="previewTaskTwoMeta">Share progress and next steps</small><i><span style="width: 35%"></span></i></div>
               <span class="preview-check preview-check-empty"></span>
             </article>

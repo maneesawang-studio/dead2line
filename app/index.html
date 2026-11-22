@@ -15,7 +15,7 @@
   <!-- ลิงก์ไปยังไฟล์ CSS -->
   <link rel="stylesheet" href="../style.css">
 </head>
-<body data-auth-page="dashboard">
+<body data-auth-page="dashboard" data-nav-active="tasks">
 
   <!-- แถบเมนูด้านบน -->
   <nav class="navbar">
@@ -62,8 +62,6 @@
         <a class="profile-row profile-row-link" href="../settings/" data-i18n="settings">Settings</a>
         <a class="profile-row profile-row-link" id="loginMenuLink" href="../login/" data-i18n="signIn">Sign in</a>
         <hr>
-        <a class="profile-row profile-row-link" href="../about/" data-i18n="about">About Deadline</a>
-        <a class="profile-row profile-row-link" href="../faq/" data-i18n="faq">FAQ</a>
         <a class="profile-row profile-row-link" href="../privacy/" data-i18n="privacy">Privacy</a>
         <button type="button" class="profile-row sign-out" id="signOutButton" data-i18n="signOut" hidden>Sign out</button>
       </div>
@@ -95,7 +93,7 @@
         </div>
         <span class="stat-divider" aria-hidden="true"></span>
         <div class="stat-item">
-          <span class="stat-label green" data-i18n="finish">Finish</span>
+          <span class="stat-label green" data-i18n="finish">Finished</span>
           <span class="stat-value" id="countFinish">0</span>
         </div>
       </div>
@@ -106,11 +104,11 @@
       </button>
     </section>
 
-    <!-- แถบควบคุม: สลับแท็บ (In progress / Finish) และช่องค้นหา -->
+    <!-- แถบควบคุม: สลับแท็บ (In progress / Finished) และช่องค้นหา -->
     <section class="controls-bar">
       <div class="status-tabs">
-        <button class="tab-btn active" data-tab="in-progress" data-i18n="inProgress">In progress</button>
-        <button class="tab-btn" data-tab="finish" data-i18n="finish">Finish</button>
+        <button class="tab-btn active" type="button" data-tab="in-progress" aria-pressed="true" data-i18n="inProgress">In progress</button>
+        <button class="tab-btn" type="button" data-tab="finish" aria-pressed="false" data-i18n="finish">Finished</button>
       </div>
 
       <div class="search-sort-group">
@@ -119,7 +117,7 @@
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input type="text" id="searchInput" placeholder="Search for a schedule">
+          <input type="text" id="searchInput" aria-label="Search for a schedule" placeholder="Search for a schedule">
         </div>
         <button class="btn-sort" id="btnSort" title="Sort deadlines" aria-label="Sort deadlines">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -132,14 +130,14 @@
 
     <!-- แถบตัวกรองหมวดหมู่ -->
     <section class="filter-pills" id="filterPills">
-      <button class="pill active" data-filter="All" data-i18n="all">All</button>
-      <button class="pill" data-filter="urgent" data-i18n="urgentFilter">(≤ 3 days)</button>
-      <button class="pill" data-filter="today" data-i18n="todayFilter">Today</button>
-      <button class="pill" data-filter="overdue" data-i18n="overdueFilter">Overdue</button>
-      <button class="pill" data-filter="Jobs" data-i18n="jobs">Jobs</button>
-      <button class="pill" data-filter="Study" data-i18n="study">Study</button>
-      <button class="pill" data-filter="Freelance" data-i18n="freelance">Freelance</button>
-      <button class="pill" data-filter="Finance" data-i18n="finance">Finance</button>
+      <button class="pill active" type="button" data-filter="All" aria-pressed="true" data-i18n="all">All</button>
+      <button class="pill" type="button" data-filter="urgent" aria-pressed="false" data-i18n="urgentFilter">(≤ 3 days)</button>
+      <button class="pill" type="button" data-filter="today" aria-pressed="false" data-i18n="todayFilter">Today</button>
+      <button class="pill" type="button" data-filter="overdue" aria-pressed="false" data-i18n="overdueFilter">Overdue</button>
+      <button class="pill" type="button" data-filter="Jobs" aria-pressed="false" data-i18n="jobs">Jobs</button>
+      <button class="pill" type="button" data-filter="Study" aria-pressed="false" data-i18n="study">Study</button>
+      <button class="pill" type="button" data-filter="Freelance" aria-pressed="false" data-i18n="freelance">Freelance</button>
+      <button class="pill" type="button" data-filter="Finance" aria-pressed="false" data-i18n="finance">Finance</button>
     </section>
 
     <!-- รายการงานจะถูกโหลดจากบัญชีและแสดงผลด้วย script.js -->
@@ -156,12 +154,12 @@
       </div>
       <form id="addTaskForm">
         <div class="form-group">
-          <label><span data-i18n="title">Title</span> <span class="required">*</span></label>
+          <label for="taskTitleInput"><span data-i18n="title">Title</span> <span class="required">*</span></label>
           <input type="text" id="taskTitleInput" required maxlength="120" placeholder="add title....">
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label data-i18n="category">Category</label>
+            <label for="taskCategoryInput" data-i18n="category">Category</label>
             <select id="taskCategoryInput">
               <option value="Jobs" data-i18n="jobs">Jobs</option>
               <option value="Study" data-i18n="study">Study</option>
@@ -172,16 +170,16 @@
         </div>
         <div class="form-row split-row">
           <div class="form-group">
-            <label><span data-i18n="deadline">Deadline</span> <span class="required">*</span></label>
+            <label for="taskDateInput"><span data-i18n="deadline">Deadline</span> <span class="required">*</span></label>
             <input type="date" id="taskDateInput" required>
           </div>
           <div class="form-group">
-            <label data-i18n="timeOptional">Time (optional)</label>
+            <label for="taskTimeInput" data-i18n="timeOptional">Time (optional)</label>
             <input type="time" id="taskTimeInput">
           </div>
         </div>
         <div class="form-group">
-          <label data-i18n="details">Details / Additional Notes</label>
+          <label for="taskDescInput" data-i18n="details">Details / Additional Notes</label>
           <textarea id="taskDescInput" rows="4" placeholder="Specify the scope of work, conditions, or necessary preparations..."></textarea>
         </div>
         <div class="sub-progress-form">
@@ -206,6 +204,7 @@
   </div>
 
   <!-- ลิงก์ไปยังไฟล์ JavaScript -->
+  <script src="../site-pages.js"></script>
   <script src="../supabase-config.js"></script>
   <script src="../script.js"></script>
   <script src="../supabase-auth.js"></script>

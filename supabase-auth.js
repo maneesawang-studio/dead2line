@@ -5,12 +5,17 @@
   const authPage = document.body.dataset.authPage;
   const loginForm = document.getElementById("loginForm");
   const loginButton = document.getElementById("loginSubmit");
-  const status = document.getElementById("loginStatus") || document.getElementById("landingAuthStatus") || document.getElementById("authStatus");
+  const status = authPage === "login"
+    ? document.getElementById("authStatus")
+    : authPage === "landing"
+      ? document.getElementById("landingAuthStatus")
+      : document.getElementById("taskOperationStatus") || document.getElementById("authStatus");
   const accountEmail = document.getElementById("accountEmail");
   const loginMenuLink = document.getElementById("loginMenuLink");
   const signOutButton = document.getElementById("signOutButton");
   const landingLoginLink = document.getElementById("landingLoginLink");
   const landingDashboardLink = document.getElementById("landingDashboardLink");
+  const tasksNavLink = document.getElementById("tasksNavLink");
 
   const messages = {
     en: {
@@ -108,6 +113,7 @@
     });
     if (landingLoginLink) landingLoginLink.hidden = isAuthenticated;
     if (landingDashboardLink) landingDashboardLink.hidden = !isAuthenticated;
+    if (tasksNavLink) tasksNavLink.href = isAuthenticated ? "/app/" : "/login/";
     if (!isAuthenticated) {
       window.deadlineUser = null;
       if (accountEmail) {
@@ -173,6 +179,8 @@
     if (loginForm) {
       showStatus(message("configMissing"));
       setLoginReady(false);
+    } else if (authPage === "dashboard") {
+      redirectToLogin("config-missing");
     }
     return;
   }
@@ -189,7 +197,7 @@
         redirectToLogin("auth-unavailable");
         return;
       }
-      showStatus(`${message("authUnavailable")} ${error.message}`);
+      showStatus(message("authUnavailable"));
       if (loginForm) setLoginReady(false);
     });
 
@@ -205,7 +213,7 @@
         redirectToLogin("auth-unavailable");
         return;
       }
-      showStatus(`${message("sessionFailed")} ${error.message || ""}`);
+      showStatus(message("sessionFailed"));
       setLoginReady(false);
       return;
     }
@@ -251,6 +259,9 @@
     }
 
     if (authPage === "landing") updateLandingView(Boolean(session));
+    else if (tasksNavLink && authPage !== "dashboard") {
+      tasksNavLink.href = session ? "/app/" : "/login/";
+    }
 
     if (session) {
       window.deadlineUser = session.user;
@@ -293,9 +304,11 @@
       if (event === "SIGNED_OUT" || !nextSession) {
         if (authPage === "dashboard") redirectToHome();
         if (authPage === "landing") updateLandingView(false);
+        else if (tasksNavLink && authPage !== "dashboard") tasksNavLink.href = "/login/";
       }
       if (event === "SIGNED_IN" && nextSession) {
         if (authPage === "landing") updateLandingView(true);
+        else if (tasksNavLink && authPage !== "dashboard") tasksNavLink.href = "/app/";
         applyUserProfile(nextSession.user);
       }
       if (event === "TOKEN_REFRESHED" && nextSession) {

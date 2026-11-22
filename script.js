@@ -16,6 +16,11 @@ function dateFromToday(offset) {
 }
 
 const REFERENCE_TODAY = new Date(`${localDateString()}T00:00:00`);
+const REFERENCE_DAY_ORDINAL = Date.UTC(
+  REFERENCE_TODAY.getFullYear(),
+  REFERENCE_TODAY.getMonth(),
+  REFERENCE_TODAY.getDate()
+) / 86400000;
 
 const demoTasks = [
   {
@@ -87,10 +92,16 @@ let searchQuery = "";
 let sortAsc = true;
 const translations = {
   en: {
+    homeNav: "Home",
+    tasksNav: "Tasks",
+    aboutNav: "About",
+    faqNav: "FAQ",
+    openNavigation: "Open navigation",
+    closeNavigation: "Close navigation",
     pageTitle: "Manage deadlines",
     inProgress: "In progress",
     urgentFilter: "(≤ 3 days)",
-    finish: "Finish",
+    finish: "Finished",
     add: "Add",
     all: "All",
     jobs: "Jobs",
@@ -154,6 +165,12 @@ const translations = {
     confirmDelete: "Do you want to delete this deadline?"
   },
   th: {
+    homeNav: "หน้าหลัก",
+    tasksNav: "รายการงาน",
+    aboutNav: "เกี่ยวกับ",
+    faqNav: "คำถามที่พบบ่อย",
+    openNavigation: "เปิดเมนูนำทาง",
+    closeNavigation: "ปิดเมนูนำทาง",
     pageTitle: "จัดการกำหนดส่ง",
     inProgress: "กำลังทำ",
     urgentFilter: "(≤ 3 วัน)",
@@ -291,6 +308,7 @@ function applyLanguage() {
   }).format(REFERENCE_TODAY);
 
   searchInput.placeholder = t("searchPlaceholder");
+  searchInput.setAttribute("aria-label", t("searchPlaceholder"));
   const sortLabel = sortAsc ? t("sortAscending") : t("sortDescending");
   btnSort.title = sortLabel;
   btnSort.setAttribute("aria-label", sortLabel);
@@ -305,6 +323,12 @@ function applyLanguage() {
   document.getElementById("addStepLabel").textContent = t("addStep");
   document.getElementById("modalTitle").textContent = t(editingTaskId === null ? "addSchedule" : "editSchedule");
   themeState.textContent = t(currentTheme);
+  const navToggle = document.getElementById("siteNavToggle");
+  if (navToggle) {
+    navToggle.setAttribute("aria-label", navToggle.getAttribute("aria-expanded") === "true"
+      ? t("closeNavigation")
+      : t("openNavigation"));
+  }
   renderTasks();
 }
 
@@ -364,9 +388,9 @@ window.addEventListener("scroll", () => {
 // 4. ฟังก์ชันคำนวณวันและจัดรูปแบบ (Helpers)
 // =========================================
 function getDaysLeft(dateString) {
-  const target = new Date(dateString + "T00:00:00");
-  const diffTime = target - REFERENCE_TODAY;
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const [year, month, day] = dateString.split("-").map(Number);
+  const targetDayOrdinal = Date.UTC(year, month - 1, day) / 86400000;
+  return targetDayOrdinal - REFERENCE_DAY_ORDINAL;
 }
 
 function formatDateParts(dateString, overrideDay = null) {
@@ -527,7 +551,7 @@ function updateStats() {
   const finishTasks = tasks.filter(t => t.status === "finish");
   const urgentTasks = inProgressTasks.filter(t => {
     const days = getDaysLeft(t.deadlineDate);
-    return days <= 3;
+    return days >= 0 && days <= 3;
   });
 
   countInProgressEl.textContent = inProgressTasks.length;
@@ -545,12 +569,15 @@ function renderTasks() {
     return;
   }
 
-  // 1) กรองตาม Tab (In progress / Finish)
+  // 1) กรองตาม Tab (In progress / Finished)
   let filtered = tasks.filter(task => task.status === currentTab);
 
   // 2) กรองตาม Pill (All / <= 3 days / หมวดหมู่)
   if (currentFilter === "urgent") {
-    filtered = filtered.filter(task => getDaysLeft(task.deadlineDate) <= 3);
+    filtered = filtered.filter(task => {
+      const days = getDaysLeft(task.deadlineDate);
+      return task.status === "in-progress" && days >= 0 && days <= 3;
+    });
   } else if (currentFilter === "today") {
     filtered = filtered.filter(task => getDaysLeft(task.deadlineDate) === 0);
   } else if (currentFilter === "overdue") {
@@ -643,14 +670,16 @@ function renderTasks() {
               <span class="badge category">${escapeHtml(getCategoryLabel(task.category))}</span>
             </div>
             <div class="task-actions-col">
-              <button class="btn-check ${task.status === "finish" ? "completed" : ""}"
+              <button type="button" class="btn-check ${task.status === "finish" ? "completed" : ""}"
                       data-action="toggle-status" data-task-id="${escapeHtml(task.id)}"
-                      title="${escapeHtml(task.status === "in-progress" ? t("markFinished") : t("moveToProgress"))}">
+                      title="${escapeHtml(task.status === "in-progress" ? t("markFinished") : t("moveToProgress"))}"
+                      aria-label="${escapeHtml(task.status === "in-progress" ? t("markFinished") : t("moveToProgress"))}">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </button>
-              <button class="btn-more" data-action="edit-task" data-task-id="${escapeHtml(task.id)}" title="${escapeHtml(t("editTask"))}">
+              <button type="button" class="btn-more" data-action="edit-task" data-task-id="${escapeHtml(task.id)}"
+                      title="${escapeHtml(t("editTask"))}" aria-label="${escapeHtml(t("editTask"))}">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="1"></circle>
                   <circle cx="12" cy="5" r="1"></circle>
@@ -770,7 +799,7 @@ window.openEditModal = function(taskId) {
   document.querySelector(".btn-submit").textContent = t("save");
   btnDeleteModal.hidden = false;
   modalDirty = false;
-  document.getElementById("taskDateInput").min = localDateString();
+  document.getElementById("taskDateInput").removeAttribute("min");
 
   document.getElementById("taskTitleInput").value = task.title;
   document.getElementById("taskDescInput").value = task.desc || "";
@@ -838,11 +867,14 @@ function createSubtaskFormRow(text = "", stepNumber = 1, done = false) {
 // =========================================
 // 8. Event Listeners (ปุ่มควบคุมและ Modal)
 // =========================================
-// สลับแท็บ In progress / Finish
+// สลับแท็บ In progress / Finished
 tabButtons.forEach(btn => {
 btn.addEventListener("click", () => {
-tabButtons.forEach(b => b.classList.remove("active"));
-btn.classList.add("active");
+tabButtons.forEach(button => {
+  const active = button === btn;
+  button.classList.toggle("active", active);
+  button.setAttribute("aria-pressed", String(active));
+});
 currentTab = btn.dataset.tab;
 renderTasks();
 });
@@ -850,8 +882,11 @@ renderTasks();
 // เลือกตัวกรองหมวดหมู่
 filterPills.forEach(pill => {
 pill.addEventListener("click", () => {
-filterPills.forEach(p => p.classList.remove("active"));
-pill.classList.add("active");
+filterPills.forEach(button => {
+  const active = button === pill;
+  button.classList.toggle("active", active);
+  button.setAttribute("aria-pressed", String(active));
+});
 currentFilter = pill.dataset.filter;
 renderTasks();
 });
@@ -1054,7 +1089,11 @@ modalDirty = false;
 hideTaskModal();
 // สลับกลับมาแท็บ In progress เพื่อให้เห็นงานที่เพิ่งเพิ่ม
 currentTab = "in-progress";
-tabButtons.forEach(b => b.classList.toggle("active", b.dataset.tab === "in-progress"));
+tabButtons.forEach(button => {
+  const active = button.dataset.tab === "in-progress";
+  button.classList.toggle("active", active);
+  button.setAttribute("aria-pressed", String(active));
+});
 renderTasks();
 });
 // =========================================
