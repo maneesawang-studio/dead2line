@@ -42,6 +42,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+html,
+body {
+  touch-action: manipulation;
+}
+
 @media (min-width: 769px) {
   html {
     overflow-y: scroll;
@@ -2402,5 +2407,15 @@ body.dark-mode .preview-window {
   select:focus,
   [contenteditable="true"]:focus {
     font-size: 16px !important;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 640px) {
+    .modal-content .split-row .form-group input[type="date"],
+    .modal-content .split-row .form-group input[type="time"] {
+      width: calc(100% - 20px);
+      max-width: calc(100% - 20px);
+    }
   }
 }
