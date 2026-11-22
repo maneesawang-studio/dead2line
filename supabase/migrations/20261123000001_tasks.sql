@@ -18,6 +18,22 @@ create index if not exists tasks_user_status_deadline_idx
 alter table public.tasks enable row level security;
 grant select, insert, update, delete on public.tasks to authenticated;
 
+create or replace function public.set_tasks_updated_at()
+returns trigger
+language plpgsql
+set search_path = ''
+as $$
+begin
+  new.updated_at = pg_catalog.now();
+  return new;
+end;
+$$;
+
+drop trigger if exists set_tasks_updated_at on public.tasks;
+create trigger set_tasks_updated_at
+  before update on public.tasks
+  for each row execute function public.set_tasks_updated_at();
+
 drop policy if exists "Users can read their own tasks" on public.tasks;
 create policy "Users can read their own tasks"
   on public.tasks for select to authenticated

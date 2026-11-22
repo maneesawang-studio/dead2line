@@ -52,12 +52,12 @@
             <span id="languageLabel" data-site-i18n="language">Language</span>
             <span class="theme-state" id="languageState">English</span>
           </button>
-          <button type="button" class="profile-row" data-site-i18n="settings">Settings</button>
+          <a class="profile-row profile-row-link" href="../settings/" data-site-i18n="settings">Settings</a>
           <a class="profile-row profile-row-link" href="../login/" id="loginMenuLink" data-site-i18n="signIn">Sign in</a>
           <hr>
           <a class="profile-row profile-row-link" href="../about/" data-site-i18n="aboutMenu">About Deadline</a>
           <a class="profile-row profile-row-link" href="./" data-site-i18n="faqNav">FAQ</a>
-          <button type="button" class="profile-row" data-site-i18n="privacy">Privacy</button>
+          <a class="profile-row profile-row-link" href="../privacy/" data-site-i18n="privacy">Privacy</a>
           <button type="button" class="profile-row sign-out" id="signOutButton" data-site-i18n="signOut" hidden>Sign out</button>
         </div>
       </div>
@@ -89,11 +89,11 @@
       </details>
       <details class="site-card faq-item">
         <summary data-site-i18n="faqLoginQuestion">How does sign-in work?</summary>
-        <p data-site-i18n="faqLoginAnswer">Sign-in uses Supabase Auth. The page is prepared, but authentication is not active until a Supabase project URL and publishable key are configured.</p>
+        <p data-site-i18n="faqLoginAnswer">Sign-in uses Supabase Auth. Use the account created for this workspace.</p>
       </details>
       <details class="site-card faq-item">
         <summary data-site-i18n="faqDataQuestion">Are my tasks saved to the cloud?</summary>
-        <p data-site-i18n="faqDataAnswer">Not yet. Tasks currently use preview data in the browser. Supabase database storage and per-user access rules have not been configured.</p>
+        <p data-site-i18n="faqDataAnswer">Yes. Tasks are stored in Supabase and protected by per-user access rules.</p>
       </details>
     </section>
 

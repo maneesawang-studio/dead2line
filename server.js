@@ -13,6 +13,8 @@ const contentTypes = {
   ".sql": "text/plain; charset=utf-8",
   ".svg": "image/svg+xml",
   ".yml": "text/plain; charset=utf-8"
+  ,
+  ".webmanifest": "application/manifest+json; charset=utf-8"
 };
 const publicRootFiles = new Set([
   "index.html",
@@ -20,9 +22,11 @@ const publicRootFiles = new Set([
   "script.js",
   "site-pages.js",
   "supabase-config.js",
-  "supabase-auth.js"
+  "supabase-auth.js",
+  "manifest.webmanifest",
+  "sw.js"
 ]);
-const publicDirectories = new Set(["Asset", "about", "faq", "login"]);
+const publicDirectories = new Set(["Asset", "about", "faq", "login", "settings", "privacy"]);
 
 const server = http.createServer((request, response) => {
   if (request.method !== "GET" && request.method !== "HEAD") {
@@ -90,7 +94,10 @@ const server = http.createServer((request, response) => {
       response.writeHead(200, {
         "Content-Type": contentTypes[path.extname(filePath).toLowerCase()] || "application/octet-stream",
         "X-Content-Type-Options": "nosniff",
-        "Referrer-Policy": "strict-origin-when-cross-origin"
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "X-Frame-Options": "DENY",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co"
       });
       response.end(request.method === "HEAD" ? undefined : contents);
     });

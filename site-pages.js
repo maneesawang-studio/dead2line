@@ -34,7 +34,7 @@ const siteTranslations = {
     featurePersonalTitle: "Make it yours",
     featurePersonalText: "Switch between English and Thai, choose a light or dark theme, and organize work by category.",
     previewTitle: "Current preview",
-    previewText: "Task data is currently held in the page and is not synced to a database. Supabase sign-in will be enabled after project settings are added.",
+    previewText: "Deadline uses Supabase for authenticated account access and cloud task storage. Your tasks are isolated to your signed-in account.",
     faqTitle: "Frequently asked questions",
     faqAddQuestion: "How do I add a task?",
     faqAddAnswer: "Open the Tasks page and select + Add. Enter a title and deadline; category, time, notes, and subtasks are optional.",
@@ -45,11 +45,19 @@ const siteTranslations = {
     faqThemeQuestion: "How do I change the theme or language?",
     faqThemeAnswer: "Open the profile menu on the Tasks page, then choose a theme or switch between English and Thai.",
     faqLoginQuestion: "How does sign-in work?",
-    faqLoginAnswer: "Sign-in uses Supabase Auth. The page is prepared, but authentication is not active until a Supabase project URL and publishable key are configured.",
+    faqLoginAnswer: "Sign-in uses Supabase Auth. Use the account created for this workspace.",
     faqDataQuestion: "Are my tasks saved to the cloud?",
-    faqDataAnswer: "Not yet. Tasks currently use preview data in the browser. Supabase database storage and per-user access rules have not been configured.",
+    faqDataAnswer: "Yes. Tasks are stored in Supabase and protected by per-user access rules.",
     backToTasks: "Back to tasks",
     footerNote: "A clearer way to keep deadlines in sight."
+    ,
+    settingsHeading: "Settings",
+    appearanceHeading: "Appearance",
+    privacyHeading: "Privacy",
+    privacyDataHeading: "Your data",
+    privacyDataText: "Deadline stores task data in Supabase and associates it with your authenticated account. Theme and language preferences are stored in your browser.",
+    privacyControlHeading: "Your control",
+    privacyControlText: "You can edit or delete your tasks at any time. Signing out does not delete your tasks. To request account deletion, contact the account administrator."
   },
   th: {
     dashboard: "รายการงาน",
@@ -86,7 +94,7 @@ const siteTranslations = {
     featurePersonalTitle: "ปรับให้เหมาะกับคุณ",
     featurePersonalText: "เลือกภาษาไทยหรืออังกฤษ ใช้ธีมสว่างหรือมืด และจัดงานตามหมวดหมู่",
     previewTitle: "สถานะเวอร์ชันปัจจุบัน",
-    previewText: "ข้อมูลงานยังอยู่ในหน้าเว็บและไม่ได้ซิงก์กับฐานข้อมูล จะเปิดใช้ Supabase sign-in หลังเพิ่มค่าตั้งค่าโปรเจกต์",
+    previewText: "Deadline ใช้ Supabase สำหรับบัญชีและการเก็บข้อมูลงานบนคลาวด์ โดยแยกงานตามบัญชีที่เข้าสู่ระบบ",
     faqTitle: "คำถามที่พบบ่อย",
     faqAddQuestion: "เพิ่มงานอย่างไร?",
     faqAddAnswer: "ไปที่หน้ารายการงานแล้วเลือก + Add กรอกหัวข้อและกำหนดส่ง ส่วนหมวดหมู่ เวลา รายละเอียด และงานย่อยเป็นตัวเลือกเสริม",
@@ -97,11 +105,19 @@ const siteTranslations = {
     faqThemeQuestion: "เปลี่ยนธีมหรือภาษาอย่างไร?",
     faqThemeAnswer: "เปิดเมนูโปรไฟล์ในหน้ารายการงาน แล้วเลือกธีมหรือสลับภาษาไทยและอังกฤษ",
     faqLoginQuestion: "ระบบเข้าสู่ระบบทำงานอย่างไร?",
-    faqLoginAnswer: "ระบบเข้าสู่ระบบใช้ Supabase Auth โดยเตรียมหน้าไว้แล้ว แต่ยังไม่เปิดใช้จนกว่าจะตั้งค่า Project URL และ Publishable key",
+    faqLoginAnswer: "ระบบเข้าสู่ระบบใช้ Supabase Auth กรุณาใช้บัญชีที่สร้างไว้สำหรับพื้นที่ใช้งานนี้",
     faqDataQuestion: "งานถูกบันทึกบนคลาวด์หรือไม่?",
-    faqDataAnswer: "ยังไม่ถูกบันทึก ขณะนี้ใช้ข้อมูลตัวอย่างในเบราว์เซอร์ และยังไม่ได้ตั้งค่าฐานข้อมูล Supabase หรือสิทธิ์แยกตามผู้ใช้",
+    faqDataAnswer: "ใช่ ข้อมูลงานถูกเก็บใน Supabase และปกป้องด้วยสิทธิ์แยกตามผู้ใช้",
     backToTasks: "กลับไปหน้ารายการงาน",
     footerNote: "มองเห็นทุกกำหนดส่งได้ชัดเจนขึ้น"
+    ,
+    settingsHeading: "การตั้งค่า",
+    appearanceHeading: "หน้าตา",
+    privacyHeading: "ความเป็นส่วนตัว",
+    privacyDataHeading: "ข้อมูลของคุณ",
+    privacyDataText: "Deadline เก็บข้อมูลงานใน Supabase และเชื่อมกับบัญชีที่เข้าสู่ระบบ ธีมและภาษาถูกเก็บในเบราว์เซอร์",
+    privacyControlHeading: "สิทธิ์ควบคุมของคุณ",
+    privacyControlText: "คุณแก้ไขหรือลบงานได้ทุกเมื่อ การออกจากระบบไม่ได้ลบงาน หากต้องการลบบัญชี โปรดติดต่อผู้ดูแลบัญชี"
   }
 };
 

@@ -165,6 +165,9 @@
         if (typeof window.loadDeadlineTasks === "function") {
           await window.loadDeadlineTasks(client, session.user);
         }
+        if (typeof window.subscribeDeadlineTasks === "function") {
+          window.subscribeDeadlineTasks(client, session.user);
+        }
       }
 
       if (accountEmail) {
@@ -191,5 +194,14 @@
         }
       });
     }
+
+    client.auth.onAuthStateChange((event, nextSession) => {
+      if (event === "SIGNED_OUT" || !nextSession) {
+        if (authPage === "dashboard") redirectToLogin("session-ended");
+      }
+      if (event === "TOKEN_REFRESHED" && nextSession) {
+        window.deadlineUser = nextSession.user;
+      }
+    });
   }
 })();

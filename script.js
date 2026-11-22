@@ -1,7 +1,21 @@
 // =========================================
 // 1. ข้อมูลเริ่มต้น (Mock Data อ้างอิงตามภาพต้นฉบับ)
 // =========================================
-const REFERENCE_TODAY = new Date("2026-11-22T00:00:00");
+function localDateString(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function dateFromToday(offset) {
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
+  date.setDate(date.getDate() + offset);
+  return localDateString(date);
+}
+
+const REFERENCE_TODAY = new Date(`${localDateString()}T00:00:00`);
 
 const demoTasks = [
   {
@@ -9,7 +23,7 @@ const demoTasks = [
     title: "Send the Q4 sales summary slides to the executives.",
     desc: "Focus on a comparison chart of online channels and the plan for next year.",
     category: "Jobs",
-    deadlineDate: "2026-11-25",
+    deadlineDate: dateFromToday(3),
     deadlineTime: "10 a.m.",
     status: "in-progress",
     subtasks: [
@@ -22,8 +36,8 @@ const demoTasks = [
     title: "Weekly Report Summary",
     desc: "Weekly update on team task status and issues encountered",
     category: "Finance",
-    deadlineDate: "2026-12-06", // 14 days left จากวันที่ 22 Nov 2026
-    displayDayOverride: "25 Nov.", // แสดงผลตามภาพตัวอย่าง
+    deadlineDate: dateFromToday(14),
+    displayDayOverride: null,
     deadlineTime: "",
     status: "in-progress",
     subtasks: []
@@ -33,7 +47,7 @@ const demoTasks = [
     title: "Finalize UX/UI Wireframes for Mobile App",
     desc: "Prepare interactive prototype for client review meeting.",
     category: "Freelance",
-    deadlineDate: "2026-11-30",
+    deadlineDate: dateFromToday(8),
     deadlineTime: "4 p.m.",
     status: "in-progress",
     subtasks: []
@@ -43,7 +57,7 @@ const demoTasks = [
     title: "Database Architecture Essay",
     desc: "Submit PDF report on normalization and indexing strategies.",
     category: "Study",
-    deadlineDate: "2026-12-04",
+    deadlineDate: dateFromToday(12),
     deadlineTime: "11:59 p.m.",
     status: "in-progress",
     subtasks: []
@@ -53,7 +67,7 @@ const demoTasks = [
     title: "Q3 Tax Filing & Expense Audit",
     desc: "Completed and submitted all receipts to the accounting team.",
     category: "Finance",
-    deadlineDate: "2026-11-18",
+    deadlineDate: dateFromToday(-4),
     deadlineTime: "5 p.m.",
     status: "finish",
     subtasks: []
@@ -87,6 +101,12 @@ const translations = {
     searchPlaceholder: "Search for a schedule",
     sortDeadlines: "Sort deadlines",
     noResults: "No deadlines found matching your filter.",
+    overdueFilter: "Overdue",
+    todayFilter: "Today",
+    sortAscending: "Sort by earliest deadline",
+    sortDescending: "Sort by latest deadline",
+    unsavedChanges: "You have unsaved changes.",
+    titleRequired: "Enter a task title.",
     loadingTasks: "Loading your tasks...",
     loadTasksFailed: "Couldn't load your tasks:",
     saveTaskFailed: "Couldn't save the task:",
@@ -148,6 +168,12 @@ const translations = {
     searchPlaceholder: "ค้นหากำหนดการ",
     sortDeadlines: "เรียงลำดับกำหนดส่ง",
     noResults: "ไม่พบกำหนดการที่ตรงกับตัวกรอง",
+    overdueFilter: "เกินกำหนด",
+    todayFilter: "วันนี้",
+    sortAscending: "เรียงกำหนดส่งเร็วที่สุด",
+    sortDescending: "เรียงกำหนดส่งช้าที่สุด",
+    unsavedChanges: "คุณมีข้อมูลที่ยังไม่ได้บันทึก",
+    titleRequired: "กรุณากรอกหัวข้องาน",
     loadingTasks: "กำลังโหลดรายการงาน...",
     loadTasksFailed: "โหลดรายการงานไม่สำเร็จ:",
     saveTaskFailed: "บันทึกงานไม่สำเร็จ:",
@@ -233,6 +259,9 @@ const taskOperationStatus = document.getElementById("taskOperationStatus");
 let editingTaskId = null;
 let modalScrollY = 0;
 let modalBodyPaddingRight = "";
+let modalPreviousFocus = null;
+let modalDirty = false;
+let realtimeTasksChannel = null;
 
 btnOpenModal.disabled = !taskDataReady;
 
@@ -262,8 +291,9 @@ function applyLanguage() {
   }).format(REFERENCE_TODAY);
 
   searchInput.placeholder = t("searchPlaceholder");
-  btnSort.title = t("sortDeadlines");
-  btnSort.setAttribute("aria-label", t("sortDeadlines"));
+  const sortLabel = sortAsc ? t("sortAscending") : t("sortDescending");
+  btnSort.title = sortLabel;
+  btnSort.setAttribute("aria-label", sortLabel);
   btnProfile.setAttribute("aria-label", t("openProfileMenu"));
   btnCloseModal.setAttribute("aria-label", t("close"));
   document.getElementById("taskTitleInput").placeholder = t("titlePlaceholder");
@@ -285,6 +315,7 @@ function closeProfileMenu() {
 }
 
 function showTaskModal() {
+  modalPreviousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   modalScrollY = window.scrollY;
   modalBodyPaddingRight = document.body.style.paddingRight;
   const isDesktop = window.matchMedia("(min-width: 769px)").matches;
@@ -295,14 +326,23 @@ function showTaskModal() {
   document.body.classList.add("modal-open");
   document.body.style.top = `-${modalScrollY}px`;
   addModal.classList.add("show");
+  addModal.setAttribute("aria-hidden", "false");
+  document.querySelector(".modal-content").setAttribute("role", "dialog");
+  document.querySelector(".modal-content").setAttribute("aria-modal", "true");
+  document.querySelector(".modal-content").setAttribute("aria-labelledby", "modalTitle");
+  requestAnimationFrame(() => document.getElementById("taskTitleInput").focus());
 }
 
 function hideTaskModal() {
+  if (modalDirty && !window.confirm(t("unsavedChanges"))) return;
   addModal.classList.remove("show");
+  addModal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
   document.body.style.top = "";
   document.body.style.paddingRight = modalBodyPaddingRight;
   window.scrollTo(0, modalScrollY);
+  modalDirty = false;
+  if (modalPreviousFocus instanceof HTMLElement) modalPreviousFocus.focus();
 }
 
 let previousScrollY = window.scrollY;
@@ -462,6 +502,23 @@ window.loadDeadlineTasks = async function(client, user) {
   }
 };
 
+window.subscribeDeadlineTasks = function(client, user) {
+  if (realtimeTasksChannel) {
+    client.removeChannel(realtimeTasksChannel);
+  }
+  realtimeTasksChannel = client
+    .channel(`deadline-tasks-${user.id}`)
+    .on("postgres_changes", {
+      event: "*",
+      schema: "public",
+      table: "tasks",
+      filter: `user_id=eq.${user.id}`
+    }, async () => {
+      await window.loadDeadlineTasks(client, user);
+    })
+    .subscribe();
+};
+
 // =========================================
 // 5. อัปเดตตัวเลขสรุปด้านบน (Summary Stats)
 // =========================================
@@ -494,6 +551,10 @@ function renderTasks() {
   // 2) กรองตาม Pill (All / <= 3 days / หมวดหมู่)
   if (currentFilter === "urgent") {
     filtered = filtered.filter(task => getDaysLeft(task.deadlineDate) <= 3);
+  } else if (currentFilter === "today") {
+    filtered = filtered.filter(task => getDaysLeft(task.deadlineDate) === 0);
+  } else if (currentFilter === "overdue") {
+    filtered = filtered.filter(task => getDaysLeft(task.deadlineDate) < 0);
   } else if (currentFilter !== "All") {
     filtered = filtered.filter(task => task.category === currentFilter);
   }
@@ -501,9 +562,11 @@ function renderTasks() {
   // 3) กรองตามคำค้นหา
   if (searchQuery.trim() !== "") {
     const q = searchQuery.toLowerCase();
-    filtered = filtered.filter(task => 
-      task.title.toLowerCase().includes(q) || 
-      task.desc.toLowerCase().includes(q)
+    filtered = filtered.filter(task =>
+      task.title.toLowerCase().includes(q) ||
+      (task.desc || "").toLowerCase().includes(q) ||
+      getCategoryLabel(task.category).toLowerCase().includes(q) ||
+      (task.subtasks || []).some(subtask => (subtask.text || "").toLowerCase().includes(q))
     );
   }
 
@@ -706,6 +769,8 @@ window.openEditModal = function(taskId) {
   document.getElementById("modalTitle").textContent = t("editSchedule");
   document.querySelector(".btn-submit").textContent = t("save");
   btnDeleteModal.hidden = false;
+  modalDirty = false;
+  document.getElementById("taskDateInput").min = localDateString();
 
   document.getElementById("taskTitleInput").value = task.title;
   document.getElementById("taskDescInput").value = task.desc || "";
@@ -799,6 +864,9 @@ renderTasks();
 // เรียงลำดับวันที่
 btnSort.addEventListener("click", () => {
 sortAsc = !sortAsc;
+const sortLabel = sortAsc ? t("sortAscending") : t("sortDescending");
+btnSort.title = sortLabel;
+btnSort.setAttribute("aria-label", sortLabel);
 renderTasks();
 });
 themeToggle.addEventListener("click", () => {
@@ -821,6 +889,8 @@ btnOpenModal.addEventListener("click", () => {
   addTaskForm.reset();
   subtaskFormList.innerHTML = "";
   addStepNumber.textContent = "1";
+  document.getElementById("taskDateInput").min = localDateString();
+  modalDirty = false;
   showTaskModal();
 });
 btnCloseModal.addEventListener("click", hideTaskModal);
@@ -836,6 +906,7 @@ btnDeleteModal.addEventListener("click", async () => {
     const deleted = await window.deleteTask(editingTaskId);
     if (deleted) {
       editingTaskId = null;
+      modalDirty = false;
       hideTaskModal();
     }
   }
@@ -859,10 +930,52 @@ addStepNumber.textContent = String(stepNumber + 1);
 document.getElementById("addStepLabel").textContent = t("addStep");
 subtaskFormList.lastElementChild.querySelector(".subtask-form-input").focus();
 });
+
+addTaskForm.addEventListener("input", () => {
+  modalDirty = true;
+});
+
+subtaskFormList.addEventListener("change", () => {
+  modalDirty = true;
+});
+
+document.addEventListener("keydown", event => {
+  if (!addModal.classList.contains("show")) return;
+  if (event.key === "Escape") {
+    event.preventDefault();
+    hideTaskModal();
+    return;
+  }
+  if (event.key !== "Tab") return;
+
+  const focusable = Array.from(addModal.querySelectorAll(
+    'button:not([hidden]):not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [href]'
+  )).filter(element => element.offsetParent !== null);
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+});
+
 // บันทึกงานใหม่จากฟอร์ม
 addTaskForm.addEventListener("submit", async (e) => {
 e.preventDefault();
 if (!taskDataReady) return;
+const titleInput = document.getElementById("taskTitleInput");
+const title = titleInput.value.trim();
+if (!title) {
+  titleInput.setCustomValidity(t("titleRequired"));
+  titleInput.reportValidity();
+  titleInput.addEventListener("input", () => titleInput.setCustomValidity(""), { once: true });
+  return;
+}
+titleInput.setCustomValidity("");
 const timeInput = document.getElementById("taskTimeInput").value;
 let deadlineTime = "";
 if (timeInput) {
@@ -879,7 +992,7 @@ const subtasks = Array.from(subtaskFormList.querySelectorAll(".subtask-form-row"
   .filter(subtask => subtask.text !== "")
   .map((subtask, index) => ({ id: Date.now() + index, text: subtask.text, done: subtask.done }));
 const taskData = {
-title: document.getElementById("taskTitleInput").value.trim(),
+title,
 desc: document.getElementById("taskDescInput").value.trim(),
 category: document.getElementById("taskCategoryInput").value,
 deadlineDate: document.getElementById("taskDateInput").value,
@@ -937,6 +1050,7 @@ addTaskForm.reset();
 subtaskFormList.innerHTML = "";
 addStepNumber.textContent = "1";
 editingTaskId = null;
+modalDirty = false;
 hideTaskModal();
 // สลับกลับมาแท็บ In progress เพื่อให้เห็นงานที่เพิ่งเพิ่ม
 currentTab = "in-progress";
@@ -948,3 +1062,10 @@ renderTasks();
 // =========================================
 applyTheme();
 applyLanguage();
+
+setInterval(() => {
+  const today = new Date(`${localDateString()}T00:00:00`);
+  if (today.getTime() !== REFERENCE_TODAY.getTime()) {
+    location.reload();
+  }
+}, 60 * 1000);

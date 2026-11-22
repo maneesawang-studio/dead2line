@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage tasks and deadlines with clear categories, subtasks, and progress tracking.">
+  <meta name="theme-color" content="#0099ff">
+  <link rel="icon" href="Asset/Deadline-512.png">
+  <link rel="manifest" href="manifest.webmanifest">
   <title>Deadline. - Manage deadlines</title>
   <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -55,12 +59,12 @@
           <span id="languageLabel">Language</span>
           <span class="theme-state" id="languageState">English</span>
         </button>
-        <button type="button" class="profile-row" data-i18n="settings">Settings</button>
+        <a class="profile-row profile-row-link" href="settings/" data-i18n="settings">Settings</a>
         <a class="profile-row profile-row-link" id="loginMenuLink" href="login/" data-i18n="signIn">Sign in</a>
         <hr>
         <a class="profile-row profile-row-link" href="about/" data-i18n="about">About Deadline</a>
         <a class="profile-row profile-row-link" href="faq/" data-i18n="faq">FAQ</a>
-        <button type="button" class="profile-row" data-i18n="privacy">Privacy</button>
+        <a class="profile-row profile-row-link" href="privacy/" data-i18n="privacy">Privacy</a>
         <button type="button" class="profile-row sign-out" id="signOutButton" data-i18n="signOut" hidden>Sign out</button>
       </div>
     </div>
@@ -130,6 +134,8 @@
     <section class="filter-pills" id="filterPills">
       <button class="pill active" data-filter="All" data-i18n="all">All</button>
       <button class="pill" data-filter="urgent" data-i18n="urgentFilter">(≤ 3 days)</button>
+      <button class="pill" data-filter="today" data-i18n="todayFilter">Today</button>
+      <button class="pill" data-filter="overdue" data-i18n="overdueFilter">Overdue</button>
       <button class="pill" data-filter="Jobs" data-i18n="jobs">Jobs</button>
       <button class="pill" data-filter="Study" data-i18n="study">Study</button>
       <button class="pill" data-filter="Freelance" data-i18n="freelance">Freelance</button>
@@ -151,7 +157,7 @@
       <form id="addTaskForm">
         <div class="form-group">
           <label><span data-i18n="title">Title</span> <span class="required">*</span></label>
-          <input type="text" id="taskTitleInput" required placeholder="add title....">
+          <input type="text" id="taskTitleInput" required maxlength="120" placeholder="add title....">
         </div>
         <div class="form-row">
           <div class="form-group">
@@ -203,5 +209,10 @@
   <script src="supabase-config.js"></script>
   <script src="script.js"></script>
   <script src="supabase-auth.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+    }
+  </script>
 </body>
 </html>
