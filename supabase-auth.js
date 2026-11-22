@@ -104,7 +104,16 @@
     }
   }
 
+  function setAuthenticatedNavigation(isAuthenticated) {
+    if (typeof window.setDeadlineAuthenticatedNavigation === "function") {
+      window.setDeadlineAuthenticatedNavigation(isAuthenticated);
+    }
+    if (loginMenuLink) loginMenuLink.hidden = isAuthenticated;
+    if (signOutButton) signOutButton.hidden = !isAuthenticated;
+  }
+
   function updateLandingView(isAuthenticated) {
+    setAuthenticatedNavigation(isAuthenticated);
     document.querySelectorAll("[data-auth-view='guest']").forEach(element => {
       element.hidden = isAuthenticated;
     });
@@ -135,6 +144,7 @@
     }
 
     const sources = [
+      "/Asset/supabase-js-2.119.2.js",
       "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.2/dist/umd/supabase.js",
       "https://unpkg.com/@supabase/supabase-js@2.119.2/dist/umd/supabase.js"
     ];
@@ -166,7 +176,7 @@
       }).then(loaded => {
         if (loaded) return;
         if (index + 1 < sources.length) {
-          console.warn("Supabase SDK CDN failed; trying the fallback source.");
+          console.warn("Supabase SDK source failed; trying the next source.");
         }
         return loadSource(index + 1);
       });
@@ -253,6 +263,8 @@
       return;
     }
 
+    setAuthenticatedNavigation(Boolean(session));
+
     if (authPage === "dashboard" && !session) {
       redirectToHome();
       return;
@@ -302,11 +314,13 @@
 
     client.auth.onAuthStateChange((event, nextSession) => {
       if (event === "SIGNED_OUT" || !nextSession) {
+        setAuthenticatedNavigation(false);
         if (authPage === "dashboard") redirectToHome();
         if (authPage === "landing") updateLandingView(false);
         else if (tasksNavLink && authPage !== "dashboard") tasksNavLink.href = "/login/";
       }
       if (event === "SIGNED_IN" && nextSession) {
+        setAuthenticatedNavigation(true);
         if (authPage === "landing") updateLandingView(true);
         else if (tasksNavLink && authPage !== "dashboard") tasksNavLink.href = "/app/";
         applyUserProfile(nextSession.user);

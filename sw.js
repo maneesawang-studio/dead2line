@@ -1,4 +1,4 @@
-const CACHE_NAME = "deadline-v3";
+const CACHE_NAME = "deadline-v4";
 const CORE_ASSETS = [
   "/",
   "/app/",
@@ -7,6 +7,7 @@ const CORE_ASSETS = [
   "/site-pages.js",
   "/supabase-auth.js",
   "/supabase-config.js",
+  "/Asset/supabase-js-2.119.2.js",
   "/manifest.webmanifest",
   "/Asset/Deadline-512.png"
 ];

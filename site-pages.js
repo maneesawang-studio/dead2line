@@ -4,7 +4,7 @@ if (nav) {
   const activePage = document.body.dataset.navActive || "";
   const authPage = document.body.dataset.authPage || "";
   const isLanding = authPage === "landing";
-  const inner = nav.querySelector(".navbar-inner");
+  let inner = nav.querySelector(".navbar-inner");
 
   function linksMarkup() {
     const tasksHref = authPage === "dashboard" ? "/app/" : "/login/";
@@ -33,7 +33,7 @@ if (nav) {
       </button>` : "";
     return `
       <div class="profile-wrapper">
-        <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open profile menu">
+        <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open profile menu" hidden>
           <div class="avatar"><img class="avatar-img" src="/Asset/MNSW New Profile.png" alt="User profile"></div>
           <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
@@ -91,7 +91,32 @@ if (nav) {
     }
   }
 
+  inner = nav.querySelector(".navbar-inner");
+  let actions = inner.querySelector(".site-nav-actions");
+  const profile = inner.querySelector(".profile-wrapper");
+  if (!actions) {
+    actions = document.createElement("div");
+    actions.className = "site-nav-actions";
+    if (profile) actions.appendChild(profile);
+    inner.appendChild(actions);
+  }
+
+  let guestLoginLink = document.getElementById("landingLoginLink");
+  if (!guestLoginLink && authPage !== "login") {
+    guestLoginLink = document.createElement("a");
+    guestLoginLink.id = "siteGuestLoginLink";
+    guestLoginLink.className = "landing-nav-login";
+    guestLoginLink.href = "/login/";
+    guestLoginLink.dataset.i18n = "signIn";
+    guestLoginLink.dataset.siteI18n = "signIn";
+    guestLoginLink.textContent = "Sign in";
+    actions.prepend(guestLoginLink);
+  }
+
+  const primaryLinks = nav.querySelector(".site-nav-links");
   const toggle = document.getElementById("siteNavToggle");
+  const profileButton = document.getElementById("btnProfile");
+  const profileMenu = document.getElementById("profileMenu");
   if (toggle) {
     const activePaths = {
       home: "/",
@@ -136,6 +161,46 @@ if (nav) {
       if (event.key === "Escape") setExpanded(false);
     });
   }
+
+  window.setDeadlineAuthenticatedNavigation = isAuthenticated => {
+    nav.classList.toggle("nav-authenticated", isAuthenticated);
+    if (guestLoginLink) guestLoginLink.hidden = isAuthenticated;
+    if (profileButton) profileButton.hidden = !isAuthenticated;
+
+    if (isAuthenticated) {
+      if (toggle) {
+        nav.classList.remove("nav-open");
+        toggle.hidden = true;
+        toggle.setAttribute("aria-expanded", "false");
+      }
+      if (primaryLinks && profileMenu && primaryLinks.parentElement !== profileMenu) {
+        primaryLinks.classList.remove("site-nav-links");
+        primaryLinks.classList.add("profile-primary-links");
+        const account = profileMenu.querySelector(".profile-account");
+        profileMenu.insertBefore(primaryLinks, account ? account.nextSibling : profileMenu.firstChild);
+        const divider = document.createElement("hr");
+        divider.className = "profile-nav-divider";
+        primaryLinks.after(divider);
+      }
+    } else {
+      if (profileMenu) profileMenu.classList.remove("show");
+      if (profileButton) profileButton.setAttribute("aria-expanded", "false");
+      if (primaryLinks && profileMenu && primaryLinks.parentElement === profileMenu) {
+        const divider = profileMenu.querySelector(".profile-nav-divider");
+        if (divider) divider.remove();
+        primaryLinks.classList.remove("profile-primary-links");
+        primaryLinks.classList.add("site-nav-links");
+        const brand = inner.querySelector(".logo");
+        if (brand) brand.after(toggle, primaryLinks);
+        else inner.prepend(toggle, primaryLinks);
+      }
+      if (toggle) {
+        toggle.hidden = false;
+        toggle.setAttribute("aria-expanded", "false");
+      }
+    }
+  };
+  window.setDeadlineAuthenticatedNavigation(false);
 }
 
 const siteTranslations = {
