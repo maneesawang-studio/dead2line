@@ -692,7 +692,7 @@ function renderTasks() {
           <span class="deadline-label">${t("deadline")}</span>
           <strong class="deadline-day ${isUrgent ? "urgent" : ""}">${escapeHtml(day)}</strong>
           <span class="deadline-year">${escapeHtml(year)}</span>
-          ${task.deadlineTime ? `<span class="deadline-time">${escapeHtml(formatDeadlineTime(task.deadlineTime))}</span>` : ""}
+          <span class="deadline-time">${task.deadlineTime ? escapeHtml(formatDeadlineTime(task.deadlineTime)) : "--:--"}</span>
         </div>
 
         <div class="task-content-col">

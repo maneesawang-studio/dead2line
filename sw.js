@@ -1,4 +1,4 @@
-const CACHE_NAME = "deadline-v16";
+const CACHE_NAME = "deadline-v18";
 const BASE_URL = new URL("./", self.location.href);
 const CORE_ASSETS = [
   "",

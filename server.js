@@ -12,6 +12,8 @@ const contentTypes = {
   ".png": "image/png",
   ".sql": "text/plain; charset=utf-8",
   ".svg": "image/svg+xml",
+  ".txt": "text/plain; charset=utf-8",
+  ".xml": "application/xml; charset=utf-8",
   ".yml": "text/plain; charset=utf-8",
   ".webmanifest": "application/manifest+json; charset=utf-8"
 };
@@ -23,7 +25,9 @@ const publicRootFiles = new Set([
   "supabase-config.js",
   "supabase-auth.js",
   "manifest.webmanifest",
-  "sw.js"
+  "sw.js",
+  "robots.txt",
+  "sitemap.xml"
 ]);
 const publicDirectories = new Set(["app", "Asset", "about", "faq", "login", "signup", "settings", "privacy"]);
 
