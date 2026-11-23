@@ -103,7 +103,7 @@ if (nav) {
     nav.className = "navbar";
     nav.innerHTML = `
       <div class="navbar-inner">
-        <a class="logo" href="${siteUrl("")}" aria-label="Deadline home">
+        <a class="logo" href="${siteUrl("")}" aria-label="Deadline">
           <img src="${siteUrl("Asset/Deadline-512.png")}" alt="">
           <span class="logo-name">Deadline<span class="logo-dot">.</span></span>
         </a>
@@ -259,6 +259,8 @@ if (nav) {
 
   window.setDeadlineAuthenticatedNavigation = isAuthenticated => {
     nav.classList.toggle("nav-authenticated", isAuthenticated);
+    const brandLink = inner.querySelector(".logo");
+    if (brandLink) brandLink.href = siteUrl(isAuthenticated ? "app/" : "");
     const backLink = document.querySelector(".site-back-link");
     if (backLink) backLink.href = siteUrl(isAuthenticated ? "app/" : "");
     actions.querySelectorAll(".site-nav-guest-link").forEach(link => {
@@ -378,6 +380,7 @@ const siteTranslations = {
     faqDataAnswer: "No. Your tasks are saved to your account and kept separate from other users' tasks.",
     backToTasks: "Back to home",
     footerNote: "Stay organized and keep your deadlines in sight.",
+    footerNavigation: "Footer navigation",
     settingsHeading: "Settings",
     appearanceHeading: "Display and language",
     privacyHeading: "Privacy policy",
@@ -388,15 +391,30 @@ const siteTranslations = {
     privacyControlHeading: "Managing your data",
     privacyControlText: "You can edit or delete tasks at any time. Signing out won't delete them. To request account deletion, contact the administrator.",
     homeTitle: "Task Manager & Deadline Planner",
-    homeDescription: "Organize tasks, track progress, and stay ahead of deadlines with Deadline, a simple task manager and deadline planner.",
-    homeEyebrow: "YOUR WORK, RIGHT ON TIME",
-    homeHeadline: "Plan clearly. Finish confidently.",
-    homeLead: "A calm, focused space for your tasks and deadlines. See what needs attention, break big work into small steps, and keep moving.",
-    homeSignedInLead: "Your tasks are ready. Head back to your list and keep your next deadline in sight.",
-    homeCaption: "Simple by design. Useful every day.",
-    getStarted: "Get started",
-    seePreview: "Explore the preview",
+    homeDescription: "Plan tasks, track progress, and manage deadlines in one place with Deadline, a simple task manager and deadline planner.",
+    homeEyebrow: "TASKS IN ORDER. DEADLINES IN SIGHT.",
+    homeHeadline: "Plan your tasks. Stay ahead of deadlines.",
+    homeLead: "Organize tasks, track progress, and see upcoming deadlines in one place. Break bigger tasks into smaller steps and know what to focus on next.",
+    homeSignedInLead: "Your tasks are ready. Open your dashboard to review what's next.",
+    homeCaption: "Simple tools. Clear next steps.",
+    getStarted: "Create an account",
+    seePreview: "See the dashboard preview",
     openDashboard: "Open my dashboard",
+    previewAriaLabel: "Deadline task dashboard preview with sample tasks",
+    featureSectionEyebrow: "FEATURES THAT KEEP YOU MOVING",
+    featureSectionHeading: "Keep every task and deadline in view.",
+    featureSectionText: "Keep deadlines visible, break larger tasks into manageable steps, and shape your workspace around the way you work.",
+    howItWorksEyebrow: "HOW IT WORKS",
+    howItWorksHeading: "From task to done in three simple steps.",
+    stepAddTitle: "Add a task and deadline",
+    stepAddText: "Give it a clear title and due date. Add a category or notes when they help.",
+    stepBreakTitle: "Break it into subtasks",
+    stepBreakText: "Turn bigger tasks into smaller steps and keep track of what's complete.",
+    stepTrackTitle: "Track progress and finish",
+    stepTrackText: "See what's due soon, update your tasks, and move finished work out of your active list.",
+    homePrivacyHeading: "Your tasks stay yours.",
+    homePrivacyText: "Tasks are saved to your account and kept separate from other users' tasks.",
+    homePrivacyLink: "Read our privacy policy",
     previewSample: "SAMPLE DATA",
     previewDashboard: "Manage tasks and deadlines",
     previewUrgent: "≤ 3 days",
@@ -422,7 +440,7 @@ const siteTranslations = {
     previewTaskTwoMeta: "Share progress and next steps",
     homeStudy: "STUDY",
     homeWork: "JOBS",
-    homeClosing: "Make room for the work that matters."
+    homeClosing: "Ready for a clearer plan?"
   },
   th: {
     dashboard: "รายการงาน",
@@ -454,7 +472,7 @@ const siteTranslations = {
     signOut: "ออกจากระบบ",
     loginTitle: "เข้าสู่ระบบ",
     signUpTitle: "สมัครสมาชิก",
-    loginHeading: "ยินดีต้อนรับกลับ",
+    loginHeading: "ยินดีต้อนรับ",
     loginLead: "เข้าสู่ระบบเพื่อดูงานและกำหนดส่งของคุณ",
     signUpHeading: "สร้างบัญชีของคุณ",
     signUpLead: "สร้างบัญชีเพื่อเริ่มจัดการงานและกำหนดส่ง",
@@ -494,6 +512,7 @@ const siteTranslations = {
     faqDataAnswer: "ไม่ งานจะบันทึกแยกตามบัญชี และผู้ใช้อื่นจะไม่เห็นงานของคุณ",
     backToTasks: "กลับหน้าหลัก",
     footerNote: "จัดการงานและกำหนดส่งให้ชัดเจนขึ้น",
+    footerNavigation: "เมนูส่วนท้าย",
     settingsHeading: "การตั้งค่า",
     appearanceHeading: "การแสดงผลและภาษา",
     privacyHeading: "นโยบายความเป็นส่วนตัว",
@@ -504,15 +523,30 @@ const siteTranslations = {
     privacyControlHeading: "การจัดการข้อมูลของคุณ",
     privacyControlText: "คุณแก้ไขหรือลบงานได้ทุกเมื่อ การออกจากระบบจะไม่ลบงาน หากต้องการลบบัญชี โปรดติดต่อผู้ดูแลระบบ",
     homeTitle: "แอปจัดการงานและกำหนดส่ง",
-    homeDescription: "จัดระเบียบงาน ติดตามความคืบหน้า และไม่พลาดกำหนดส่งด้วย Deadline แอปวางแผนงานที่เรียบง่ายและใช้งานสะดวก",
-    homeEyebrow: "จัดการงานให้ทันทุกกำหนดส่ง",
-    homeHeadline: "วางแผนชัดเจน ทำงานเสร็จอย่างมั่นใจ",
-    homeLead: "พื้นที่เรียบง่ายสำหรับจัดการงานและกำหนดส่ง เห็นสิ่งที่ควรทำ แบ่งงานใหญ่เป็นขั้นตอนเล็ก ๆ แล้วเดินหน้าต่อ",
-    homeSignedInLead: "รายการงานของคุณพร้อมแล้ว กลับไปดูงานและกำหนดส่งถัดไปได้เลย",
-    homeCaption: "เรียบง่าย ใช้งานได้ทุกวัน",
-    getStarted: "เริ่มต้นใช้งาน",
-    seePreview: "ดูตัวอย่าง",
+    homeDescription: "จัดการงาน ติดตามความคืบหน้า และดูวันครบกำหนดได้ในที่เดียวด้วย Deadline แอปจัดการงานและกำหนดส่งที่ใช้งานง่าย",
+    homeEyebrow: "จัดระเบียบงาน เห็นกำหนดส่งชัดเจน",
+    homeHeadline: "วางแผนงานให้ชัด มองเห็นทุกกำหนดส่ง",
+    homeLead: "รวมงานและกำหนดส่งไว้ในที่เดียว ติดตามความคืบหน้า แบ่งงานใหญ่เป็นขั้นตอนเล็ก ๆ และเห็นสิ่งที่ควรทำต่อได้ง่ายขึ้น",
+    homeSignedInLead: "รายการงานของคุณพร้อมแล้ว เปิดหน้ารายการงานเพื่อดูสิ่งที่ต้องทำต่อ",
+    homeCaption: "เครื่องมือเรียบง่าย เห็นขั้นตอนถัดไปชัดเจน",
+    getStarted: "สร้างบัญชี",
+    seePreview: "ดูตัวอย่างหน้ารายการงาน",
     openDashboard: "เปิดหน้ารายการงาน",
+    previewAriaLabel: "ตัวอย่างหน้ารายการงาน Deadline พร้อมข้อมูลงานตัวอย่าง",
+    featureSectionEyebrow: "ฟีเจอร์ที่ช่วยให้งานเดินหน้า",
+    featureSectionHeading: "เห็นงานและกำหนดส่งได้ชัดเจนในที่เดียว",
+    featureSectionText: "เห็นกำหนดส่งที่ใกล้ถึง แบ่งงานใหญ่เป็นขั้นตอนที่ทำได้จริง และปรับพื้นที่ทำงานให้เหมาะกับคุณ",
+    howItWorksEyebrow: "วิธีเริ่มใช้งาน",
+    howItWorksHeading: "เริ่มจัดการงานได้ง่าย ๆ ใน 3 ขั้นตอน",
+    stepAddTitle: "เพิ่มงานและกำหนดส่ง",
+    stepAddText: "ระบุชื่องานและวันครบกำหนด พร้อมเพิ่มหมวดหมู่หรือรายละเอียดได้ตามต้องการ",
+    stepBreakTitle: "แบ่งงานเป็นงานย่อย",
+    stepBreakText: "แยกงานใหญ่เป็นขั้นตอนเล็ก ๆ และติดตามสิ่งที่ทำเสร็จแล้ว",
+    stepTrackTitle: "ติดตามความคืบหน้า",
+    stepTrackText: "ดูงานที่ใกล้ครบกำหนด อัปเดตสถานะ และย้ายงานที่เสร็จแล้วออกจากรายการกำลังทำ",
+    homePrivacyHeading: "งานของคุณแยกตามบัญชี",
+    homePrivacyText: "งานจะบันทึกไว้กับบัญชีของคุณและแยกจากงานของผู้ใช้อื่น",
+    homePrivacyLink: "อ่านนโยบายความเป็นส่วนตัว",
     previewSample: "ข้อมูลตัวอย่าง",
     previewDashboard: "จัดการงานและกำหนดส่ง",
     previewUrgent: "≤ 3 วัน",
@@ -538,7 +572,7 @@ const siteTranslations = {
     previewTaskTwoMeta: "แจ้งความคืบหน้าและขั้นตอนถัดไป",
     homeStudy: "การเรียน",
     homeWork: "งาน",
-    homeClosing: "ให้เวลากับงานสำคัญได้มากขึ้น"
+    homeClosing: "พร้อมวางแผนงานให้ชัดเจนขึ้นหรือยัง?"
   }
 };
 

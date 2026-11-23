@@ -24,9 +24,11 @@
   const landingLoginLink = document.getElementById("landingLoginLink");
   const landingDashboardLink = document.getElementById("landingDashboardLink");
   const tasksNavLink = document.getElementById("tasksNavLink");
+  let landingGreetingUser = null;
 
   const messages = {
     en: {
+      landingGreeting: "Hello, {name}",
       configMissing: "Sign-in isn't configured. Add the Supabase project URL and publishable key to supabase-config.js, then open the site over HTTP(S).",
       sdkMissing: "We couldn't load the sign-in service. Check your connection and try again.",
       sessionFailed: "We couldn't verify your sign-in. Refresh the page and try again.",
@@ -48,6 +50,7 @@
       authUnavailable: "We couldn't connect to the sign-in service. Check your connection and try again."
     },
     th: {
+      landingGreeting: "สวัสดี {name}",
       configMissing: "ยังไม่ได้ตั้งค่าระบบเข้าสู่ระบบ กรุณาตรวจสอบ Project URL และ Publishable key ใน supabase-config.js แล้วเปิดเว็บผ่าน HTTP(S)",
       sdkMissing: "โหลดระบบเข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
       sessionFailed: "ตรวจสอบสถานะการเข้าสู่ระบบไม่สำเร็จ กรุณาโหลดหน้าใหม่แล้วลองอีกครั้ง",
@@ -101,12 +104,13 @@
   }
 
   function updateLandingGreeting(user) {
-    const metadata = user.user_metadata || {};
     const greeting = document.getElementById("landingGreeting");
-    if (greeting) {
-      const name = metadata.full_name || metadata.name || metadata.nickname || (user.email || "").split("@")[0];
-      greeting.textContent = `${language() === "th" ? "ยินดีต้อนรับกลับ" : "Welcome back"}, ${name}`;
-    }
+    if (!greeting) return;
+
+    landingGreetingUser = user;
+    const metadata = user.user_metadata || {};
+    const name = metadata.full_name || metadata.name || metadata.nickname || (user.email || "").split("@")[0];
+    greeting.textContent = message("landingGreeting").replace("{name}", name);
   }
 
   function setAuthenticatedNavigation(isAuthenticated) {
@@ -129,6 +133,7 @@
     if (landingDashboardLink) landingDashboardLink.hidden = !isAuthenticated;
     if (tasksNavLink) tasksNavLink.href = siteUrl(isAuthenticated ? "app/" : "login/");
     if (!isAuthenticated) {
+      landingGreetingUser = null;
       window.deadlineUser = null;
       if (accountEmail) {
         accountEmail.dataset.siteI18n = "previewAccount";
@@ -415,7 +420,7 @@
     });
 
     window.addEventListener("deadline-preferences-changed", () => {
-      if (window.deadlineUser) applyUserProfile(window.deadlineUser);
+      if (landingGreetingUser) updateLandingGreeting(landingGreetingUser);
     });
   }
 })();
