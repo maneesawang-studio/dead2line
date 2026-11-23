@@ -433,20 +433,29 @@ const siteTranslations = {
     getStarted: "Get started",
     seePreview: "Explore the preview",
     openDashboard: "Open my dashboard",
-    previewToday: "PRODUCT PREVIEW · SAMPLE TASKS",
+    previewSample: "SAMPLE DATA",
     previewDashboard: "Manage deadlines",
+    previewUrgent: "≤ 3 days",
+    previewAdd: "Add",
+    previewSearch: "Search for a schedule",
+    previewAll: "All",
+    previewTodayFilter: "Today",
+    previewOverdue: "Overdue",
+    previewJobs: "Jobs",
+    previewFreelance: "Freelance",
+    previewFinance: "Finance",
+    previewDeadline: "Deadline",
+    previewOneDayLeft: "1 day left",
+    previewFourDaysLeft: "4 days left",
+    previewSubtasks: "1 of 2 subtasks",
+    previewSubtaskOne: "Outline key ideas",
+    previewSubtaskTwo: "Gather sources",
     homeInProgress: "In progress",
     homeFinished: "Finished",
-    previewDueSoon: "Due soon",
     previewTaskOne: "Research presentation",
     previewTaskOneMeta: "Outline key ideas and gather sources",
     previewTaskTwo: "Weekly team update",
     previewTaskTwoMeta: "Share progress and next steps",
-    previewFooter: "A little more focus. A lot less overwhelm.",
-    previewDone: "One step at a time",
-    previewMonday: "MON",
-    previewWednesday: "WED",
-    previewNovember: "NOV",
     homeStudy: "STUDY",
     homeWork: "WORK",
     homeClosing: "Make room for the work that matters."
@@ -530,20 +539,29 @@ const siteTranslations = {
     getStarted: "เริ่มต้นใช้งาน",
     seePreview: "ดูตัวอย่าง",
     openDashboard: "เปิดหน้ารายการงาน",
-    previewToday: "ตัวอย่างหน้ารายการงาน",
+    previewSample: "ข้อมูลตัวอย่าง",
     previewDashboard: "จัดการกำหนดส่ง",
+    previewUrgent: "≤ 3 วัน",
+    previewAdd: "เพิ่ม",
+    previewSearch: "ค้นหางาน",
+    previewAll: "ทั้งหมด",
+    previewTodayFilter: "วันนี้",
+    previewOverdue: "เลยกำหนด",
+    previewJobs: "งาน",
+    previewFreelance: "ฟรีแลนซ์",
+    previewFinance: "การเงิน",
+    previewDeadline: "กำหนดส่ง",
+    previewOneDayLeft: "เหลือ 1 วัน",
+    previewFourDaysLeft: "เหลือ 4 วัน",
+    previewSubtasks: "ทำแล้ว 1 จาก 2 ขั้นตอน",
+    previewSubtaskOne: "วางโครงเรื่อง",
+    previewSubtaskTwo: "รวบรวมแหล่งข้อมูล",
     homeInProgress: "กำลังทำ",
     homeFinished: "เสร็จแล้ว",
-    previewDueSoon: "ใกล้ถึงกำหนด",
     previewTaskOne: "เตรียมงานนำเสนอ",
     previewTaskOneMeta: "วางโครงเรื่องและรวบรวมแหล่งข้อมูล",
     previewTaskTwo: "สรุปความคืบหน้าทีม",
     previewTaskTwoMeta: "แจ้งความคืบหน้าและขั้นตอนถัดไป",
-    previewFooter: "มีสมาธิมากขึ้น กังวลน้อยลง",
-    previewDone: "ค่อย ๆ ทำทีละขั้น",
-    previewMonday: "จ.",
-    previewWednesday: "พ.",
-    previewNovember: "พ.ย.",
     homeStudy: "เรียน",
     homeWork: "งาน",
     homeClosing: "มีพื้นที่ให้กับงานที่สำคัญ"
@@ -589,21 +607,30 @@ function siteText(key) {
 
 function updatePreviewDates() {
   const previewDates = [
-    { offset: 1, weekday: "previewWeekdayOne", day: "previewDayOne", month: "previewMonthOne" },
-    { offset: 3, weekday: "previewWeekdayTwo", day: "previewDayTwo", month: "previewMonthTwo" }
+    { offset: 1, day: "previewDayOne", month: "previewMonthOne", year: "previewYearOne" },
+    { offset: 4, day: "previewDayTwo", month: "previewMonthTwo", year: "previewYearTwo" }
   ];
   const locale = siteLanguage === "th" ? "th-TH" : "en-US";
+  const currentDate = document.getElementById("previewCurrentDate");
+  if (currentDate) {
+    currentDate.textContent = new Intl.DateTimeFormat(locale, {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }).format(new Date());
+  }
 
-  previewDates.forEach(({ offset, weekday, day, month }) => {
+  previewDates.forEach(({ offset, day, month, year }) => {
     const date = new Date();
     date.setHours(12, 0, 0, 0);
     date.setDate(date.getDate() + offset);
-    const weekdayElement = document.getElementById(weekday);
     const dayElement = document.getElementById(day);
     const monthElement = document.getElementById(month);
-    if (weekdayElement) weekdayElement.textContent = new Intl.DateTimeFormat(locale, { weekday: "short" }).format(date);
+    const yearElement = document.getElementById(year);
     if (dayElement) dayElement.textContent = new Intl.DateTimeFormat(locale, { day: "numeric" }).format(date);
     if (monthElement) monthElement.textContent = new Intl.DateTimeFormat(locale, { month: "short" }).format(date);
+    if (yearElement) yearElement.textContent = new Intl.DateTimeFormat(locale, { year: "numeric" }).format(date);
   });
 }
 

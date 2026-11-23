@@ -102,34 +102,166 @@
         <p class="landing-caption" data-site-i18n="homeCaption">Simple by design. Useful every day.</p>
       </div>
 
-      <div class="landing-preview" aria-label="Deadline dashboard preview">
+      <div class="landing-preview" role="img" aria-label="Deadline dashboard preview with sample tasks">
         <div class="preview-window">
-          <div class="preview-window-top"><span></span><span></span><span></span><strong>Deadline.</strong></div>
+          <div class="preview-window-top">
+            <span></span><span></span><span></span>
+            <strong>Deadline. <small data-site-i18n="previewSample">SAMPLE DATA</small></strong>
+          </div>
           <div class="preview-window-body">
-            <div class="preview-heading">
-              <div><small data-site-i18n="previewToday">YOUR WEEK, AT A GLANCE</small><h2 data-site-i18n="previewDashboard">Manage deadlines</h2></div>
-              <span class="preview-add">+</span>
+            <div class="preview-dashboard">
+              <header class="page-header">
+                <p class="current-date" id="previewCurrentDate"></p>
+                <h2 class="page-title" data-site-i18n="previewDashboard">Manage deadlines</h2>
+              </header>
+
+              <section class="summary-bar">
+                <div class="stats-card">
+                  <div class="stat-item">
+                    <span class="stat-label blue" data-site-i18n="homeInProgress">In progress</span>
+                    <span class="stat-value">04</span>
+                  </div>
+                  <span class="stat-divider" aria-hidden="true"></span>
+                  <div class="stat-item">
+                    <span class="stat-label red" data-site-i18n="previewUrgent">≤ 3 days</span>
+                    <span class="stat-value">02</span>
+                  </div>
+                  <span class="stat-divider" aria-hidden="true"></span>
+                  <div class="stat-item">
+                    <span class="stat-label green" data-site-i18n="homeFinished">Finished</span>
+                    <span class="stat-value">08</span>
+                  </div>
+                </div>
+                <span class="btn-add" aria-hidden="true">
+                  <span class="btn-add-icon">+</span>
+                  <span data-site-i18n="previewAdd">Add</span>
+                </span>
+              </section>
+
+              <section class="controls-bar">
+                <div class="status-tabs">
+                  <span class="tab-btn active" data-site-i18n="homeInProgress">In progress</span>
+                  <span class="tab-btn" data-site-i18n="homeFinished">Finished</span>
+                </div>
+                <div class="search-sort-group">
+                  <div class="search-box">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <span data-site-i18n="previewSearch">Search for a schedule</span>
+                  </div>
+                  <span class="btn-sort" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 19V5"></path>
+                      <path d="m6 11 6-6 6 6"></path>
+                    </svg>
+                  </span>
+                </div>
+              </section>
+
+              <section class="filter-pills" aria-hidden="true">
+                <span class="pill active" data-site-i18n="previewAll">All</span>
+                <span class="pill" data-site-i18n="previewUrgent">≤ 3 days</span>
+                <span class="pill" data-site-i18n="previewTodayFilter">Today</span>
+                <span class="pill" data-site-i18n="previewOverdue">Overdue</span>
+                <span class="pill" data-site-i18n="previewJobs">Jobs</span>
+                <span class="pill" data-site-i18n="homeStudy">Study</span>
+                <span class="pill" data-site-i18n="previewFreelance">Freelance</span>
+                <span class="pill" data-site-i18n="previewFinance">Finance</span>
+              </section>
+
+              <section class="task-list-container">
+                <article class="task-card">
+                  <div class="task-date-col">
+                    <span class="deadline-label" data-site-i18n="previewDeadline">Deadline</span>
+                    <strong class="deadline-day" id="previewDayOne">24</strong>
+                    <span class="deadline-year"><span id="previewMonthOne">Nov</span> <span id="previewYearOne">2026</span></span>
+                  </div>
+                  <div class="task-content-col">
+                    <div class="task-badges">
+                      <div class="task-badge-group">
+                        <span class="badge urgent" data-site-i18n="previewOneDayLeft">1 day left</span>
+                        <span class="badge category" data-site-i18n="homeStudy">Study</span>
+                      </div>
+                      <div class="task-actions-col" aria-hidden="true">
+                        <span class="btn-check">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </span>
+                        <span class="btn-more">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="5" r="1"></circle>
+                            <circle cx="12" cy="12" r="1"></circle>
+                            <circle cx="12" cy="19" r="1"></circle>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                    <h3 class="task-title" data-site-i18n="previewTaskOne">Research presentation</h3>
+                    <p class="task-desc" data-site-i18n="previewTaskOneMeta">Outline key ideas and gather sources</p>
+                    <div class="sub-progress-section">
+                      <div class="progress-header">
+                        <span data-site-i18n="previewSubtasks">1 of 2 subtasks</span>
+                        <span class="progress-percent">50%</span>
+                      </div>
+                      <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 50%"></div></div>
+                      <ul class="subtask-list">
+                        <li>
+                          <label class="custom-checkbox done">
+                            <input type="checkbox" checked disabled>
+                            <span class="checkmark"></span>
+                            <span data-site-i18n="previewSubtaskOne">Outline key ideas</span>
+                          </label>
+                        </li>
+                        <li>
+                          <label class="custom-checkbox">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span data-site-i18n="previewSubtaskTwo">Gather sources</span>
+                          </label>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="task-card">
+                  <div class="task-date-col">
+                    <span class="deadline-label" data-site-i18n="previewDeadline">Deadline</span>
+                    <strong class="deadline-day" id="previewDayTwo">27</strong>
+                    <span class="deadline-year"><span id="previewMonthTwo">Nov</span> <span id="previewYearTwo">2026</span></span>
+                  </div>
+                  <div class="task-content-col">
+                    <div class="task-badges">
+                      <div class="task-badge-group">
+                        <span class="badge normal" data-site-i18n="previewFourDaysLeft">4 days left</span>
+                        <span class="badge category" data-site-i18n="homeWork">Work</span>
+                      </div>
+                      <div class="task-actions-col" aria-hidden="true">
+                        <span class="btn-check">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </span>
+                        <span class="btn-more">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="5" r="1"></circle>
+                            <circle cx="12" cy="12" r="1"></circle>
+                            <circle cx="12" cy="19" r="1"></circle>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                    <h3 class="task-title" data-site-i18n="previewTaskTwo">Weekly team update</h3>
+                    <p class="task-desc" data-site-i18n="previewTaskTwoMeta">Share progress and next steps</p>
+                  </div>
+                </article>
+              </section>
             </div>
-            <div class="preview-stats">
-              <div><small data-site-i18n="homeInProgress">In progress</small><strong>04</strong></div>
-              <div><small data-site-i18n="previewDueSoon">Due soon</small><strong class="preview-red">02</strong></div>
-              <div><small data-site-i18n="homeFinished">Finished</small><strong class="preview-green">08</strong></div>
-            </div>
-            <div class="preview-tabs"><b data-site-i18n="homeInProgress">In progress</b><span data-site-i18n="homeFinished">Finished</span></div>
-            <article class="preview-task">
-              <div class="preview-date"><small id="previewWeekdayOne">MON</small><b id="previewDayOne">24</b><small id="previewMonthOne">NOV</small></div>
-              <div class="preview-task-content"><span class="preview-tag" data-site-i18n="homeStudy">STUDY</span><strong data-site-i18n="previewTaskOne">Research presentation</strong><small data-site-i18n="previewTaskOneMeta">Outline key ideas and gather sources</small><i><span style="width: 68%"></span></i></div>
-              <span class="preview-check">✓</span>
-            </article>
-            <article class="preview-task">
-              <div class="preview-date preview-date-blue"><small id="previewWeekdayTwo">WED</small><b id="previewDayTwo">26</b><small id="previewMonthTwo">NOV</small></div>
-              <div class="preview-task-content"><span class="preview-tag preview-tag-blue" data-site-i18n="homeWork">WORK</span><strong data-site-i18n="previewTaskTwo">Weekly team update</strong><small data-site-i18n="previewTaskTwoMeta">Share progress and next steps</small><i><span style="width: 35%"></span></i></div>
-              <span class="preview-check preview-check-empty"></span>
-            </article>
-            <div class="preview-footer"><span>◷</span><span data-site-i18n="previewFooter">A little more focus. A lot less overwhelm.</span></div>
           </div>
         </div>
-        <div class="preview-float" aria-hidden="true">✓ <span data-site-i18n="previewDone">One step at a time</span></div>
       </div>
     </section>
 
