@@ -5,6 +5,40 @@ const siteUrl = path => new URL(String(path || "").replace(/^\/+/, ""), siteRoot
 const sitePath = path => new URL(siteUrl(path)).pathname;
 window.deadlineSiteUrl = siteUrl;
 
+const lastPwaPageKey = "deadline-pwa-last-page";
+const isStandaloneApp = (
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(display-mode: standalone)").matches
+) || Boolean(window.navigator && window.navigator.standalone);
+const isPwaLaunch = new URLSearchParams(window.location.search).get("source") === "pwa" ||
+  (isStandaloneApp && window.location.pathname === siteRoot.pathname && !document.referrer);
+if (isStandaloneApp) {
+  const currentPath = window.location.pathname;
+  if (isPwaLaunch && currentPath === siteRoot.pathname) {
+    const savedPath = localStorage.getItem(lastPwaPageKey);
+    if (savedPath) {
+      try {
+        const savedUrl = new URL(savedPath, window.location.origin);
+        if (savedUrl.origin === window.location.origin &&
+          savedUrl.pathname.startsWith(siteRoot.pathname) &&
+          savedUrl.pathname !== siteRoot.pathname) {
+          window.location.replace(savedUrl.pathname);
+        } else {
+          localStorage.setItem(lastPwaPageKey, currentPath);
+        }
+      } catch (error) {
+        console.warn("Ignoring invalid saved PWA page:", error);
+        localStorage.setItem(lastPwaPageKey, currentPath);
+      }
+    } else {
+      localStorage.setItem(lastPwaPageKey, currentPath);
+    }
+    window.history.replaceState(null, "", siteRoot.pathname);
+  } else {
+    localStorage.setItem(lastPwaPageKey, currentPath);
+  }
+}
+
 const nav = document.getElementById("siteNavigation") || document.querySelector(".navbar");
 if (nav) {
   const activePage = document.body.dataset.navActive || "";

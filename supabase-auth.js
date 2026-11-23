@@ -35,7 +35,9 @@
       signingUp: "Creating your account...",
       signUpFailed: "Sign-up failed.",
       passwordMismatch: "The passwords don't match.",
-      signUpCheckEmail: "Account created. Check your email for a confirmation link before signing in.",
+      signUpCheckEmail: "Account created. Check your email and open the confirmation link to return here and sign in.",
+      emailConfirmed: "Email confirmed. You can now sign in.",
+      emailConfirmSessionFailed: "Email confirmed, but the session couldn't be cleared. Please reload this page before signing in.",
       signUpMissingUser: "Supabase didn't return the new account.",
       noSession: "Supabase didn't return a session. Check your Auth settings.",
       signOutFailed: "Sign-out failed.",
@@ -54,7 +56,9 @@
       signingUp: "กำลังสร้างบัญชี...",
       signUpFailed: "สมัครสมาชิกไม่สำเร็จ",
       passwordMismatch: "รหัสผ่านทั้งสองช่องไม่ตรงกัน",
-      signUpCheckEmail: "สร้างบัญชีแล้ว กรุณาตรวจสอบอีเมลและกดยืนยันก่อนเข้าสู่ระบบ",
+      signUpCheckEmail: "สร้างบัญชีแล้ว กรุณาเปิดลิงก์ยืนยันในอีเมลเพื่อกลับมาหน้านี้และเข้าสู่ระบบ",
+      emailConfirmed: "ยืนยันอีเมลแล้ว คุณสามารถเข้าสู่ระบบได้เลย",
+      emailConfirmSessionFailed: "ยืนยันอีเมลแล้ว แต่เคลียร์ session ไม่สำเร็จ กรุณาโหลดหน้านี้ใหม่ก่อนเข้าสู่ระบบ",
       signUpMissingUser: "Supabase ไม่ได้ส่งข้อมูลบัญชีใหม่กลับมา",
       noSession: "Supabase ไม่ได้ส่ง session กลับมา กรุณาตรวจสอบการตั้งค่า Auth",
       signOutFailed: "ออกจากระบบไม่สำเร็จ",
@@ -284,12 +288,29 @@
     }
 
     if (loginForm || signUpForm) {
+      const loginReason = new URLSearchParams(window.location.search).get("reason");
+      if (loginForm && loginReason === "email-confirmed") {
+        if (session) {
+          try {
+            const { error } = await client.auth.signOut();
+            if (error) throw error;
+            session = null;
+          } catch (error) {
+            console.error("Could not clear the session after email confirmation:", error);
+            showStatus(message("emailConfirmSessionFailed"));
+            setAuthReady(false);
+            return;
+          }
+        }
+        window.history.replaceState(null, "", window.location.pathname);
+        showStatus(message("emailConfirmed"), "success");
+      }
+
       if (session) {
         redirectToDashboard();
         return;
       }
-      const reason = new URLSearchParams(window.location.search).get("reason");
-      if (reason === "auth-unavailable" && loginForm) showStatus(message("authUnavailable"));
+      if (loginReason === "auth-unavailable" && loginForm) showStatus(message("authUnavailable"));
       setAuthReady(true);
 
       if (loginForm) {
@@ -333,7 +354,11 @@
           setAuthReady(false);
           showStatus(message("signingUp"), "pending");
           try {
-            const { data, error } = await client.auth.signUp({ email, password });
+            const { data, error } = await client.auth.signUp({
+              email,
+              password,
+              options: { emailRedirectTo: siteUrl("login/?reason=email-confirmed") }
+            });
             if (error) throw error;
             if (data && data.session) {
               redirectToDashboard();

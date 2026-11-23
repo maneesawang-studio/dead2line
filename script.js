@@ -167,7 +167,7 @@ const translations = {
     confirmDeleteTitle: "Delete this task?",
     confirmDeleteMessage: "This action can't be undone.",
     confirmFinishTitle: "Mark this task as finished?",
-    confirmFinishMessage: "It will move to Finished and be automatically deleted 15 days after confirmation.",
+    confirmFinishMessage: "It will move to Finished and stay there until you delete it.",
     confirmRestoreTitle: "This task isn't finished yet?",
     confirmRestoreMessage: "It will move back to In progress.",
     confirm: "Confirm"
@@ -248,7 +248,7 @@ const translations = {
     confirmDeleteTitle: "ต้องการลบงานนี้หรือไม่?",
     confirmDeleteMessage: "งานนี้จะถูกลบถาวรและไม่สามารถกู้คืนได้",
     confirmFinishTitle: "ยืนยันว่าทำงานเสร็จแล้วใช่ไหม?",
-    confirmFinishMessage: "งานจะย้ายไปที่เสร็จแล้ว และระบบจะลบอัตโนมัติเมื่อครบ 15 วันหลังยืนยัน",
+    confirmFinishMessage: "งานจะย้ายไปที่เสร็จแล้ว และจะคงอยู่จนกว่าคุณจะลบเอง",
     confirmRestoreTitle: "งานนี้ยังไม่เสร็จใช่ไหม?",
     confirmRestoreMessage: "งานจะถูกย้ายกลับไปที่กำลังดำเนินการ",
     confirm: "ยืนยัน"
@@ -749,8 +749,7 @@ window.toggleTaskStatus = async function(taskId) {
       const { error } = await window.deadlineSupabase
         .from("tasks")
         .update({
-          status,
-          finished_at: isFinishing ? new Date().toISOString() : null
+          status
         })
         .eq("id", task.id)
         .eq("user_id", window.deadlineUser.id)
