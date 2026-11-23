@@ -909,8 +909,8 @@ body.dark-mode .btn-sort:hover {
 }
 
 .btn-check {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 1.8px solid #0099ff;
   color: var(--primary-blue);
