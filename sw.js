@@ -1,9 +1,11 @@
-const CACHE_NAME = "deadline-v21";
+const CACHE_NAME = "deadline-v22";
 const BASE_URL = new URL("./", self.location.href);
 const CORE_ASSETS = [
   "",
   "app/",
+  "en/",
   "signup/",
+  "th/",
   "style.css",
   "script.js",
   "site-pages.js",

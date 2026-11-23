@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/">
+  <meta name="description" content="Organize tasks, add subtasks, track progress, and see upcoming deadlines in one simple task management app.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#F2F2F7">
+  <meta name="application-name" content="Deadline">
+  <meta name="apple-mobile-web-app-title" content="Deadline">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="canonical" href="https://dead2line.com/en/">
+  <link rel="alternate" hreflang="en" href="https://dead2line.com/en/">
+  <link rel="alternate" hreflang="th" href="https://dead2line.com/th/">
+  <link rel="alternate" hreflang="x-default" href="https://dead2line.com/en/">
+  <link rel="icon" type="image/png" sizes="96x96" href="Asset/Deadline-96.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="Asset/Deadline-white-512.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>Deadline | Task Manager &amp; Deadline Tracker</title>
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Deadline">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="th_TH">
+  <meta property="og:title" content="Deadline | Task Manager &amp; Deadline Tracker">
+  <meta property="og:description" content="Organize tasks, add subtasks, track progress, and see upcoming deadlines in one simple task management app.">
+  <meta property="og:url" content="https://dead2line.com/en/">
+  <meta property="og:image" content="https://dead2line.com/Asset/Deadline-512.png">
+  <meta property="og:image:alt" content="Deadline task manager logo">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Deadline | Task Manager &amp; Deadline Tracker">
+  <meta name="twitter:description" content="Organize tasks, add subtasks, track progress, and see upcoming deadlines in one simple task management app.">
+  <meta name="twitter:image" content="https://dead2line.com/Asset/Deadline-512.png">
+  <meta name="twitter:image:alt" content="Deadline task manager logo">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://dead2line.com/#organization",
+          "name": "Deadline",
+          "url": "https://dead2line.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://dead2line.com/Asset/Deadline-512.png",
+            "width": 512,
+            "height": 512
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://dead2line.com/#website",
+          "url": "https://dead2line.com/en/",
+          "name": "Deadline",
+          "description": "Organize tasks, add subtasks, track progress, and see upcoming deadlines in one simple task management app.",
+          "publisher": {
+            "@id": "https://dead2line.com/#organization"
+          },
+          "inLanguage": "en"
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://dead2line.com/#application",
+          "name": "Deadline Task Manager",
+          "url": "https://dead2line.com/en/",
+          "applicationCategory": "ProductivityApplication",
+          "operatingSystem": "Any",
+          "description": "Organize tasks, add subtasks, track progress, and see upcoming deadlines in one simple task management app.",
+          "featureList": [
+            "Task and deadline management",
+            "Task categories",
+            "Subtasks and progress tracking",
+            "English and Thai interface",
+            "Light and dark themes"
+          ],
+          "browserRequirements": "Requires JavaScript and a modern web browser.",
+          "inLanguage": "en",
+          "provider": {
+            "@id": "https://dead2line.com/#organization"
+          }
+        }
+      ]
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="site-page landing-page" data-auth-page="landing" data-site-title="homeTitle" data-site-description="homeDescription" data-nav-active="home">
+  <nav id="siteNavigation" aria-label="Main navigation" data-site-i18n-aria-label="mainNavigation"></nav>
+
+  <p class="auth-status landing-auth-status" id="landingAuthStatus" role="status" aria-live="polite" hidden></p>
+  <main class="landing-main">
+    <section class="landing-hero">
+      <div class="landing-copy">
+        <p class="landing-eyebrow" data-site-i18n="homeEyebrow">YOUR WORK, RIGHT ON TIME</p>
+        <h1 data-auth-view="guest" data-site-i18n="homeHeadline">Plan your tasks. Stay ahead of deadlines.</h1>
+        <h1 data-auth-view="authenticated" id="landingGreeting" hidden></h1>
+        <p class="landing-lead" data-auth-view="guest" data-site-i18n="homeLead">Organize tasks, track progress, and see upcoming deadlines in one place. Break bigger tasks into smaller steps and know what to focus on next.</p>
+        <p class="landing-lead" data-auth-view="authenticated" data-site-i18n="homeSignedInLead" hidden>Your tasks are ready. Open your dashboard to review what's next.</p>
+        <div class="landing-actions" data-auth-view="guest">
+          <a class="landing-primary" href="signup/" data-site-i18n="getStarted">Create an account</a>
+          <a class="landing-secondary" href="#preview" data-site-i18n="seePreview">See the dashboard preview</a>
+        </div>
+        <div class="landing-actions" data-auth-view="authenticated" hidden>
+          <a class="landing-primary" href="app/" data-site-i18n="openDashboard">Open my dashboard</a>
+          <a class="landing-secondary" href="#preview" data-site-i18n="seePreview">See the dashboard preview</a>
+        </div>
+        <p class="landing-caption" data-site-i18n="homeCaption">Simple tools. Clear next steps.</p>
+      </div>
+
+      <div class="landing-preview" id="preview" role="img" aria-label="Deadline task dashboard preview with sample tasks" data-site-i18n-aria-label="previewAriaLabel">
+        <div class="preview-window">
+          <div class="preview-window-top">
+            <span></span><span></span><span></span>
+            <strong>Deadline. <small data-site-i18n="previewSample">SAMPLE DATA</small></strong>
+          </div>
+          <div class="preview-window-body">
+            <div class="preview-dashboard">
+              <header class="page-header">
+                <p class="current-date" id="previewCurrentDate"></p>
+                <h2 class="page-title" data-site-i18n="previewDashboard">Manage tasks and deadlines</h2>
+              </header>
+
+              <section class="summary-bar">
+                <div class="stats-card">
+                  <div class="stat-item">
+                    <span class="stat-label blue" data-site-i18n="homeInProgress">In progress</span>
+                    <span class="stat-value">04</span>
+                  </div>
+                  <span class="stat-divider" aria-hidden="true"></span>
+                  <div class="stat-item">
+                    <span class="stat-label red" data-site-i18n="previewUrgent">≤ 3 days</span>
+                    <span class="stat-value">02</span>
+                  </div>
+                  <span class="stat-divider" aria-hidden="true"></span>
+                  <div class="stat-item">
+                    <span class="stat-label green" data-site-i18n="homeFinished">Finished</span>
+                    <span class="stat-value">08</span>
+                  </div>
+                </div>
+                <span class="btn-add" aria-hidden="true">
+                  <span class="btn-add-icon">+</span>
+                  <span data-site-i18n="previewAdd">Add</span>
+                </span>
+              </section>
+
+              <section class="controls-bar">
+                <div class="status-tabs">
+                  <span class="tab-btn active" data-site-i18n="homeInProgress">In progress</span>
+                  <span class="tab-btn" data-site-i18n="homeFinished">Finished</span>
+                </div>
+                <div class="search-sort-group">
+                  <div class="search-box">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <span data-site-i18n="previewSearch">Search tasks</span>
+                  </div>
+                  <span class="btn-sort" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 19V5"></path>
+                      <path d="m6 11 6-6 6 6"></path>
+                    </svg>
+                  </span>
+                </div>
+              </section>
+
+              <section class="filter-pills" aria-hidden="true">
+                <span class="pill active" data-site-i18n="previewAll">All</span>
+                <span class="pill" data-site-i18n="previewUrgent">≤ 3 days</span>
+                <span class="pill" data-site-i18n="previewTodayFilter">Today</span>
+                <span class="pill" data-site-i18n="previewOverdue">Overdue</span>
+                <span class="pill" data-site-i18n="previewJobs">Jobs</span>
+                <span class="pill" data-site-i18n="homeStudy">Study</span>
+                <span class="pill" data-site-i18n="previewFreelance">Freelance</span>
+                <span class="pill" data-site-i18n="previewFinance">Finance</span>
+              </section>
+
+              <section class="task-list-container">
+                <article class="task-card">
+                  <div class="task-date-col">
+                    <span class="deadline-label" data-site-i18n="previewDeadline">Deadline</span>
+                    <strong class="deadline-day" id="previewDayOne">24</strong>
+                    <span class="deadline-year"><span id="previewMonthOne">Nov</span> <span id="previewYearOne">2026</span></span>
+                  </div>
+                  <div class="task-content-col">
+                    <div class="task-badges">
+                      <div class="task-badge-group">
+                        <span class="badge urgent" data-site-i18n="previewOneDayLeft">1 day left</span>
+                        <span class="badge category" data-site-i18n="homeStudy">Study</span>
+                      </div>
+                      <div class="task-actions-col" aria-hidden="true">
+                        <span class="btn-check">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </span>
+                        <span class="btn-more">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="5" r="1"></circle>
+                            <circle cx="12" cy="12" r="1"></circle>
+                            <circle cx="12" cy="19" r="1"></circle>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                    <h3 class="task-title" data-site-i18n="previewTaskOne">Research presentation</h3>
+                    <p class="task-desc" data-site-i18n="previewTaskOneMeta">Outline key ideas and gather sources</p>
+                    <div class="sub-progress-section">
+                      <div class="progress-header">
+                        <span data-site-i18n="previewSubtasks">1 of 2 subtasks complete</span>
+                        <span class="progress-percent">50%</span>
+                      </div>
+                      <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 50%"></div></div>
+                      <ul class="subtask-list">
+                        <li>
+                          <label class="custom-checkbox done">
+                            <input type="checkbox" checked disabled>
+                            <span class="checkmark"></span>
+                            <span data-site-i18n="previewSubtaskOne">Outline key ideas</span>
+                          </label>
+                        </li>
+                        <li>
+                          <label class="custom-checkbox">
+                            <input type="checkbox" disabled>
+                            <span class="checkmark"></span>
+                            <span data-site-i18n="previewSubtaskTwo">Gather sources</span>
+                          </label>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="task-card">
+                  <div class="task-date-col">
+                    <span class="deadline-label" data-site-i18n="previewDeadline">Deadline</span>
+                    <strong class="deadline-day" id="previewDayTwo">27</strong>
+                    <span class="deadline-year"><span id="previewMonthTwo">Nov</span> <span id="previewYearTwo">2026</span></span>
+                  </div>
+                  <div class="task-content-col">
+                    <div class="task-badges">
+                      <div class="task-badge-group">
+                        <span class="badge normal" data-site-i18n="previewFourDaysLeft">4 days left</span>
+                        <span class="badge category" data-site-i18n="homeWork">Work</span>
+                      </div>
+                      <div class="task-actions-col" aria-hidden="true">
+                        <span class="btn-check">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </span>
+                        <span class="btn-more">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="5" r="1"></circle>
+                            <circle cx="12" cy="12" r="1"></circle>
+                            <circle cx="12" cy="19" r="1"></circle>
+                          </svg>
+                        </span>
+                      </div>
+                    </div>
+                    <h3 class="task-title" data-site-i18n="previewTaskTwo">Weekly team update</h3>
+                    <p class="task-desc" data-site-i18n="previewTaskTwoMeta">Share progress and next steps</p>
+                  </div>
+                </article>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="landing-features" id="features" aria-labelledby="featureSectionHeading">
+      <header class="landing-section-heading">
+        <p class="landing-eyebrow" data-site-i18n="featureSectionEyebrow">FEATURES THAT KEEP YOU MOVING</p>
+        <h2 id="featureSectionHeading" data-site-i18n="featureSectionHeading">Keep every task and deadline in view.</h2>
+        <p data-site-i18n="featureSectionText">Keep deadlines visible, break larger tasks into manageable steps, and shape your workspace around the way you work.</p>
+      </header>
+      <article><span>01</span><h2 data-site-i18n="featureTasksTitle">See what matters</h2><p data-site-i18n="featureTasksText">See tasks in progress, finished tasks, and upcoming deadlines at a glance.</p></article>
+      <article><span>02</span><h2 data-site-i18n="featureStepsTitle">Break work into steps</h2><p data-site-i18n="featureStepsText">Add subtasks and track your progress as you complete them.</p></article>
+      <article><span>03</span><h2 data-site-i18n="featurePersonalTitle">Make it your own</h2><p data-site-i18n="featurePersonalText">Choose English or Thai, switch between light and dark themes, and filter tasks by category.</p></article>
+    </section>
+
+    <section class="landing-how" id="how-it-works" aria-labelledby="howItWorksHeading">
+      <header class="landing-section-heading">
+        <p class="landing-eyebrow" data-site-i18n="howItWorksEyebrow">HOW IT WORKS</p>
+        <h2 id="howItWorksHeading" data-site-i18n="howItWorksHeading">From task to done in three simple steps.</h2>
+      </header>
+      <ol class="landing-steps">
+        <li>
+          <span class="landing-step-number" aria-hidden="true">01</span>
+          <h3 data-site-i18n="stepAddTitle">Add a task and deadline</h3>
+          <p data-site-i18n="stepAddText">Give it a clear title and due date. Add a category or notes when they help.</p>
+        </li>
+        <li>
+          <span class="landing-step-number" aria-hidden="true">02</span>
+          <h3 data-site-i18n="stepBreakTitle">Break it into subtasks</h3>
+          <p data-site-i18n="stepBreakText">Turn bigger tasks into smaller steps and keep track of what's complete.</p>
+        </li>
+        <li>
+          <span class="landing-step-number" aria-hidden="true">03</span>
+          <h3 data-site-i18n="stepTrackTitle">Track progress and finish</h3>
+          <p data-site-i18n="stepTrackText">See what's due soon, update your tasks, and move finished work out of your active list.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="landing-privacy" aria-labelledby="homePrivacyHeading">
+      <div>
+        <h2 id="homePrivacyHeading" data-site-i18n="homePrivacyHeading">Your tasks stay yours.</h2>
+        <p data-site-i18n="homePrivacyText">Tasks are saved to your account and kept separate from other users' tasks.</p>
+      </div>
+      <a href="privacy/" data-site-i18n="homePrivacyLink">Read our privacy policy</a>
+    </section>
+
+    <section class="landing-bottom-cta">
+      <h2 data-site-i18n="homeClosing">Ready for a clearer plan?</h2>
+      <a class="landing-primary" href="signup/" data-auth-view="guest" data-site-i18n="getStarted">Create an account</a>
+      <a class="landing-primary" href="app/" data-auth-view="authenticated" hidden data-site-i18n="openDashboard">Open my dashboard</a>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <span data-site-i18n="footerNote">Stay organized and keep your deadlines in sight.</span>
+    <nav class="site-footer-links" aria-label="Footer navigation" data-site-i18n-aria-label="footerNavigation">
+      <a href="./" data-site-i18n="homeNav">Home</a>
+      <a href="about/" data-site-i18n="aboutNav">About</a>
+      <a href="faq/" data-site-i18n="faqNav">FAQ</a>
+      <a href="privacy/" data-site-i18n="privacy">Privacy</a>
+    </nav>
+  </footer>
+
+  <script src="site-pages.js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="supabase-auth.js"></script>
+</body>
+</html>

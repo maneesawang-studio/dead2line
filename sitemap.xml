@@ -1,19 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://dead2line.com/</loc>
+    <loc>https://dead2line.com/en/</loc>
     <lastmod>2026-11-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dead2line.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://dead2line.com/th/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dead2line.com/en/"/>
   </url>
   <url>
-    <loc>https://dead2line.com/about/</loc>
+    <loc>https://dead2line.com/th/</loc>
     <lastmod>2026-11-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dead2line.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://dead2line.com/th/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dead2line.com/en/"/>
   </url>
   <url>
-    <loc>https://dead2line.com/faq/</loc>
+    <loc>https://dead2line.com/en/about/</loc>
     <lastmod>2026-11-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dead2line.com/en/about/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://dead2line.com/th/about/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dead2line.com/en/about/"/>
   </url>
   <url>
-    <loc>https://dead2line.com/privacy/</loc>
+    <loc>https://dead2line.com/th/about/</loc>
     <lastmod>2026-11-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dead2line.com/en/about/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://dead2line.com/th/about/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dead2line.com/en/about/"/>
+  </url>
+  <url>
+    <loc>https://dead2line.com/en/faq/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dead2line.com/en/faq/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://dead2line.com/th/faq/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dead2line.com/en/faq/"/>
+  </url>
+  <url>
+    <loc>https://dead2line.com/th/faq/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dead2line.com/en/faq/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://dead2line.com/th/faq/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dead2line.com/en/faq/"/>
+  </url>
+  <url>
+    <loc>https://dead2line.com/en/privacy/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dead2line.com/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://dead2line.com/th/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dead2line.com/en/privacy/"/>
+  </url>
+  <url>
+    <loc>https://dead2line.com/th/privacy/</loc>
+    <lastmod>2026-11-24</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://dead2line.com/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://dead2line.com/th/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dead2line.com/en/privacy/"/>
   </url>
 </urlset>

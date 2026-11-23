@@ -3,7 +3,43 @@ const scriptUrl = document.currentScript && document.currentScript.src;
 const siteRoot = new URL("./", scriptUrl || window.location.href);
 const siteUrl = path => new URL(String(path || "").replace(/^\/+/, ""), siteRoot).href;
 const sitePath = path => new URL(siteUrl(path)).pathname;
+const localePath = /^\/(en|th)(?:\/|$)/.exec(window.location.pathname);
+const routeLanguage = localePath ? localePath[1] : null;
+let siteLanguage = routeLanguage || (localStorage.getItem("deadline-language") === "th" ? "th" : "en");
+const localizedPublicPaths = new Set(["", "about/", "faq/", "privacy/"]);
+const localizedSiteUrl = (path, language = siteLanguage) => {
+  const normalizedPath = String(path || "").replace(/^\/+/, "");
+  if (!localizedPublicPaths.has(normalizedPath)) return siteUrl(path);
+  return siteUrl(`${language}/${normalizedPath}`);
+};
 window.deadlineSiteUrl = siteUrl;
+
+function getLocalizedPublicPath(pathname) {
+  const unprefixedPath = pathname.replace(/^\/(?:en|th)(?=\/|$)/, "/");
+  const normalizedPath = unprefixedPath.replace(/^\/+|\/+$/g, "");
+  if (!normalizedPath) return "";
+  return ["about", "faq", "privacy"].includes(normalizedPath) ? `${normalizedPath}/` : null;
+}
+
+function localizePublicPageLinks() {
+  const pathMap = new Map([
+    [sitePath(""), ""],
+    [sitePath("about/"), "about/"],
+    [sitePath("faq/"), "faq/"],
+    [sitePath("privacy/"), "privacy/"]
+  ]);
+  document.querySelectorAll("a[href]").forEach(link => {
+    const target = new URL(link.href, window.location.href);
+    if (target.origin !== siteRoot.origin) return;
+    const unprefixedPath = target.pathname.replace(/^\/(?:en|th)(?=\/|$)/, "/");
+    const slug = pathMap.get(unprefixedPath);
+    if (slug === undefined) return;
+    const localizedTarget = new URL(localizedSiteUrl(slug), siteRoot);
+    localizedTarget.search = target.search;
+    localizedTarget.hash = target.hash;
+    link.href = localizedTarget.href;
+  });
+}
 
 const isStandaloneApp = (
   typeof window.matchMedia === "function" &&
@@ -46,10 +82,10 @@ if (nav) {
         <span></span><span></span><span></span>
       </button>
       <div class="site-nav-links" id="primaryNavigation">
-        <a class="site-nav-link" href="${siteUrl("")}"${currentPage("home")}><span data-i18n="homeNav" data-site-i18n="homeNav">Home</span></a>
+        <a class="site-nav-link" href="${localizedSiteUrl("")}"${currentPage("home")}><span data-i18n="homeNav" data-site-i18n="homeNav">Home</span></a>
         <a class="site-nav-link" id="tasksNavLink" href="${tasksHref}"${currentPage("tasks")}><span data-i18n="tasksNav" data-site-i18n="tasksNav">Tasks</span></a>
-        <a class="site-nav-link" href="${siteUrl("about/")}"${currentPage("about")}><span data-i18n="aboutNav" data-site-i18n="aboutNav">About</span></a>
-        <a class="site-nav-link" href="${siteUrl("faq/")}"${currentPage("faq")}><span data-i18n="faqNav" data-site-i18n="faqNav">FAQ</span></a>
+        <a class="site-nav-link" href="${localizedSiteUrl("about/")}"${currentPage("about")}><span data-i18n="aboutNav" data-site-i18n="aboutNav">About</span></a>
+        <a class="site-nav-link" href="${localizedSiteUrl("faq/")}"${currentPage("faq")}><span data-i18n="faqNav" data-site-i18n="faqNav">FAQ</span></a>
         ${hasVisiblePagePreferences ? "" : `
           <div class="site-nav-preferences">
             <button type="button" class="site-nav-preference" id="guestThemeToggle" data-i18n-aria-label="switchTheme" data-i18n-title="switchTheme" data-site-i18n-aria-label="switchTheme" data-site-i18n-title="switchTheme">
@@ -92,7 +128,7 @@ if (nav) {
           ${preferences}
           <a class="profile-row profile-row-link" href="${siteUrl("settings/")}" data-i18n="settings" data-site-i18n="settings">Settings</a>
           <hr>
-          <a class="profile-row profile-row-link" href="${siteUrl("privacy/")}" data-i18n="privacy" data-site-i18n="privacy">Privacy</a>
+          <a class="profile-row profile-row-link" href="${localizedSiteUrl("privacy/")}" data-i18n="privacy" data-site-i18n="privacy">Privacy</a>
           <a class="profile-row profile-row-link" id="loginMenuLink" href="${siteUrl("login/")}" data-i18n="signIn" data-site-i18n="signIn">Sign in</a>
           <button type="button" class="profile-row sign-out" id="signOutButton" data-i18n="signOut" data-site-i18n="signOut" hidden>Sign out</button>
         </div>
@@ -103,7 +139,7 @@ if (nav) {
     nav.className = "navbar";
     nav.innerHTML = `
       <div class="navbar-inner">
-        <a class="logo" href="${siteUrl("")}" aria-label="Deadline">
+        <a class="logo" href="${localizedSiteUrl("")}" aria-label="Deadline">
           <img src="${siteUrl("Asset/Deadline-512.png")}" alt="">
           <span class="logo-name">Deadline<span class="logo-dot">.</span></span>
         </a>
@@ -202,7 +238,7 @@ if (nav) {
       const link = document.createElement("a");
       link.id = id;
       link.className = "profile-row profile-row-link";
-      link.href = siteUrl(`${page}/`);
+      link.href = localizedSiteUrl(`${page}/`);
       link.dataset.i18n = key;
       link.dataset.siteI18n = key;
       link.textContent = text;
@@ -214,10 +250,10 @@ if (nav) {
 
   if (toggle) {
     const activePaths = {
-      home: sitePath(""),
+      home: new URL(localizedSiteUrl("")).pathname,
       tasks: sitePath("app/"),
-      about: sitePath("about/"),
-      faq: sitePath("faq/"),
+      about: new URL(localizedSiteUrl("about/")).pathname,
+      faq: new URL(localizedSiteUrl("faq/")).pathname,
       settings: sitePath("settings/"),
       privacy: sitePath("privacy/"),
       login: sitePath("login/")
@@ -260,9 +296,9 @@ if (nav) {
   window.setDeadlineAuthenticatedNavigation = isAuthenticated => {
     nav.classList.toggle("nav-authenticated", isAuthenticated);
     const brandLink = inner.querySelector(".logo");
-    if (brandLink) brandLink.href = siteUrl(isAuthenticated ? "app/" : "");
+    if (brandLink) brandLink.href = isAuthenticated ? siteUrl("app/") : localizedSiteUrl("");
     const backLink = document.querySelector(".site-back-link");
-    if (backLink) backLink.href = siteUrl(isAuthenticated ? "app/" : "");
+    if (backLink) backLink.href = isAuthenticated ? siteUrl("app/") : localizedSiteUrl("");
     actions.querySelectorAll(".site-nav-guest-link").forEach(link => {
       link.hidden = isAuthenticated;
     });
@@ -352,7 +388,7 @@ const siteTranslations = {
     needAccount: "Don't have an account?",
     signUpLink: "Sign up",
     alreadyAccount: "Already have an account?",
-    aboutTitle: "About the Task Manager",
+    aboutTitle: "How Deadline Helps You Manage Tasks",
     aboutDescription: "Learn how Deadline helps you organize tasks, track progress, and manage deadlines with clear next steps.",
     aboutHeading: "Make every deadline manageable.",
     aboutIntro: "Deadline helps you organize tasks, see what needs attention, and break larger tasks into clear next steps.",
@@ -364,7 +400,7 @@ const siteTranslations = {
     featurePersonalText: "Choose English or Thai, switch between light and dark themes, and filter tasks by category.",
     previewTitle: "Your tasks, in one place",
     previewText: "Sign in to save tasks to your account. Your tasks are kept separate from other users' tasks.",
-    faqTitle: "Frequently asked questions",
+    faqTitle: "Task Manager and Deadline FAQ",
     faqDescription: "Find answers to common questions about tasks, deadlines, account access, and settings in Deadline.",
     faqAddQuestion: "How do I add a task?",
     faqAddAnswer: "On the Tasks page, select + Add, then enter a task title and deadline. Category, time, notes, and subtasks are optional.",
@@ -384,14 +420,14 @@ const siteTranslations = {
     settingsHeading: "Settings",
     appearanceHeading: "Display and language",
     privacyHeading: "Privacy policy",
-    privacyTitle: "Privacy policy",
+    privacyTitle: "Privacy Policy",
     privacyDescription: "See what information Deadline stores, how task data is associated with your account, and the controls available for your data.",
     privacyDataHeading: "Your data",
     privacyDataText: "Tasks are stored in Supabase and linked to your account. Theme and language preferences are saved in your browser.",
     privacyControlHeading: "Managing your data",
     privacyControlText: "You can edit or delete tasks at any time. Signing out won't delete them. To request account deletion, contact the administrator.",
-    homeTitle: "Task Manager & Deadline Planner",
-    homeDescription: "Plan tasks, track progress, and manage deadlines in one place with Deadline, a simple task manager and deadline planner.",
+    homeTitle: "Task Manager & Deadline Tracker",
+    homeDescription: "Organize tasks, add subtasks, track progress, and see upcoming deadlines in one simple task management app.",
     homeEyebrow: "TASKS IN ORDER. DEADLINES IN SIGHT.",
     homeHeadline: "Plan your tasks. Stay ahead of deadlines.",
     homeLead: "Organize tasks, track progress, and see upcoming deadlines in one place. Break bigger tasks into smaller steps and know what to focus on next.",
@@ -496,7 +532,7 @@ const siteTranslations = {
     featurePersonalText: "เลือกภาษาไทยหรืออังกฤษ สลับธีมสว่างหรือมืด และกรองงานตามหมวดหมู่",
     previewTitle: "งานของคุณในที่เดียว",
     previewText: "เมื่อเข้าสู่ระบบ งานจะถูกบันทึกไว้กับบัญชีของคุณและแยกจากงานของผู้ใช้อื่น",
-    faqTitle: "คำถามที่พบบ่อย",
+    faqTitle: "คำถามเกี่ยวกับแอปจัดการงาน",
     faqDescription: "คำตอบสำหรับคำถามที่พบบ่อยเกี่ยวกับการจัดการงาน กำหนดส่ง บัญชีผู้ใช้ และการตั้งค่าใน Deadline",
     faqAddQuestion: "เพิ่มงานอย่างไร?",
     faqAddAnswer: "ไปที่หน้ารายการงานแล้วเลือก + เพิ่ม จากนั้นกรอกชื่องานและกำหนดส่ง ส่วนหมวดหมู่ เวลา รายละเอียด และงานย่อยจะกรอกหรือไม่ก็ได้",
@@ -522,8 +558,8 @@ const siteTranslations = {
     privacyDataText: "งานของคุณบันทึกไว้ใน Supabase และเชื่อมกับบัญชีของคุณ ส่วนธีมและภาษาบันทึกไว้ในเบราว์เซอร์",
     privacyControlHeading: "การจัดการข้อมูลของคุณ",
     privacyControlText: "คุณแก้ไขหรือลบงานได้ทุกเมื่อ การออกจากระบบจะไม่ลบงาน หากต้องการลบบัญชี โปรดติดต่อผู้ดูแลระบบ",
-    homeTitle: "แอปจัดการงานและกำหนดส่ง",
-    homeDescription: "จัดการงาน ติดตามความคืบหน้า และดูวันครบกำหนดได้ในที่เดียวด้วย Deadline แอปจัดการงานและกำหนดส่งที่ใช้งานง่าย",
+    homeTitle: "แอปจัดการงานและติดตามกำหนดส่ง",
+    homeDescription: "จัดระเบียบงาน เพิ่มงานย่อย ติดตามความคืบหน้า และดูวันครบกำหนดได้ในที่เดียวด้วยแอปจัดการงาน Deadline",
     homeEyebrow: "จัดระเบียบงาน เห็นกำหนดส่งชัดเจน",
     homeHeadline: "วางแผนงานให้ชัด มองเห็นทุกกำหนดส่ง",
     homeLead: "รวมงานและกำหนดส่งไว้ในที่เดียว ติดตามความคืบหน้า แบ่งงานใหญ่เป็นขั้นตอนเล็ก ๆ และเห็นสิ่งที่ควรทำต่อได้ง่ายขึ้น",
@@ -576,7 +612,6 @@ const siteTranslations = {
   }
 };
 
-let siteLanguage = localStorage.getItem("deadline-language") === "th" ? "th" : "en";
 const systemThemePreference = window.matchMedia
   ? window.matchMedia("(prefers-color-scheme: dark)")
   : null;
@@ -644,6 +679,7 @@ function updatePreviewDates() {
 
 function applySitePreferences() {
   document.documentElement.lang = siteLanguage;
+  localizePublicPageLinks();
   applyDocumentTheme(siteTheme);
   document.body.classList.toggle("dark-mode", siteTheme === "dark");
   applyLogoTheme(siteTheme);
@@ -843,8 +879,17 @@ if (!isDashboard) {
   });
 
   if (languageToggle) languageToggle.addEventListener("click", () => {
-    siteLanguage = siteLanguage === "en" ? "th" : "en";
-    localStorage.setItem("deadline-language", siteLanguage);
+    const nextLanguage = siteLanguage === "en" ? "th" : "en";
+    localStorage.setItem("deadline-language", nextLanguage);
+    const localizedPath = getLocalizedPublicPath(window.location.pathname);
+    if (localizedPath !== null) {
+      const target = new URL(localizedSiteUrl(localizedPath, nextLanguage));
+      target.search = window.location.search;
+      target.hash = window.location.hash;
+      window.location.assign(target.href);
+      return;
+    }
+    siteLanguage = nextLanguage;
     applySitePreferences();
   });
 
