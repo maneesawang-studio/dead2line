@@ -112,7 +112,7 @@ button {
   border-radius: 999px;
   color: var(--text-muted);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 400;
   text-decoration: none;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
@@ -136,6 +136,7 @@ button {
 .site-nav-preference {
   width: 40px;
   height: 40px;
+  border: 1px solid var(--border-color);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1806,13 +1807,34 @@ body.dark-mode .login-card {
   justify-content: center;
   min-width: 100px;
   min-height: 44px;
-  padding: 0 0px;
+  padding: 0 18px;
+  border: 1px solid var(--primary-blue);
   border-radius: 999px;
-  background: var(--bg-blue);
-  color: var(--text-white);
+  background: var(--bg-white);
+  color: var(--primary-blue);
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
+  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.landing-nav-login:hover {
+  background: rgba(0, 153, 255, 0.08);
+}
+
+.landing-nav-login#landingSignUpLink,
+.landing-nav-login#siteGuestSignUpLink,
+.landing-nav-login#landingDashboardLink {
+  background: var(--primary-blue);
+  border-color: var(--primary-blue);
+  color: #FFFFFF;
+}
+
+.landing-nav-login#landingSignUpLink:hover,
+.landing-nav-login#siteGuestSignUpLink:hover,
+.landing-nav-login#landingDashboardLink:hover {
+  background: var(--primary-blue-hover);
+  border-color: var(--primary-blue-hover);
 }
 
 .landing-nav-login[hidden],
@@ -1883,7 +1905,7 @@ body.dark-mode .login-card {
 .landing-primary,
 .landing-secondary {
   display: inline-flex;
-  min-height: 48px;
+  min-height: 44px;
   align-items: center;
   justify-content: center;
   padding: 0 22px;
