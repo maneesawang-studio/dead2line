@@ -1829,7 +1829,7 @@ body.dark-mode .login-card {
   min-width: 100px;
   min-height: 44px;
   padding: 0 18px;
-  border: 1px solid var(--primary-blue);
+  border: 2px solid var(--primary-blue);
   border-radius: 999px;
   background: var(--bg-white);
   color: var(--primary-blue);
@@ -2341,6 +2341,7 @@ body.dark-mode .preview-window {
   }
 
   .landing-nav-login {
+    border: 1.5px solid var(--primary-blue);
     width: fit-content;
     min-width: 100px;
     min-height: 40px;

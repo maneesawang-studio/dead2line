@@ -305,6 +305,8 @@ if (nav) {
 
   window.setDeadlineAuthenticatedNavigation = isAuthenticated => {
     nav.classList.toggle("nav-authenticated", isAuthenticated);
+    const backLink = document.querySelector(".site-back-link");
+    if (backLink) backLink.href = siteUrl(isAuthenticated ? "app/" : "");
     actions.querySelectorAll(".site-nav-guest-link").forEach(link => {
       link.hidden = isAuthenticated;
     });
