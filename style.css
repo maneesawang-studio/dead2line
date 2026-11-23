@@ -228,7 +228,7 @@ button {
   align-items: center;
   gap: 4px;
   cursor: pointer;
-  padding: 4px 4px;
+  padding: 4px 8px 4px 4px;
 }
 
 .profile-email {
@@ -247,7 +247,8 @@ button {
 }
 
 .profile-menu {
-  display: none;
+  display: flex;
+  flex-direction: column;
   position: absolute;
   top: 52px;
   right: 0;
@@ -262,11 +263,34 @@ button {
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.14);
   font-size: 14px;
   z-index: 120;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-8px) scale(0.98);
+  transform-origin: top right;
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
 }
 
 .profile-menu.show {
-  display: flex;
-  flex-direction: column;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.user-profile .chevron {
+  transition: transform 0.18s ease;
+}
+
+.user-profile[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-menu,
+  .user-profile .chevron {
+    transition: none;
+  }
 }
 
 .profile-account {
@@ -1782,11 +1806,10 @@ body.dark-mode .login-card {
   justify-content: center;
   min-width: 100px;
   min-height: 44px;
-  padding: 0 18px;
-  border: 1px solid var(--border-color);
+  padding: 0 0px;
   border-radius: 999px;
-  background: var(--bg-white);
-  color: var(--text-dark);
+  background: var(--bg-blue);
+  color: var(--text-white);
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
