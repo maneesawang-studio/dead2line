@@ -65,6 +65,13 @@
           "applicationCategory": "ProductivityApplication",
           "operatingSystem": "Any",
           "description": "Organize tasks, track progress, and stay ahead of deadlines with Deadline, a simple task manager and deadline planner.",
+          "featureList": [
+            "Task and deadline management",
+            "Task categories",
+            "Subtasks and progress tracking",
+            "English and Thai interface",
+            "Light and dark themes"
+          ],
           "browserRequirements": "Requires JavaScript and a modern web browser.",
           "inLanguage": ["en", "th"],
           "provider": {
@@ -79,18 +86,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="site-page landing-page" data-auth-page="landing" data-site-title="homeTitle" data-nav-active="home">
-  <nav id="siteNavigation" aria-label="Main navigation"></nav>
+<body class="site-page landing-page" data-auth-page="landing" data-site-title="homeTitle" data-site-description="homeDescription" data-nav-active="home">
+  <nav id="siteNavigation" aria-label="Main navigation" data-site-i18n-aria-label="mainNavigation"></nav>
 
   <p class="auth-status landing-auth-status" id="landingAuthStatus" role="status" aria-live="polite" hidden></p>
   <main class="landing-main">
     <section class="landing-hero">
       <div class="landing-copy">
-        <p class="landing-eyebrow" data-site-i18n="homeEyebrow">YOUR WORK, IN GOOD TIME</p>
+        <p class="landing-eyebrow" data-site-i18n="homeEyebrow">YOUR WORK, RIGHT ON TIME</p>
         <h1 data-auth-view="guest" data-site-i18n="homeHeadline">Plan clearly.<br>Finish confidently.</h1>
         <h1 data-auth-view="authenticated" id="landingGreeting" hidden></h1>
         <p class="landing-lead" data-auth-view="guest" data-site-i18n="homeLead">A calm, focused space for your tasks and deadlines. See what needs attention, break big work into small steps, and keep moving.</p>
-        <p class="landing-lead" data-auth-view="authenticated" data-site-i18n="homeSignedInLead" hidden>Your workspace is ready. Jump back into your tasks and keep your next deadline in sight.</p>
+        <p class="landing-lead" data-auth-view="authenticated" data-site-i18n="homeSignedInLead" hidden>Your tasks are ready. Head back to your list and keep your next deadline in sight.</p>
         <div class="landing-actions" data-auth-view="guest">
           <a class="landing-primary" href="login/" data-site-i18n="getStarted">Get started</a>
           <a class="landing-secondary" href="#preview" data-site-i18n="seePreview">Explore the preview</a>
@@ -112,7 +119,7 @@
             <div class="preview-dashboard">
               <header class="page-header">
                 <p class="current-date" id="previewCurrentDate"></p>
-                <h2 class="page-title" data-site-i18n="previewDashboard">Manage deadlines</h2>
+                <h2 class="page-title" data-site-i18n="previewDashboard">Manage tasks and deadlines</h2>
               </header>
 
               <section class="summary-bar">
@@ -149,7 +156,7 @@
                       <circle cx="11" cy="11" r="8"></circle>
                       <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                    <span data-site-i18n="previewSearch">Search for a schedule</span>
+                    <span data-site-i18n="previewSearch">Search tasks</span>
                   </div>
                   <span class="btn-sort" aria-hidden="true">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -203,7 +210,7 @@
                     <p class="task-desc" data-site-i18n="previewTaskOneMeta">Outline key ideas and gather sources</p>
                     <div class="sub-progress-section">
                       <div class="progress-header">
-                        <span data-site-i18n="previewSubtasks">1 of 2 subtasks</span>
+                        <span data-site-i18n="previewSubtasks">1 of 2 subtasks complete</span>
                         <span class="progress-percent">50%</span>
                       </div>
                       <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 50%"></div></div>
@@ -266,9 +273,9 @@
     </section>
 
     <section class="landing-features" id="preview">
-      <article><span>01</span><h2 data-site-i18n="featureTasksTitle">See what matters</h2><p data-site-i18n="featureTasksText">Review work in progress, finished tasks, and upcoming deadlines in one place.</p></article>
-      <article><span>02</span><h2 data-site-i18n="featureStepsTitle">Make progress visible</h2><p data-site-i18n="featureStepsText">Break larger work into small steps and see how far you have come.</p></article>
-      <article><span>03</span><h2 data-site-i18n="featurePersonalTitle">Make it yours</h2><p data-site-i18n="featurePersonalText">Switch between English and Thai, choose a light or dark theme, and organize work by category.</p></article>
+      <article><span>01</span><h2 data-site-i18n="featureTasksTitle">See what matters</h2><p data-site-i18n="featureTasksText">See tasks in progress, finished tasks, and upcoming deadlines at a glance.</p></article>
+      <article><span>02</span><h2 data-site-i18n="featureStepsTitle">Break work into steps</h2><p data-site-i18n="featureStepsText">Add subtasks and track your progress as you complete them.</p></article>
+      <article><span>03</span><h2 data-site-i18n="featurePersonalTitle">Make it your own</h2><p data-site-i18n="featurePersonalText">Choose English or Thai, switch between light and dark themes, and filter tasks by category.</p></article>
     </section>
     <section class="landing-bottom-cta">
       <h2 data-site-i18n="homeClosing">Make room for the work that matters.</h2>
@@ -276,7 +283,7 @@
       <a class="landing-primary" href="app/" data-auth-view="authenticated" hidden data-site-i18n="openDashboard">Open my dashboard</a>
     </section>
   </main>
-  <footer class="site-footer"><span data-site-i18n="footerNote">A clearer way to keep deadlines in sight.</span> · <a href="privacy/" data-site-i18n="privacy">Privacy</a></footer>
+  <footer class="site-footer"><span data-site-i18n="footerNote">Stay organized and keep your deadlines in sight.</span> · <a href="privacy/" data-site-i18n="privacy">Privacy</a></footer>
 
   <script src="site-pages.js"></script>
   <script src="supabase-config.js"></script>

@@ -12,17 +12,17 @@
   <link rel="canonical" href="https://dead2line.com/about/">
   <link rel="icon" type="image/png" sizes="512x512" href="../Asset/Deadline-512.png">
   <link rel="apple-touch-icon" sizes="512x512" href="../Asset/Deadline-white-512.png">
-  <title>About Deadline | Task and Deadline Planner</title>
+  <title>Deadline | About the Task Manager</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Deadline">
   <meta property="og:locale" content="en_US">
-  <meta property="og:title" content="About Deadline | Task and Deadline Planner">
+  <meta property="og:title" content="Deadline | About the Task Manager">
   <meta property="og:description" content="Learn how Deadline helps you organize tasks, track progress, and manage deadlines with clear next steps.">
   <meta property="og:url" content="https://dead2line.com/about/">
   <meta property="og:image" content="https://dead2line.com/Asset/Deadline-512.png">
   <meta property="og:image:alt" content="Deadline task manager logo">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="About Deadline | Task and Deadline Planner">
+  <meta name="twitter:title" content="Deadline | About the Task Manager">
   <meta name="twitter:description" content="Learn how Deadline helps you organize tasks and manage deadlines.">
   <meta name="twitter:image" content="https://dead2line.com/Asset/Deadline-512.png">
   <script type="application/ld+json">
@@ -43,7 +43,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css">
 </head>
-<body class="site-page" data-auth-page="public" data-site-title="aboutTitle" data-nav-active="about">
+<body class="site-page" data-auth-page="public" data-site-title="aboutTitle" data-site-description="aboutDescription" data-nav-active="about">
   <nav class="navbar">
     <div class="navbar-inner">
       <a class="logo" href="../" aria-label="Deadline">
@@ -51,20 +51,13 @@
         <span class="logo-name">Deadline<span class="logo-dot">.</span></span>
       </a>
       <div class="profile-wrapper">
-        <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open profile menu" hidden>
-          <div class="avatar">
-            <span class="avatar-initials" aria-hidden="true">U</span>
-            <img class="avatar-img" alt="User profile" hidden>
-          </div>
-          <span class="profile-email" id="profileEmail"></span>
-          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+        <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open settings menu" hidden>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12.22 2h-.44a2 2 0 0 0-2 1.72l-.17 1.18a2 2 0 0 1-1 1.48l-.43.25a2 2 0 0 1-1.78.09l-1.07-.48a2 2 0 0 0-2.5.73l-.22.38a2 2 0 0 0 .5 2.55l.9.72a2 2 0 0 1 .71 1.65v.5a2 2 0 0 1-.71 1.65l-.9.72a2 2 0 0 0-.5 2.55l.22.38a2 2 0 0 0 2.5.73l1.07-.48a2 2 0 0 1 1.78.09l.43.25a2 2 0 0 1 1 1.48l.17 1.18A2 2 0 0 0 11.78 22h.44a2 2 0 0 0 2-1.72l.17-1.18a2 2 0 0 1 1-1.48l.43-.25a2 2 0 0 1 1.78-.09l1.07.48a2 2 0 0 0 2.5-.73l.22-.38a2 2 0 0 0-.5-2.55l-.9-.72a2 2 0 0 1-.71-1.65v-.5a2 2 0 0 1 .71-1.65l.9-.72a2 2 0 0 0 .5-2.55l-.22-.38a2 2 0 0 0-2.5-.73l-1.07.48a2 2 0 0 1-1.78-.09l-.43-.25a2 2 0 0 1-1-1.48l-.17-1.18A2 2 0 0 0 12.22 2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
         </button>
         <div class="profile-menu" id="profileMenu">
           <div class="profile-account">
             <span data-site-i18n="account">Account</span>
-            <strong id="accountEmail" data-site-i18n="previewAccount">Preview mode (not authenticated)</strong>
+            <strong id="accountEmail" data-site-i18n="previewAccount">Not signed in</strong>
           </div>
           <p class="auth-status" id="authStatus" role="status" aria-live="polite" hidden></p>
           <button type="button" class="profile-row theme-row" id="themeToggle">
@@ -101,36 +94,35 @@
     <header class="site-page-header">
       <p class="site-eyebrow">Deadline.</p>
       <h1 data-site-i18n="aboutHeading">Make every deadline manageable.</h1>
-      <p class="site-lead" data-site-i18n="aboutIntro">Deadline is a simple task and deadline dashboard designed to help you see what needs attention and break work into clear next steps.</p>
+      <p class="site-lead" data-site-i18n="aboutIntro">Deadline helps you organize tasks, see what needs attention, and break larger tasks into clear next steps.</p>
     </header>
 
-    <section class="site-feature-grid" aria-label="Deadline features">
+    <section class="site-feature-grid" aria-label="Deadline features" data-site-i18n-aria-label="featuresLabel">
       <article class="site-card site-feature-card">
         <span class="site-feature-number">01</span>
         <h2 data-site-i18n="featureTasksTitle">See what matters</h2>
-        <p data-site-i18n="featureTasksText">Review work in progress, finished tasks, and upcoming deadlines in one place.</p>
+        <p data-site-i18n="featureTasksText">See tasks in progress, finished tasks, and upcoming deadlines at a glance.</p>
       </article>
       <article class="site-card site-feature-card">
         <span class="site-feature-number">02</span>
         <h2 data-site-i18n="featureStepsTitle">Break work into steps</h2>
-        <p data-site-i18n="featureStepsText">Add smaller checklist items and track progress as you complete them.</p>
+        <p data-site-i18n="featureStepsText">Add subtasks and track your progress as you complete them.</p>
       </article>
       <article class="site-card site-feature-card">
         <span class="site-feature-number">03</span>
-        <h2 data-site-i18n="featurePersonalTitle">Make it yours</h2>
-        <p data-site-i18n="featurePersonalText">Switch between English and Thai, choose a light or dark theme, and organize work by category.</p>
+        <h2 data-site-i18n="featurePersonalTitle">Make it your own</h2>
+        <p data-site-i18n="featurePersonalText">Choose English or Thai, switch between light and dark themes, and filter tasks by category.</p>
       </article>
     </section>
 
     <section class="site-card site-notice-card">
-      <h2 data-site-i18n="previewTitle">Current preview</h2>
-      <p data-site-i18n="previewText">Deadline uses Supabase for authenticated account access and cloud task storage. Your tasks are isolated to your signed-in account.</p>
+      <h2 data-site-i18n="previewTitle">Your tasks, in one place</h2>
+      <p data-site-i18n="previewText">Sign in to save tasks to your account. Your tasks are kept separate from other users' tasks.</p>
     </section>
 
-    <a class="site-back-link" href="../" data-site-i18n="backToTasks">Back to tasks</a>
+    <a class="site-back-link" href="../" data-site-i18n="backToTasks">Back to home</a>
   </main>
-
-  <footer class="site-footer" data-site-i18n="footerNote">A clearer way to keep deadlines in sight.</footer>
+  <footer class="site-footer" data-site-i18n="footerNote">Stay organized and keep your deadlines in sight.</footer>
 
   <script src="../site-pages.js"></script>
   <script src="../supabase-config.js"></script>

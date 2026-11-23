@@ -19,7 +19,6 @@
       ? document.getElementById("landingAuthStatus")
       : document.getElementById("taskOperationStatus") || document.getElementById("profileAuthStatus") || document.getElementById("authStatus");
   const accountEmail = document.getElementById("accountEmail");
-  const profileEmail = document.getElementById("profileEmail");
   const loginMenuLink = document.getElementById("loginMenuLink");
   const signOutButton = document.getElementById("signOutButton");
   const landingLoginLink = document.getElementById("landingLoginLink");
@@ -28,46 +27,46 @@
 
   const messages = {
     en: {
-      configMissing: "Supabase isn't configured yet. Add the project URL and publishable key to supabase-config.js. Sign-in needs an HTTP(S) site URL.",
-      sdkMissing: "Couldn't load the Supabase client. Check your connection and reload.",
-      sessionFailed: "Couldn't verify your session.",
+      configMissing: "Sign-in isn't configured. Add the Supabase project URL and publishable key to supabase-config.js, then open the site over HTTP(S).",
+      sdkMissing: "We couldn't load the sign-in service. Check your connection and try again.",
+      sessionFailed: "We couldn't verify your sign-in. Refresh the page and try again.",
       signingIn: "Signing in...",
-      signInFailed: "Sign-in failed.",
+      signInFailed: "Couldn't sign in.",
       signingUp: "Creating your account...",
-      signUpFailed: "Sign-up failed.",
+      signUpFailed: "Couldn't create your account.",
       passwordMismatch: "The passwords don't match.",
-      signUpCheckEmail: "Account created. Check your email and open the confirmation link to return here and sign in.",
+      signUpCheckEmail: "Account created. Check your email and follow the confirmation link to continue.",
       emailConfirmed: "Email confirmed. You can now sign in.",
-      emailConfirmSessionFailed: "Email confirmed, but the session couldn't be cleared. Please reload this page before signing in.",
-      signUpMissingUser: "Supabase didn't return the new account.",
-      noSession: "Supabase didn't return a session. Check your Auth settings.",
-      signOutFailed: "Sign-out failed.",
+      emailConfirmSessionFailed: "Email confirmed, but we couldn't reset your sign-in. Refresh the page before signing in.",
+      signUpMissingUser: "We couldn't retrieve your new account. Please try again.",
+      noSession: "Your account was created, but sign-in didn't complete. Please try signing in again.",
+      signOutFailed: "Couldn't sign out.",
       signOutConfirmTitle: "Sign out?",
-      signOutConfirmMessage: "Are you sure you want to sign out?",
+      signOutConfirmMessage: "You'll need to sign in again to view your tasks.",
       confirmSignOut: "Sign out",
       cancel: "Cancel",
-      authUnavailable: "Couldn't connect to Supabase. Check the project URL and network, then try again."
+      authUnavailable: "We couldn't connect to the sign-in service. Check your connection and try again."
     },
     th: {
-      configMissing: "ยังไม่ได้ตั้งค่า Supabase กรุณาใส่ Project URL และ Publishable key ใน supabase-config.js และเปิดเว็บผ่าน HTTP(S)",
-      sdkMissing: "โหลด Supabase client ไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ตแล้วโหลดหน้าใหม่",
-      sessionFailed: "ตรวจสอบสถานะการเข้าสู่ระบบไม่สำเร็จ",
+      configMissing: "ยังไม่ได้ตั้งค่าระบบเข้าสู่ระบบ กรุณาตรวจสอบ Project URL และ Publishable key ใน supabase-config.js แล้วเปิดเว็บผ่าน HTTP(S)",
+      sdkMissing: "โหลดระบบเข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง",
+      sessionFailed: "ตรวจสอบสถานะการเข้าสู่ระบบไม่สำเร็จ กรุณาโหลดหน้าใหม่แล้วลองอีกครั้ง",
       signingIn: "กำลังเข้าสู่ระบบ...",
       signInFailed: "เข้าสู่ระบบไม่สำเร็จ",
       signingUp: "กำลังสร้างบัญชี...",
-      signUpFailed: "สมัครสมาชิกไม่สำเร็จ",
+      signUpFailed: "สร้างบัญชีไม่สำเร็จ",
       passwordMismatch: "รหัสผ่านทั้งสองช่องไม่ตรงกัน",
-      signUpCheckEmail: "สร้างบัญชีแล้ว กรุณาเปิดลิงก์ยืนยันในอีเมลเพื่อกลับมาหน้านี้และเข้าสู่ระบบ",
+      signUpCheckEmail: "สร้างบัญชีแล้ว กรุณาตรวจสอบอีเมลและกดลิงก์ยืนยันเพื่อดำเนินการต่อ",
       emailConfirmed: "ยืนยันอีเมลแล้ว คุณสามารถเข้าสู่ระบบได้เลย",
-      emailConfirmSessionFailed: "ยืนยันอีเมลแล้ว แต่เคลียร์ session ไม่สำเร็จ กรุณาโหลดหน้านี้ใหม่ก่อนเข้าสู่ระบบ",
-      signUpMissingUser: "Supabase ไม่ได้ส่งข้อมูลบัญชีใหม่กลับมา",
-      noSession: "Supabase ไม่ได้ส่ง session กลับมา กรุณาตรวจสอบการตั้งค่า Auth",
+      emailConfirmSessionFailed: "ยืนยันอีเมลแล้ว แต่เตรียมสถานะเข้าสู่ระบบไม่สำเร็จ กรุณาโหลดหน้าใหม่ก่อนเข้าสู่ระบบ",
+      signUpMissingUser: "เรียกดูข้อมูลบัญชีใหม่ไม่สำเร็จ กรุณาลองอีกครั้ง",
+      noSession: "สร้างบัญชีแล้ว แต่เข้าสู่ระบบไม่สำเร็จ กรุณาลองเข้าสู่ระบบอีกครั้ง",
       signOutFailed: "ออกจากระบบไม่สำเร็จ",
       signOutConfirmTitle: "ต้องการออกจากระบบหรือไม่?",
-      signOutConfirmMessage: "คุณสามารถเข้าสู่ระบบอีกครั้งได้ทุกเมื่อ",
+      signOutConfirmMessage: "คุณจะต้องเข้าสู่ระบบอีกครั้งเพื่อดูงาน",
       confirmSignOut: "ออกจากระบบ",
       cancel: "ยกเลิก",
-      authUnavailable: "เชื่อมต่อ Supabase ไม่สำเร็จ กรุณาตรวจสอบ Project URL และเครือข่าย"
+      authUnavailable: "เชื่อมต่อระบบเข้าสู่ระบบไม่ได้ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองอีกครั้ง"
     }
   };
 
@@ -101,56 +100,8 @@
     window.location.replace(siteUrl(""));
   }
 
-  function applyUserProfile(user) {
+  function updateLandingGreeting(user) {
     const metadata = user.user_metadata || {};
-    const userEmail = typeof user.email === "string" ? user.email.trim() : "";
-    if (profileEmail) profileEmail.textContent = userEmail;
-    const emailName = userEmail.split("@")[0].trim();
-    const avatarInitial = Array.from(emailName)[0] || "U";
-    document.querySelectorAll(".avatar-initials").forEach(element => {
-      element.textContent = avatarInitial.toLocaleUpperCase();
-    });
-    document.querySelectorAll(".avatar-img").forEach(image => {
-      image.hidden = true;
-      image.onerror = null;
-      image.onload = null;
-      const initials = image.closest(".avatar").querySelector(".avatar-initials");
-      if (initials) initials.hidden = false;
-    });
-    const identityImage = (user.identities || [])
-      .map(identity => identity.identity_data && (identity.identity_data.avatar_url || identity.identity_data.picture))
-      .find(Boolean);
-    const imageUrl = metadata.avatar_url || metadata.picture || metadata.profile_image_url || metadata.avatar || identityImage;
-    if (typeof imageUrl === "string" && imageUrl.trim()) {
-      try {
-        const parsed = new URL(imageUrl, window.location.href);
-        if (parsed.protocol === "https:" || parsed.protocol === "http:") {
-          document.querySelectorAll(".avatar-img").forEach(image => {
-            const initials = image.closest(".avatar").querySelector(".avatar-initials");
-            image.onerror = () => {
-              image.hidden = true;
-              if (initials) initials.hidden = false;
-              image.onerror = null;
-              image.onload = null;
-            };
-            image.onload = () => {
-              image.hidden = false;
-              if (initials) initials.hidden = true;
-              image.onerror = null;
-              image.onload = null;
-            };
-            image.src = parsed.href;
-          });
-        }
-      } catch (error) {
-        console.warn("Ignoring invalid profile image URL.");
-      }
-    }
-
-    document.querySelectorAll(".avatar-img").forEach(image => {
-      image.alt = metadata.full_name || metadata.name || user.email || "User profile";
-    });
-
     const greeting = document.getElementById("landingGreeting");
     if (greeting) {
       const name = metadata.full_name || metadata.name || metadata.nickname || (user.email || "").split("@")[0];
@@ -164,7 +115,6 @@
     }
     if (loginMenuLink) loginMenuLink.hidden = isAuthenticated;
     if (signOutButton) signOutButton.hidden = !isAuthenticated;
-    if (!isAuthenticated && profileEmail) profileEmail.textContent = "";
   }
 
   function updateLandingView(isAuthenticated) {
@@ -182,20 +132,9 @@
       window.deadlineUser = null;
       if (accountEmail) {
         accountEmail.dataset.siteI18n = "previewAccount";
-        accountEmail.textContent = language() === "th" ? "โหมดตัวอย่าง (ยังไม่ได้เข้าสู่ระบบ)" : "Preview mode (not authenticated)";
+        accountEmail.textContent = message("previewAccount");
       }
       if (signOutButton) signOutButton.hidden = true;
-      document.querySelectorAll(".avatar-img").forEach(image => {
-        image.onerror = null;
-        image.onload = null;
-        image.hidden = true;
-        const initials = image.closest(".avatar").querySelector(".avatar-initials");
-        if (initials) {
-          initials.textContent = "U";
-          initials.hidden = false;
-        }
-        image.alt = "User profile";
-      });
     }
   }
 
@@ -421,7 +360,7 @@
         accountEmail.removeAttribute("data-site-i18n");
         accountEmail.textContent = session.user.email || session.user.id;
       }
-      applyUserProfile(session.user);
+      updateLandingGreeting(session.user);
       if (loginMenuLink) loginMenuLink.hidden = true;
       if (signOutButton) signOutButton.hidden = false;
     }
@@ -467,11 +406,11 @@
         setAuthenticatedNavigation(true);
         if (authPage === "landing") updateLandingView(true);
         else if (tasksNavLink && authPage !== "dashboard") tasksNavLink.href = siteUrl("app/");
-        applyUserProfile(nextSession.user);
+        updateLandingGreeting(nextSession.user);
       }
       if (event === "TOKEN_REFRESHED" && nextSession) {
         window.deadlineUser = nextSession.user;
-        applyUserProfile(nextSession.user);
+        updateLandingGreeting(nextSession.user);
       }
     });
 

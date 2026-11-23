@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Find answers about adding tasks, managing deadlines, tracking progress, changing languages, and storing your work securely with Deadline.">
+  <meta name="description" content="Find answers to common questions about tasks, deadlines, account access, and settings in Deadline.">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <meta name="theme-color" content="#F2F2F7">
   <meta name="apple-mobile-web-app-title" content="Deadline">
@@ -12,18 +12,18 @@
   <link rel="canonical" href="https://dead2line.com/faq/">
   <link rel="icon" type="image/png" sizes="512x512" href="../Asset/Deadline-512.png">
   <link rel="apple-touch-icon" sizes="512x512" href="../Asset/Deadline-white-512.png">
-  <title>Deadline FAQ | Tasks, Deadlines, and Accounts</title>
+  <title>Deadline | Frequently asked questions</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Deadline">
   <meta property="og:locale" content="en_US">
-  <meta property="og:title" content="Deadline FAQ | Tasks, Deadlines, and Accounts">
-  <meta property="og:description" content="Find answers about adding tasks, managing deadlines, tracking progress, changing languages, and storing your work securely with Deadline.">
+  <meta property="og:title" content="Deadline | Frequently asked questions">
+  <meta property="og:description" content="Find answers to common questions about tasks, deadlines, account access, and settings in Deadline.">
   <meta property="og:url" content="https://dead2line.com/faq/">
   <meta property="og:image" content="https://dead2line.com/Asset/Deadline-512.png">
   <meta property="og:image:alt" content="Deadline task manager logo">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Deadline FAQ | Tasks, Deadlines, and Accounts">
-  <meta name="twitter:description" content="Answers about tasks, deadlines, progress, language, and account access in Deadline.">
+  <meta name="twitter:title" content="Deadline | Frequently asked questions">
+  <meta name="twitter:description" content="Find answers to common questions about tasks, deadlines, account access, and settings in Deadline.">
   <meta name="twitter:image" content="https://dead2line.com/Asset/Deadline-512.png">
   <script type="application/ld+json">
     {
@@ -32,13 +32,16 @@
       "name": "Deadline frequently asked questions",
       "url": "https://dead2line.com/faq/",
       "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://dead2line.com/#website"
+      },
       "mainEntity": [
         {
           "@type": "Question",
           "name": "How do I add a task?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Open the Tasks page and select + Add. Enter a title and deadline; category, time, notes, and subtasks are optional."
+            "text": "On the Tasks page, select + Add, then enter a task title and deadline. Category, time, notes, and subtasks are optional."
           }
         },
         {
@@ -46,15 +49,15 @@
           "name": "How do I mark a task as finished?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Select the check button on a task card. Use the In progress and Finished tabs to switch between task lists."
+            "text": "Select the checkmark on a task card. The task will then appear under Finished."
           }
         },
         {
           "@type": "Question",
-          "name": "What does the urgent label mean?",
+          "name": "What does the red badge mean?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "It marks an in-progress task whose deadline is within three days."
+            "text": "It marks an in-progress task that's due within three days or already overdue."
           }
         },
         {
@@ -62,23 +65,23 @@
           "name": "How do I change the theme or language?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Open the profile menu on the Tasks page, then choose a theme or switch between English and Thai."
+            "text": "Select the gear icon on the Tasks page to open the settings menu, then choose a theme or language."
           }
         },
         {
           "@type": "Question",
-          "name": "How does sign-in work?",
+          "name": "How do I sign in?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Sign-in uses Supabase Auth. Use the account created for this workspace."
+            "text": "Sign in with your Deadline account email and password. If you don't have an account, select Sign up."
           }
         },
         {
           "@type": "Question",
-          "name": "Are my tasks saved to the cloud?",
+          "name": "Can other users see my tasks?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. Tasks are stored in Supabase and protected by per-user access rules."
+            "text": "No. Your tasks are saved to your account and kept separate from other users' tasks."
           }
         }
       ]
@@ -89,7 +92,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css">
 </head>
-<body class="site-page" data-auth-page="public" data-site-title="faqTitle" data-nav-active="faq">
+<body class="site-page" data-auth-page="public" data-site-title="faqTitle" data-site-description="faqDescription" data-nav-active="faq">
   <nav class="navbar">
     <div class="navbar-inner">
       <a class="logo" href="../" aria-label="Deadline">
@@ -97,20 +100,13 @@
         <span class="logo-name">Deadline<span class="logo-dot">.</span></span>
       </a>
       <div class="profile-wrapper">
-        <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open profile menu" hidden>
-          <div class="avatar">
-            <span class="avatar-initials" aria-hidden="true">U</span>
-            <img class="avatar-img" alt="User profile" hidden>
-          </div>
-          <span class="profile-email" id="profileEmail"></span>
-          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+        <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open settings menu" hidden>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12.22 2h-.44a2 2 0 0 0-2 1.72l-.17 1.18a2 2 0 0 1-1 1.48l-.43.25a2 2 0 0 1-1.78.09l-1.07-.48a2 2 0 0 0-2.5.73l-.22.38a2 2 0 0 0 .5 2.55l.9.72a2 2 0 0 1 .71 1.65v.5a2 2 0 0 1-.71 1.65l-.9.72a2 2 0 0 0-.5 2.55l.22.38a2 2 0 0 0 2.5.73l1.07-.48a2 2 0 0 1 1.78.09l.43.25a2 2 0 0 1 1 1.48l.17 1.18A2 2 0 0 0 11.78 22h.44a2 2 0 0 0 2-1.72l.17-1.18a2 2 0 0 1 1-1.48l.43-.25a2 2 0 0 1 1.78-.09l1.07.48a2 2 0 0 0 2.5-.73l.22-.38a2 2 0 0 0-.5-2.55l-.9-.72a2 2 0 0 1-.71-1.65v-.5a2 2 0 0 1 .71-1.65l.9-.72a2 2 0 0 0 .5-2.55l-.22-.38a2 2 0 0 0-2.5-.73l-1.07.48a2 2 0 0 1-1.78-.09l-.43-.25a2 2 0 0 1-1-1.48l-.17-1.18A2 2 0 0 0 12.22 2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
         </button>
         <div class="profile-menu" id="profileMenu">
           <div class="profile-account">
             <span data-site-i18n="account">Account</span>
-            <strong id="accountEmail" data-site-i18n="previewAccount">Preview mode (not authenticated)</strong>
+            <strong id="accountEmail" data-site-i18n="previewAccount">Not signed in</strong>
           </div>
           <p class="auth-status" id="authStatus" role="status" aria-live="polite" hidden></p>
           <button type="button" class="profile-row theme-row" id="themeToggle">
@@ -145,41 +141,41 @@
 
   <main class="site-main faq-main">
     <header class="site-page-header">
-      <p class="site-eyebrow">Help center</p>
+      <p class="site-eyebrow" data-site-i18n="helpCenterEyebrow">Help center</p>
       <h1 data-site-i18n="faqTitle">Frequently asked questions</h1>
     </header>
 
-    <section class="faq-list" aria-label="Frequently asked questions">
+    <section class="faq-list" aria-label="Frequently asked questions" data-site-i18n-aria-label="faqListLabel">
       <details class="site-card faq-item" open>
         <summary data-site-i18n="faqAddQuestion">How do I add a task?</summary>
-        <p data-site-i18n="faqAddAnswer">Open the Tasks page and select + Add. Enter a title and deadline; category, time, notes, and subtasks are optional.</p>
+        <p data-site-i18n="faqAddAnswer">On the Tasks page, select + Add, then enter a task title and deadline. Category, time, notes, and subtasks are optional.</p>
       </details>
       <details class="site-card faq-item">
         <summary data-site-i18n="faqProgressQuestion">How do I mark a task as finished?</summary>
-        <p data-site-i18n="faqProgressAnswer">Select the check button on a task card. Use the In progress and Finished tabs to switch between task lists.</p>
+        <p data-site-i18n="faqProgressAnswer">Select the checkmark on a task card. The task will then appear under Finished.</p>
       </details>
       <details class="site-card faq-item">
-        <summary data-site-i18n="faqUrgentQuestion">What does the urgent label mean?</summary>
-        <p data-site-i18n="faqUrgentAnswer">It marks an in-progress task whose deadline is within three days.</p>
+        <summary data-site-i18n="faqUrgentQuestion">What does the red badge mean?</summary>
+        <p data-site-i18n="faqUrgentAnswer">It marks an in-progress task that's due within three days or already overdue.</p>
       </details>
       <details class="site-card faq-item">
         <summary data-site-i18n="faqThemeQuestion">How do I change the theme or language?</summary>
-        <p data-site-i18n="faqThemeAnswer">Open the profile menu on the Tasks page, then choose a theme or switch between English and Thai.</p>
+        <p data-site-i18n="faqThemeAnswer">Select the gear icon on the Tasks page to open the settings menu, then choose a theme or language.</p>
       </details>
       <details class="site-card faq-item">
-        <summary data-site-i18n="faqLoginQuestion">How does sign-in work?</summary>
-        <p data-site-i18n="faqLoginAnswer">Sign-in uses Supabase Auth. Use the account created for this workspace.</p>
+        <summary data-site-i18n="faqLoginQuestion">How do I sign in?</summary>
+        <p data-site-i18n="faqLoginAnswer">Sign in with your Deadline account email and password. If you don't have an account, select Sign up.</p>
       </details>
       <details class="site-card faq-item">
-        <summary data-site-i18n="faqDataQuestion">Are my tasks saved to the cloud?</summary>
-        <p data-site-i18n="faqDataAnswer">Yes. Tasks are stored in Supabase and protected by per-user access rules.</p>
+        <summary data-site-i18n="faqDataQuestion">Can other users see my tasks?</summary>
+        <p data-site-i18n="faqDataAnswer">No. Your tasks are saved to your account and kept separate from other users' tasks.</p>
       </details>
     </section>
 
-    <a class="site-back-link" href="../" data-site-i18n="backToTasks">Back to tasks</a>
+    <a class="site-back-link" href="../" data-site-i18n="backToTasks">Back to home</a>
   </main>
 
-  <footer class="site-footer" data-site-i18n="footerNote">A clearer way to keep deadlines in sight.</footer>
+  <footer class="site-footer" data-site-i18n="footerNote">Stay organized and keep your deadlines in sight.</footer>
 
   <script src="../site-pages.js"></script>
   <script src="../supabase-config.js"></script>

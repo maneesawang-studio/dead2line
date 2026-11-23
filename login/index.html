@@ -12,7 +12,7 @@
   <link rel="icon" type="image/png" sizes="512x512" href="../Asset/Deadline-512.png">
   <link rel="apple-touch-icon" sizes="512x512" href="../Asset/Deadline-white-512.png">
   <link rel="manifest" href="../manifest.webmanifest">
-  <title>Deadline. - Sign in</title>
+  <title>Deadline | Sign in</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,20 +26,13 @@
         <span class="logo-name">Deadline<span class="logo-dot">.</span></span>
       </a>
       <div class="profile-wrapper">
-        <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open profile menu" hidden>
-          <div class="avatar">
-            <span class="avatar-initials" aria-hidden="true">U</span>
-            <img class="avatar-img" alt="User profile" hidden>
-          </div>
-          <span class="profile-email" id="profileEmail"></span>
-          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+        <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open settings menu" hidden>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12.22 2h-.44a2 2 0 0 0-2 1.72l-.17 1.18a2 2 0 0 1-1 1.48l-.43.25a2 2 0 0 1-1.78.09l-1.07-.48a2 2 0 0 0-2.5.73l-.22.38a2 2 0 0 0 .5 2.55l.9.72a2 2 0 0 1 .71 1.65v.5a2 2 0 0 1-.71 1.65l-.9.72a2 2 0 0 0-.5 2.55l.22.38a2 2 0 0 0 2.5.73l1.07-.48a2 2 0 0 1 1.78.09l.43.25a2 2 0 0 1 1 1.48l.17 1.18A2 2 0 0 0 11.78 22h.44a2 2 0 0 0 2-1.72l.17-1.18a2 2 0 0 1 1-1.48l.43-.25a2 2 0 0 1 1.78-.09l1.07.48a2 2 0 0 0 2.5-.73l.22-.38a2 2 0 0 0-.5-2.55l-.9-.72a2 2 0 0 1-.71-1.65v-.5a2 2 0 0 1 .71-1.65l.9-.72a2 2 0 0 0 .5-2.55l-.22-.38a2 2 0 0 0-2.5-.73l-1.07.48a2 2 0 0 1-1.78-.09l-.43-.25a2 2 0 0 1-1-1.48l-.17-1.18A2 2 0 0 0 12.22 2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
         </button>
         <div class="profile-menu" id="profileMenu">
           <div class="profile-account">
             <span data-site-i18n="account">Account</span>
-            <strong id="accountEmail" data-site-i18n="previewAccount">Preview mode (not authenticated)</strong>
+            <strong id="accountEmail" data-site-i18n="previewAccount">Not signed in</strong>
           </div>
           <button type="button" class="profile-row theme-row" id="themeToggle">
             <span class="theme-icon" aria-hidden="true">
@@ -78,7 +71,7 @@
         <span>Deadline<span class="logo-dot">.</span></span>
       </div>
       <h1 id="loginHeading" data-site-i18n="loginHeading">Welcome back</h1>
-      <p class="site-lead" data-site-i18n="loginLead">Sign in to continue to your deadlines.</p>
+      <p class="site-lead" data-site-i18n="loginLead">Sign in to view your tasks and deadlines.</p>
 
       <form id="loginForm" class="login-form" method="post">
         <div class="site-form-group">

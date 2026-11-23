@@ -12,7 +12,7 @@
   <link rel="icon" type="image/png" sizes="512x512" href="../Asset/Deadline-512.png">
   <link rel="apple-touch-icon" sizes="512x512" href="../Asset/Deadline-white-512.png">
   <link rel="manifest" href="../manifest.webmanifest">
-  <title>Deadline. - Manage deadlines</title>
+  <title>Deadline | Manage tasks and deadlines</title>
   <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,20 +30,13 @@
       <span class="logo-name">Deadline<span class="logo-dot">.</span></span>
     </a>
     <div class="profile-wrapper">
-      <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open profile menu" hidden>
-        <div class="avatar">
-          <span class="avatar-initials" aria-hidden="true">U</span>
-          <img class="avatar-img" alt="User profile" hidden>
-        </div>
-        <span class="profile-email" id="profileEmail"></span>
-        <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
+      <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open settings menu" hidden>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12.22 2h-.44a2 2 0 0 0-2 1.72l-.17 1.18a2 2 0 0 1-1 1.48l-.43.25a2 2 0 0 1-1.78.09l-1.07-.48a2 2 0 0 0-2.5.73l-.22.38a2 2 0 0 0 .5 2.55l.9.72a2 2 0 0 1 .71 1.65v.5a2 2 0 0 1-.71 1.65l-.9.72a2 2 0 0 0-.5 2.55l.22.38a2 2 0 0 0 2.5.73l1.07-.48a2 2 0 0 1 1.78.09l.43.25a2 2 0 0 1 1 1.48l.17 1.18A2 2 0 0 0 11.78 22h.44a2 2 0 0 0 2-1.72l.17-1.18a2 2 0 0 1 1-1.48l.43-.25a2 2 0 0 1 1.78-.09l1.07.48a2 2 0 0 0 2.5-.73l.22-.38a2 2 0 0 0-.5-2.55l-.9-.72a2 2 0 0 1-.71-1.65v-.5a2 2 0 0 1 .71-1.65l.9-.72a2 2 0 0 0 .5-2.55l-.22-.38a2 2 0 0 0-2.5-.73l-1.07.48a2 2 0 0 1-1.78-.09l-.43-.25a2 2 0 0 1-1-1.48l-.17-1.18A2 2 0 0 0 12.22 2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
       </button>
       <div class="profile-menu" id="profileMenu">
         <div class="profile-account">
           <span id="accountLabel">Logged-in account</span>
-          <strong id="accountEmail" data-i18n="previewAccount">Preview mode (not authenticated)</strong>
+          <strong id="accountEmail" data-i18n="previewAccount">Not signed in</strong>
         </div>
         <p class="auth-status" id="authStatus" role="status" aria-live="polite" hidden></p>
         <button type="button" class="profile-row theme-row" id="themeToggle">
@@ -82,7 +75,7 @@
     <!-- ส่วนหัว: วันที่และชื่อหน้า -->
     <header class="page-header">
       <p class="current-date" id="currentDate">Sunday, November 22, 2026</p>
-      <h1 class="page-title" data-i18n="pageTitle">Manage deadlines</h1>
+      <h1 class="page-title" data-i18n="pageTitle">Manage tasks and deadlines</h1>
     </header>
     <p class="task-operation-status" id="taskOperationStatus" role="alert" aria-live="polite" hidden></p>
 
@@ -124,7 +117,7 @@
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input type="text" id="searchInput" aria-label="Search for a schedule" placeholder="Search for a schedule">
+          <input type="text" id="searchInput" aria-label="Search tasks" placeholder="Search tasks">
         </div>
         <button class="btn-sort" id="btnSort" title="Sort by earliest deadline" aria-label="Sort by earliest deadline" aria-pressed="true" data-sort-direction="ascending">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -156,13 +149,13 @@
   <div class="modal-overlay" id="addModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 id="modalTitle">Add schedule</h3>
+        <h3 id="modalTitle">Add task</h3>
         <button class="btn-close-modal" id="btnCloseModal" aria-label="Close">&times;</button>
       </div>
       <form id="addTaskForm">
         <div class="form-group">
-          <label for="taskTitleInput"><span data-i18n="title">Title</span> <span class="required">*</span></label>
-          <input type="text" id="taskTitleInput" required maxlength="120" placeholder="add title....">
+          <label for="taskTitleInput"><span data-i18n="title">Task title</span> <span class="required">*</span></label>
+          <input type="text" id="taskTitleInput" required maxlength="120" placeholder="Enter a task title">
         </div>
         <div class="form-row">
           <div class="form-group">
@@ -186,11 +179,11 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="taskDescInput" data-i18n="details">Details / Additional Notes</label>
-          <textarea id="taskDescInput" rows="4" placeholder="Specify the scope of work, conditions, or necessary preparations..."></textarea>
+          <label for="taskDescInput" data-i18n="details">Additional details (optional)</label>
+          <textarea id="taskDescInput" rows="4" placeholder="Add any details or notes..."></textarea>
         </div>
         <div class="sub-progress-form">
-          <label data-i18n="subProgress">Sub-progress</label>
+          <label data-i18n="subProgress">Subtasks</label>
           <div id="subtaskFormList"></div>
           <button type="button" class="btn-add-step" id="btnAddStep">
             <span id="addStepLabel">Add step</span>
