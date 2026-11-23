@@ -911,7 +911,7 @@ body.dark-mode .btn-sort:hover {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 2px solid #0099ff;
+  border: 1.8px solid #0099ff;
   color: var(--primary-blue);
   display: flex;
   align-items: center;
