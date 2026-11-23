@@ -127,7 +127,7 @@ if (nav) {
         <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open profile menu" hidden>
           <div class="avatar"><span class="avatar-initials" aria-hidden="true">U</span><img class="avatar-img" alt="User profile" hidden></div>
           <span class="profile-email" id="profileEmail"></span>
-          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
         <div class="profile-menu" id="profileMenu">
           <div class="profile-account">
