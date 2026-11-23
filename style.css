@@ -388,7 +388,7 @@ button {
 .container {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 36px 24px 60px;
+  padding: 36px 24px 100px;
 }
 
 .page-header {
@@ -1316,7 +1316,7 @@ transform: translateY(-100%);
 }
 
 .container {
-padding: 16px;
+padding: 16px 16px 100px;
 }
 .task-list-container {
 margin-left: -8px;
