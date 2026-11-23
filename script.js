@@ -647,6 +647,7 @@ function renderTasks() {
     const daysLeft = getDaysLeft(task.deadlineDate);
     const isUrgent = daysLeft <= 3 && task.status === "in-progress";
     const { day, year } = formatDateParts(task.deadlineDate, task.displayDayOverride);
+    const deadlineTime = typeof task.deadlineTime === "string" ? task.deadlineTime.trim() : "";
 
     // ข้อความบน Badge แจ้งเตือนวัน
     let badgeText = t("daysLeft", daysLeft);
@@ -693,7 +694,7 @@ function renderTasks() {
           <span class="deadline-label">${t("deadline")}</span>
           <strong class="deadline-day ${isUrgent ? "urgent" : ""}">${escapeHtml(day)}</strong>
           <span class="deadline-year">${escapeHtml(year)}</span>
-          <span class="deadline-time">${task.deadlineTime ? escapeHtml(formatDeadlineTime(task.deadlineTime)) : "--:--"}</span>
+          ${deadlineTime ? `<span class="deadline-time">${escapeHtml(formatDeadlineTime(deadlineTime))}</span>` : ""}
         </div>
 
         <div class="task-content-col">
