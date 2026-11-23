@@ -250,7 +250,7 @@ const translations = {
     confirmFinishTitle: "ยืนยันว่าทำงานเสร็จแล้วใช่ไหม?",
     confirmFinishMessage: "งานจะย้ายไปที่เสร็จแล้ว และจะคงอยู่จนกว่าคุณจะลบเอง",
     confirmRestoreTitle: "งานนี้ยังไม่เสร็จใช่ไหม?",
-    confirmRestoreMessage: "งานจะถูกย้ายกลับไปที่กำลังดำเนินการ",
+    confirmRestoreMessage: "งานจะถูกย้ายกลับไปที่กำลังทำ",
     confirm: "ยืนยัน"
   }
 };
