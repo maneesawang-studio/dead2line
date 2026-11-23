@@ -808,7 +808,7 @@ body.dark-mode .btn-sort:hover {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .task-badge-group {
