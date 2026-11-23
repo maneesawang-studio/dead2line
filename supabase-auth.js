@@ -25,6 +25,16 @@
   const landingDashboardLink = document.getElementById("landingDashboardLink");
   const tasksNavLink = document.getElementById("tasksNavLink");
 
+  function rememberStandalonePage(path) {
+    const isStandalone = (
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(display-mode: standalone)").matches
+    ) || Boolean(window.navigator && window.navigator.standalone);
+    if (isStandalone) {
+      localStorage.setItem("deadline-pwa-last-page", new URL(path, window.location.href).pathname);
+    }
+  }
+
   const messages = {
     en: {
       configMissing: "Supabase isn't configured yet. Add the project URL and publishable key to supabase-config.js. Sign-in needs an HTTP(S) site URL.",
@@ -88,14 +98,18 @@
   function redirectToLogin(reason) {
     const loginUrl = new URL(siteUrl("login/"));
     if (reason) loginUrl.searchParams.set("reason", reason);
+    rememberStandalonePage(loginUrl.href);
     window.location.replace(loginUrl.href);
   }
 
   function redirectToDashboard() {
-    window.location.replace(siteUrl("app/"));
+    const dashboardUrl = siteUrl("app/");
+    rememberStandalonePage(dashboardUrl);
+    window.location.replace(dashboardUrl);
   }
 
   function redirectToHome() {
+    localStorage.removeItem("deadline-pwa-last-page");
     window.location.replace(siteUrl(""));
   }
 
