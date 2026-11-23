@@ -5,45 +5,14 @@ const siteUrl = path => new URL(String(path || "").replace(/^\/+/, ""), siteRoot
 const sitePath = path => new URL(siteUrl(path)).pathname;
 window.deadlineSiteUrl = siteUrl;
 
-const lastPwaPageKey = "deadline-pwa-last-page";
 const isStandaloneApp = (
   typeof window.matchMedia === "function" &&
   window.matchMedia("(display-mode: standalone)").matches
 ) || Boolean(window.navigator && window.navigator.standalone);
 if (isStandaloneApp) {
   const currentPath = window.location.pathname;
-  const navigationEntries = window.performance &&
-    typeof window.performance.getEntriesByType === "function"
-    ? window.performance.getEntriesByType("navigation")
-    : [];
-  const isHistoryNavigation = navigationEntries[0] && navigationEntries[0].type === "back_forward";
   const query = new URLSearchParams(window.location.search);
-  const authCallbackKeys = ["code", "token_hash", "access_token", "refresh_token"];
-  const isAuthCallback = authCallbackKeys.some(key => query.has(key)) ||
-    query.get("reason") === "email-confirmed" ||
-    /(?:access_token|refresh_token|code|token_hash)=/.test(window.location.hash);
-  const savedPath = localStorage.getItem(lastPwaPageKey);
-  let restoredPath = false;
-
-  if (savedPath && !isHistoryNavigation && !isAuthCallback) {
-    try {
-      const savedUrl = new URL(savedPath, window.location.origin);
-      if (savedUrl.origin === window.location.origin &&
-        savedUrl.pathname.startsWith(siteRoot.pathname) &&
-        savedUrl.pathname !== currentPath) {
-        window.location.replace(savedUrl.pathname);
-        restoredPath = true;
-      }
-    } catch (error) {
-      console.warn("Ignoring invalid saved PWA page:", error);
-    }
-  }
-
-  if (!restoredPath) {
-    localStorage.setItem(lastPwaPageKey, currentPath);
-  }
-
-  if (!restoredPath && query.get("source") === "pwa") {
+  if (query.get("source") === "pwa") {
     query.delete("source");
     const remainingQuery = query.toString();
     window.history.replaceState(
@@ -52,19 +21,6 @@ if (isStandaloneApp) {
       `${currentPath}${remainingQuery ? `?${remainingQuery}` : ""}${window.location.hash}`
     );
   }
-
-  document.addEventListener("click", event => {
-    if (event.defaultPrevented) return;
-    const link = event.target.closest && event.target.closest("a[href]");
-    if (!link || link.hasAttribute("download") ||
-      (link.target && link.target.toLowerCase() !== "_self")) return;
-
-    const destination = new URL(link.href, window.location.href);
-    if (destination.origin === window.location.origin &&
-      destination.pathname.startsWith(siteRoot.pathname)) {
-      localStorage.setItem(lastPwaPageKey, destination.pathname);
-    }
-  });
 }
 
 const nav = document.getElementById("siteNavigation") || document.querySelector(".navbar");

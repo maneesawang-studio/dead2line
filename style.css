@@ -534,6 +534,10 @@ body.dark-mode .profile-menu {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
 }
 
+body.dark-mode .avatar {
+  background-color: #141414;
+}
+
 body.dark-mode .profile-menu hr,
 body.dark-mode .task-card {
   border-color: #2C2C2C;
@@ -836,6 +840,11 @@ body.dark-mode .btn-sort:hover {
 
 .badge.normal {
   background-color: var(--badge-blue-bg);
+  color: #FFFFFF;
+}
+
+.badge.completed {
+  background-color: var(--color-green);
   color: #FFFFFF;
 }
 
@@ -1432,7 +1441,7 @@ font-size: 12px;
 .form-group select {
     height: 40px;
     padding: 0 40px 0 12px;
-    font-size: 13px;
+    font-size: 16px;
 }
 .form-group textarea {
     height: 100px;

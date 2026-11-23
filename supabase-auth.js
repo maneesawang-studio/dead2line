@@ -26,16 +26,6 @@
   const landingDashboardLink = document.getElementById("landingDashboardLink");
   const tasksNavLink = document.getElementById("tasksNavLink");
 
-  function rememberStandalonePage(path) {
-    const isStandalone = (
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(display-mode: standalone)").matches
-    ) || Boolean(window.navigator && window.navigator.standalone);
-    if (isStandalone) {
-      localStorage.setItem("deadline-pwa-last-page", new URL(path, window.location.href).pathname);
-    }
-  }
-
   const messages = {
     en: {
       configMissing: "Supabase isn't configured yet. Add the project URL and publishable key to supabase-config.js. Sign-in needs an HTTP(S) site URL.",
@@ -99,18 +89,15 @@
   function redirectToLogin(reason) {
     const loginUrl = new URL(siteUrl("login/"));
     if (reason) loginUrl.searchParams.set("reason", reason);
-    rememberStandalonePage(loginUrl.href);
     window.location.replace(loginUrl.href);
   }
 
   function redirectToDashboard() {
     const dashboardUrl = siteUrl("app/");
-    rememberStandalonePage(dashboardUrl);
     window.location.replace(dashboardUrl);
   }
 
   function redirectToHome() {
-    localStorage.removeItem("deadline-pwa-last-page");
     window.location.replace(siteUrl(""));
   }
 
@@ -403,7 +390,17 @@
       return;
     }
 
-    if (authPage === "landing") updateLandingView(Boolean(session));
+    if (authPage === "landing" && session) {
+      const isStandaloneApp = (
+        typeof window.matchMedia === "function" &&
+        window.matchMedia("(display-mode: standalone)").matches
+      ) || Boolean(window.navigator && window.navigator.standalone);
+      if (isStandaloneApp) {
+        redirectToDashboard();
+        return;
+      }
+      updateLandingView(true);
+    } else if (authPage === "landing") updateLandingView(false);
     else if (tasksNavLink && authPage !== "dashboard") {
       tasksNavLink.href = siteUrl(session ? "app/" : "login/");
     }

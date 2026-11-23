@@ -652,6 +652,7 @@ function renderTasks() {
   taskListContainer.innerHTML = filtered.map(task => {
     const daysLeft = getDaysLeft(task.deadlineDate);
     const isUrgent = daysLeft <= 3 && task.status === "in-progress";
+    const isCompleted = task.status === "finish";
     const { day, year } = formatDateParts(task.deadlineDate, task.displayDayOverride);
     const deadlineTime = typeof task.deadlineTime === "string" ? task.deadlineTime.trim() : "";
 
@@ -706,7 +707,7 @@ function renderTasks() {
         <div class="task-content-col">
           <div class="task-badges">
             <div class="task-badge-group">
-              <span class="badge ${isUrgent ? "urgent" : "normal"}">${escapeHtml(badgeText)}</span>
+              <span class="badge ${isCompleted ? "completed" : isUrgent ? "urgent" : "normal"}">${escapeHtml(badgeText)}</span>
               <span class="badge category">${escapeHtml(getCategoryLabel(task.category))}</span>
             </div>
             <div class="task-actions-col">
