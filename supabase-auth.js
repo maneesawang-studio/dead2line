@@ -5,6 +5,7 @@
     ? window.deadlineSiteUrl(path)
     : new URL(String(path || "").replace(/^\/+/, ""), siteRoot).href;
   const config = window.DEADLINE_SUPABASE_CONFIG || {};
+  const publicSiteUrl = typeof config.siteUrl === "string" ? config.siteUrl.trim() : "";
   const supabaseUrl = typeof config.url === "string" ? config.url.trim() : "";
   const publishableKey = typeof config.publishableKey === "string" ? config.publishableKey.trim() : "";
   const authPage = document.body.dataset.authPage;
@@ -371,7 +372,9 @@
             const { data, error } = await client.auth.signUp({
               email,
               password,
-              options: { emailRedirectTo: siteUrl("login/?reason=email-confirmed") }
+              options: {
+                emailRedirectTo: new URL("login/?reason=email-confirmed", publicSiteUrl).href
+              }
             });
             if (error) throw error;
             if (data && data.session) {
