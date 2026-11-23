@@ -78,7 +78,7 @@ button {
   position: sticky;
   top: 0;
   z-index: 200;
-  border-bottom: 1px solid var(--navbar-glass-border);
+  border-bottom: none;
   background-color: var(--navbar-glass-background);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
@@ -223,7 +223,7 @@ button {
 
 .user-profile {
   height: 44px;
-  background-color: var(--bg-white);
+  background-color: var(--bg-page);
   border-radius: 999px;
   display: flex;
   align-items: center;
@@ -237,7 +237,7 @@ button {
   overflow: hidden;
   color: var(--text-dark);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 400;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -598,6 +598,7 @@ body.dark-mode .subtask-form-input::placeholder {
   background-color: var(--bg-white);
   border-radius: 999px;
   padding: 4px;
+  gap: 4px;
   display: flex;
   width: 340px;
   box-shadow: var(--shadow-soft);
@@ -618,6 +619,11 @@ body.dark-mode .subtask-form-input::placeholder {
   background-color: var(--primary-blue);
   color: #FFFFFF;
   font-weight: 600;
+}
+
+.tab-btn:not(.active):hover {
+  background-color: rgba(0, 153, 255, 0.12);
+  color: var(--primary-blue);
 }
 
 .search-sort-group {
@@ -662,6 +668,20 @@ body.dark-mode .subtask-form-input::placeholder {
   justify-content: center;
   box-shadow: var(--shadow-soft);
   transition: background-color 0.2s;
+}
+
+.btn-sort svg {
+  transition: transform 0.18s ease;
+}
+
+.btn-sort[data-sort-direction="descending"] svg {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-sort svg {
+    transition: none;
+  }
 }
 
 .btn-sort:hover {

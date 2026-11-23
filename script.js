@@ -305,6 +305,14 @@ function t(key, ...args) {
   return typeof translation === "function" ? translation(...args) : translation;
 }
 
+function updateSortButton() {
+  const sortLabel = sortAsc ? t("sortAscending") : t("sortDescending");
+  btnSort.title = sortLabel;
+  btnSort.setAttribute("aria-label", sortLabel);
+  btnSort.setAttribute("aria-pressed", String(sortAsc));
+  btnSort.dataset.sortDirection = sortAsc ? "ascending" : "descending";
+}
+
 function applyTheme() {
   window.deadlineApplyDocumentTheme(currentTheme);
   document.body.classList.toggle("dark-mode", currentTheme === "dark");
@@ -331,9 +339,7 @@ function applyLanguage() {
 
   searchInput.placeholder = t("searchPlaceholder");
   searchInput.setAttribute("aria-label", t("searchPlaceholder"));
-  const sortLabel = sortAsc ? t("sortAscending") : t("sortDescending");
-  btnSort.title = sortLabel;
-  btnSort.setAttribute("aria-label", sortLabel);
+  updateSortButton();
   btnProfile.setAttribute("aria-label", t("openProfileMenu"));
   btnCloseModal.setAttribute("aria-label", t("close"));
   document.getElementById("taskTitleInput").placeholder = t("titlePlaceholder");
@@ -945,9 +951,7 @@ renderTasks();
 // เรียงลำดับวันที่
 btnSort.addEventListener("click", () => {
 sortAsc = !sortAsc;
-const sortLabel = sortAsc ? t("sortAscending") : t("sortDescending");
-btnSort.title = sortLabel;
-btnSort.setAttribute("aria-label", sortLabel);
+updateSortButton();
 renderTasks();
 });
 themeToggle.addEventListener("click", () => {
