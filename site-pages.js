@@ -260,6 +260,19 @@ if (nav) {
       if (privacyLink) profileMenu.insertBefore(link, privacyLink);
       else profileMenu.appendChild(link);
     });
+    const secondaryLinks = [
+      "profileInstallLink",
+      "profileAboutLink",
+      "profileFaqLink",
+      "profileContactLink"
+    ].map(id => profileMenu.querySelector(`#${id}`)).filter(Boolean);
+    if (privacyLink) secondaryLinks.push(privacyLink);
+    if (secondaryLinks.length) {
+      const linksGroup = document.createElement("div");
+      linksGroup.className = "profile-link-group";
+      profileMenu.insertBefore(linksGroup, secondaryLinks[0]);
+      secondaryLinks.forEach(link => linksGroup.appendChild(link));
+    }
   }
 
   if (toggle) {

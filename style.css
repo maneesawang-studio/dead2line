@@ -490,6 +490,10 @@ body.dark-mode .profile-menu {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
 }
 
+body.dark-mode .profile-link-group {
+  border-color: #383838;
+}
+
 body.dark-mode .profile-row:hover,
 body.dark-mode .btn-more:hover {
   background-color: #303030;
@@ -1424,6 +1428,17 @@ font-size: 12px;
 
 .profile-row-link {
   text-decoration: none;
+}
+
+.profile-link-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-radius: 0px;
+}
+
+.profile-link-group .profile-row {
+  border-radius: 8px;
 }
 
 .task-operation-status {
