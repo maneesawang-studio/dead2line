@@ -13,6 +13,7 @@
   const signUpForm = document.getElementById("signUpForm");
   const loginButton = document.getElementById("loginSubmit");
   const signUpButton = document.getElementById("signUpSubmit");
+  const resendConfirmationButton = document.getElementById("resendConfirmation");
   const status = authPage === "login" || authPage === "signup"
     ? document.getElementById("authStatus")
     : authPage === "landing"
@@ -40,6 +41,11 @@
       signUpCheckEmail: "Account created. Check your email and follow the confirmation link to continue.",
       emailConfirmed: "Email confirmed. You can now sign in.",
       emailConfirmSessionFailed: "Email confirmed, but we couldn't reset your sign-in. Refresh the page before signing in.",
+      emailLinkExpired: "This confirmation link is invalid or has expired. Enter your email above and request a new confirmation email.",
+      resendConfirmation: "Resend confirmation email",
+      resendingConfirmation: "Sending a new confirmation email...",
+      confirmationResent: "A new confirmation email has been sent. Check your inbox.",
+      resendConfirmationFailed: "Couldn't resend the confirmation email.",
       signUpMissingUser: "We couldn't retrieve your new account. Please try again.",
       noSession: "Your account was created, but sign-in didn't complete. Please try signing in again.",
       signOutFailed: "Couldn't sign out.",
@@ -62,6 +68,11 @@
       signUpCheckEmail: "สร้างบัญชีแล้ว กรุณาตรวจสอบอีเมลและกดลิงก์ยืนยันเพื่อดำเนินการต่อ",
       emailConfirmed: "ยืนยันอีเมลแล้ว คุณสามารถเข้าสู่ระบบได้เลย",
       emailConfirmSessionFailed: "ยืนยันอีเมลแล้ว แต่เตรียมสถานะเข้าสู่ระบบไม่สำเร็จ กรุณาโหลดหน้าใหม่ก่อนเข้าสู่ระบบ",
+      emailLinkExpired: "ลิงก์ยืนยันอีเมลไม่ถูกต้องหรือหมดอายุแล้ว กรุณากรอกอีเมลด้านบนเพื่อขอลิงก์ยืนยันใหม่",
+      resendConfirmation: "ส่งลิงก์ยืนยันอีกครั้ง",
+      resendingConfirmation: "กำลังส่งอีเมลยืนยันใหม่...",
+      confirmationResent: "ส่งอีเมลยืนยันใหม่แล้ว กรุณาตรวจสอบกล่องจดหมาย",
+      resendConfirmationFailed: "ส่งอีเมลยืนยันใหม่ไม่สำเร็จ",
       signUpMissingUser: "เรียกดูข้อมูลบัญชีใหม่ไม่สำเร็จ กรุณาลองอีกครั้ง",
       noSession: "สร้างบัญชีแล้ว แต่เข้าสู่ระบบไม่สำเร็จ กรุณาลองเข้าสู่ระบบอีกครั้ง",
       signOutFailed: "ออกจากระบบไม่สำเร็จ",
@@ -234,6 +245,12 @@
     }
 
     if (loginForm || signUpForm) {
+      const callbackError = new URLSearchParams(window.location.hash.slice(1));
+      const expiredEmailLink = callbackError.get("error_code") === "otp_expired";
+      if (callbackError.has("error")) {
+        window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
+      }
+
       const loginReason = new URLSearchParams(window.location.search).get("reason");
       if (loginForm && loginReason === "email-confirmed") {
         if (session) {
@@ -256,10 +273,43 @@
         redirectToDashboard();
         return;
       }
+      if (loginForm && resendConfirmationButton) {
+        resendConfirmationButton.hidden = false;
+        resendConfirmationButton.textContent = message("resendConfirmation");
+      }
+      if (expiredEmailLink && loginForm) {
+        showStatus(message("emailLinkExpired"));
+      }
       if (loginReason === "auth-unavailable" && loginForm) showStatus(message("authUnavailable"));
       setAuthReady(true);
 
       if (loginForm) {
+        if (resendConfirmationButton) {
+          resendConfirmationButton.addEventListener("click", async () => {
+            const emailInput = document.getElementById("loginEmail");
+            if (!emailInput.reportValidity()) return;
+
+            resendConfirmationButton.disabled = true;
+            showStatus(message("resendingConfirmation"), "pending");
+            try {
+              const { error } = await client.auth.resend({
+                type: "signup",
+                email: emailInput.value.trim(),
+                options: {
+                  emailRedirectTo: new URL("login/?reason=email-confirmed", publicSiteUrl).href
+                }
+              });
+              if (error) throw error;
+              showStatus(message("confirmationResent"), "success");
+            } catch (error) {
+              console.error("Supabase confirmation email resend failed:", error);
+              showStatus(`${message("resendConfirmationFailed")} ${error.message || ""}`);
+            } finally {
+              resendConfirmationButton.disabled = false;
+            }
+          });
+        }
+
         loginForm.addEventListener("submit", async event => {
           event.preventDefault();
           setAuthReady(false);

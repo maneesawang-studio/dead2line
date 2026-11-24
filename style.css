@@ -1458,6 +1458,30 @@ body.dark-mode .task-operation-status {
   display: none;
 }
 
+.auth-resend-link {
+  display: block;
+  margin: -4px 0 16px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--primary-blue);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.auth-resend-link[hidden] {
+  display: none;
+}
+
+.auth-resend-link:focus-visible {
+  outline: 2px solid var(--primary-blue);
+  outline-offset: 3px;
+}
+
 .auth-status[data-kind="pending"] {
   background-color: #EFF6FF;
   color: #1D4ED8;
