@@ -1,14 +1,28 @@
-const CACHE_NAME = "deadline-v30";
+const CACHE_NAME = "deadline-v31";
 const BASE_URL = new URL("./", self.location.href);
 const CACHEABLE_DESTINATIONS = new Set(["document", "font", "image", "script", "style"]);
+const CORE_DOCUMENTS = new Set([
+  "",
+  "index.html",
+  "app/",
+  "app/index.html",
+  "en/",
+  "en/index.html",
+  "th/",
+  "th/index.html"
+].map(path => new URL(path, BASE_URL).pathname));
 const CORE_ASSETS = [
   "",
+  "index.html",
   "app/",
+  "app/index.html",
   "en/",
+  "en/index.html",
   "signup/",
   "contact/",
   "install/",
   "th/",
+  "th/index.html",
   "style.css",
   "script.js",
   "site-pages.js",
@@ -39,6 +53,28 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
   if (!CACHEABLE_DESTINATIONS.has(event.request.destination)) return;
+
+  if (event.request.destination === "document"
+    && CORE_DOCUMENTS.has(new URL(event.request.url).pathname)) {
+    const update = fetch(event.request).then(response => {
+      if (!response.ok || response.type !== "basic") return response;
+
+      const responseToCache = response.clone();
+      return caches.open(CACHE_NAME)
+        .then(cache => cache.put(event.request, responseToCache))
+        .catch(error => {
+          console.error("Could not cache a core document:", error);
+        })
+        .then(() => response);
+    });
+    event.waitUntil(update.then(() => undefined, () => undefined));
+    event.respondWith(
+      caches.match(event.request, { ignoreSearch: true }).then(cachedResponse =>
+        cachedResponse || update
+      )
+    );
+    return;
+  }
 
   if (event.request.destination === "document"
     || event.request.destination === "style"

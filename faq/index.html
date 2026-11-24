@@ -5,7 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Find answers to common questions about tasks, deadlines, account access, and settings in Deadline.">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="theme-color" content="#F2F2F7">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#F2F2F7" data-theme-color="light" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#000000" data-theme-color="dark" media="(prefers-color-scheme: dark)">
+  <script>
+    (() => {
+      let preference = "system";
+      try {
+        const savedTheme = localStorage.getItem("deadline-theme");
+        if (savedTheme === "light" || savedTheme === "dark") {
+          preference = savedTheme;
+        } else {
+          localStorage.removeItem("deadline-theme");
+        }
+      } catch (error) {
+        preference = "system";
+      }
+      const systemIsDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const theme = preference === "system" ? (systemIsDark ? "dark" : "light") : preference;
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
+      document.querySelectorAll('meta[name="theme-color"]').forEach(meta => {
+        meta.media = meta.dataset.themeColor === theme ? "all" : "not all";
+      });
+    })();
+  </script>
   <meta name="apple-mobile-web-app-title" content="Deadline">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
@@ -134,7 +158,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../style.css">
 </head>
 <body class="site-page" data-auth-page="public" data-site-title="faqTitle" data-site-description="faqDescription" data-nav-active="faq">
   <nav class="navbar">

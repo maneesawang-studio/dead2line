@@ -394,6 +394,7 @@ const siteTranslations = {
     language: "Language",
     light: "Light",
     dark: "Dark",
+    system: "System",
     languageName: "English",
     account: "Account",
     previewAccount: "Not signed in",
@@ -591,6 +592,7 @@ const siteTranslations = {
     language: "ภาษา",
     light: "สว่าง",
     dark: "มืด",
+    system: "ตามเครื่อง",
     languageName: "ไทย",
     account: "บัญชี",
     previewAccount: "ยังไม่ได้เข้าสู่ระบบ",
@@ -774,20 +776,41 @@ const systemThemePreference = window.matchMedia
   ? window.matchMedia("(prefers-color-scheme: dark)")
   : null;
 
-function getThemePreference() {
+function getThemeMode() {
   const savedTheme = localStorage.getItem("deadline-theme");
   if (savedTheme === "dark" || savedTheme === "light") return savedTheme;
+  localStorage.removeItem("deadline-theme");
+  return "system";
+}
+
+function getThemePreference() {
+  const savedTheme = getThemeMode();
+  if (savedTheme !== "system") return savedTheme;
   return systemThemePreference && systemThemePreference.matches ? "dark" : "light";
+}
+
+function setThemeMode(theme) {
+  if (theme === "system") {
+    localStorage.removeItem("deadline-theme");
+    return;
+  }
+  localStorage.setItem("deadline-theme", theme);
 }
 
 function applyDocumentTheme(theme) {
   document.documentElement.style.colorScheme = theme;
-  const themeColor = document.querySelector('meta[name="theme-color"]');
-  if (themeColor) themeColor.content = theme === "dark" ? "#000000" : "#F2F2F7";
+  document.documentElement.dataset.theme = theme;
+  document.querySelectorAll('meta[name="theme-color"]').forEach(meta => {
+    const matchesTheme = meta.dataset.themeColor === theme;
+    meta.media = matchesTheme ? "all" : "not all";
+  });
 }
 
 let siteTheme = getThemePreference();
+let siteThemeMode = getThemeMode();
 window.deadlineGetThemePreference = getThemePreference;
+window.deadlineGetThemeMode = getThemeMode;
+window.deadlineSetThemeMode = setThemeMode;
 window.deadlineApplyDocumentTheme = applyDocumentTheme;
 
 function applyLogoTheme(theme) {
@@ -918,7 +941,7 @@ function applySitePreferences() {
   const themeState = document.getElementById("themeState");
   const languageState = document.getElementById("languageState");
   const profileButton = document.getElementById("btnProfile");
-  if (themeState) themeState.textContent = siteText(siteTheme);
+  if (themeState) themeState.textContent = siteText(siteThemeMode);
   if (languageState) languageState.textContent = siteText("languageName");
   if (profileButton) profileButton.setAttribute("aria-label", siteText("openProfileMenu"));
   document.querySelectorAll("[data-site-i18n-aria-label]").forEach(element => {
@@ -1056,8 +1079,7 @@ installActionConfirmation();
 const isDashboard = document.body.dataset.authPage === "dashboard";
 if (!isDashboard && systemThemePreference) {
   const syncSystemTheme = event => {
-    const savedTheme = localStorage.getItem("deadline-theme");
-    if (savedTheme === "dark" || savedTheme === "light") return;
+    if (siteThemeMode !== "system") return;
     siteTheme = event.matches ? "dark" : "light";
     applySitePreferences();
   };
@@ -1082,8 +1104,10 @@ if (!isDashboard) {
   const themeToggle = document.getElementById("themeToggle");
   const languageToggle = document.getElementById("languageToggle");
   if (themeToggle) themeToggle.addEventListener("click", () => {
-    siteTheme = siteTheme === "light" ? "dark" : "light";
-    localStorage.setItem("deadline-theme", siteTheme);
+    const modes = ["system", "light", "dark"];
+    siteThemeMode = modes[(modes.indexOf(siteThemeMode) + 1) % modes.length];
+    setThemeMode(siteThemeMode);
+    siteTheme = getThemePreference();
     applySitePreferences();
   });
 

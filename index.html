@@ -5,7 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Organize tasks, add subtasks, track progress, and see upcoming deadlines in one simple task management app.">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="theme-color" content="#F2F2F7">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#F2F2F7" data-theme-color="light" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#000000" data-theme-color="dark" media="(prefers-color-scheme: dark)">
+  <script>
+    (() => {
+      let preference = "system";
+      try {
+        const savedTheme = localStorage.getItem("deadline-theme");
+        if (savedTheme === "light" || savedTheme === "dark") {
+          preference = savedTheme;
+        } else {
+          localStorage.removeItem("deadline-theme");
+        }
+      } catch (error) {
+        preference = "system";
+      }
+      const systemIsDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const theme = preference === "system" ? (systemIsDark ? "dark" : "light") : preference;
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
+      document.querySelectorAll('meta[name="theme-color"]').forEach(meta => {
+        meta.media = meta.dataset.themeColor === theme ? "all" : "not all";
+      });
+    })();
+  </script>
+  <script>
+    (() => {
+      let hasSession = false;
+      try {
+        for (let index = 0; index < localStorage.length; index += 1) {
+          const key = localStorage.key(index);
+          if (!key || !/^sb-.+-auth-token$/.test(key)) continue;
+          let session;
+          try {
+            session = JSON.parse(localStorage.getItem(key));
+          } catch (error) {
+            continue;
+          }
+          if (session && session.access_token && session.refresh_token && session.user) {
+            hasSession = true;
+            break;
+          }
+        }
+      } catch (error) {
+        hasSession = false;
+      }
+      if (hasSession) {
+        document.documentElement.style.display = "none";
+        window.location.replace("/app/");
+      }
+    })();
+  </script>
   <meta name="application-name" content="Deadline">
   <meta name="apple-mobile-web-app-title" content="Deadline">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -88,7 +139,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body class="site-page landing-page" data-auth-page="landing" data-site-title="homeTitle" data-site-description="homeDescription" data-nav-active="home">
   <nav id="siteNavigation" aria-label="Main navigation" data-site-i18n-aria-label="mainNavigation"></nav>

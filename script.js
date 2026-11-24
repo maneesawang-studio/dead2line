@@ -157,6 +157,7 @@ const translations = {
     switchTheme: "Switch theme",
     light: "Light",
     dark: "Dark",
+    system: "System",
     language: "Language",
     languageName: "English",
     settings: "Settings",
@@ -240,6 +241,7 @@ const translations = {
     switchTheme: "เปลี่ยนธีม",
     light: "สว่าง",
     dark: "มืด",
+    system: "ตามเครื่อง",
     language: "ภาษา",
     languageName: "ไทย",
     settings: "การตั้งค่า",
@@ -259,6 +261,7 @@ const translations = {
   }
 };
 let currentLanguage = localStorage.getItem("deadline-language") === "th" ? "th" : "en";
+let currentThemeMode = window.deadlineGetThemeMode();
 let currentTheme = window.deadlineGetThemePreference();
 
 // =========================================
@@ -323,7 +326,7 @@ function applyTheme() {
   if (typeof window.deadlineApplyLogoTheme === "function") {
     window.deadlineApplyLogoTheme(currentTheme);
   }
-  themeState.textContent = t(currentTheme);
+  themeState.textContent = t(currentThemeMode);
 }
 
 function applyLanguage() {
@@ -362,7 +365,7 @@ function applyLanguage() {
   }
   document.getElementById("addStepLabel").textContent = t("addStep");
   document.getElementById("modalTitle").textContent = t(editingTaskId === null ? "addSchedule" : "editSchedule");
-  themeState.textContent = t(currentTheme);
+  themeState.textContent = t(currentThemeMode);
   const navToggle = document.getElementById("siteNavToggle");
   if (navToggle) {
     navToggle.setAttribute("aria-label", navToggle.getAttribute("aria-expanded") === "true"
@@ -960,14 +963,15 @@ updateSortButton();
 renderTasks();
 });
 themeToggle.addEventListener("click", () => {
-  currentTheme = currentTheme === "light" ? "dark" : "light";
-  localStorage.setItem("deadline-theme", currentTheme);
+  const modes = ["system", "light", "dark"];
+  currentThemeMode = modes[(modes.indexOf(currentThemeMode) + 1) % modes.length];
+  window.deadlineSetThemeMode(currentThemeMode);
+  currentTheme = window.deadlineGetThemePreference();
   applyTheme();
 });
 const systemThemePreference = window.matchMedia("(prefers-color-scheme: dark)");
 const syncSystemTheme = event => {
-  const savedTheme = localStorage.getItem("deadline-theme");
-  if (savedTheme === "dark" || savedTheme === "light") return;
+  if (currentThemeMode !== "system") return;
   currentTheme = event.matches ? "dark" : "light";
   applyTheme();
 };
