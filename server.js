@@ -29,7 +29,7 @@ const publicRootFiles = new Set([
   "robots.txt",
   "sitemap.xml"
 ]);
-const publicDirectories = new Set(["app", "Asset", "about", "en", "faq", "login", "privacy", "settings", "signup", "th"]);
+const publicDirectories = new Set(["app", "Asset", "about", "en", "faq", "install", "login", "privacy", "settings", "signup", "th"]);
 
 const server = http.createServer((request, response) => {
   if (request.method !== "GET" && request.method !== "HEAD") {

@@ -1,15 +1,46 @@
 {
   "name": "Deadline",
   "short_name": "Deadline",
+  "description": "Organize tasks and deadlines in one place.",
+  "id": "./",
   "start_url": "./?source=pwa",
+  "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "background_color": "#F2F2F7",
   "theme_color": "#F2F2F7",
+  "categories": ["productivity"],
+  "shortcuts": [
+    {
+      "name": "Open tasks",
+      "short_name": "Tasks",
+      "description": "View your tasks and deadlines.",
+      "url": "app/",
+      "icons": [
+        {
+          "src": "Asset/Deadline-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
   "icons": [
+    {
+      "src": "Asset/Deadline-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
     {
       "src": "Asset/Deadline-512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "Asset/Deadline-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

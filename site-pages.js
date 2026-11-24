@@ -127,6 +127,7 @@ if (nav) {
           <p class="auth-status" id="profileAuthStatus" role="status" aria-live="polite" hidden></p>
           ${preferences}
           <a class="profile-row profile-row-link" href="${siteUrl("settings/")}" data-i18n="settings" data-site-i18n="settings">Settings</a>
+          <a class="profile-row profile-row-link" id="profileInstallLink" href="${siteUrl("install/")}" data-i18n="installApp" data-site-i18n="installApp">Install app</a>
           <hr>
           <a class="profile-row profile-row-link" href="${localizedSiteUrl("privacy/")}" data-i18n="privacy" data-site-i18n="privacy">Privacy</a>
           <a class="profile-row profile-row-link" id="loginMenuLink" href="${siteUrl("login/")}" data-i18n="signIn" data-site-i18n="signIn">Sign in</a>
@@ -230,6 +231,17 @@ if (nav) {
     const privacyPath = sitePath("privacy/");
     const privacyLink = Array.from(profileMenu.querySelectorAll(".profile-row-link"))
       .find(link => new URL(link.href, window.location.href).pathname === privacyPath);
+    if (!document.getElementById("profileInstallLink")) {
+      const link = document.createElement("a");
+      link.id = "profileInstallLink";
+      link.className = "profile-row profile-row-link";
+      link.href = siteUrl("install/");
+      link.dataset.i18n = "installApp";
+      link.dataset.siteI18n = "installApp";
+      link.textContent = "Install app";
+      if (privacyLink) profileMenu.insertBefore(link, privacyLink);
+      else profileMenu.appendChild(link);
+    }
     [
       { id: "profileAboutLink", page: "about", key: "aboutNav", text: "About" },
       { id: "profileFaqLink", page: "faq", key: "faqNav", text: "FAQ" }
@@ -371,6 +383,7 @@ const siteTranslations = {
     openProfileMenu: "Open settings menu",
     switchTheme: "Switch theme",
     settings: "Settings",
+    installApp: "Install app",
     signIn: "Sign in",
     privacy: "Privacy",
     signOut: "Sign out",
@@ -476,7 +489,29 @@ const siteTranslations = {
     previewTaskTwoMeta: "Share progress and next steps",
     homeStudy: "STUDY",
     homeWork: "JOBS",
-    homeClosing: "Ready for a clearer plan?"
+    homeClosing: "Ready for a clearer plan?",
+    installTitle: "Install Deadline as an app",
+    installDescription: "Add Deadline to your home screen or computer for a simple app-like experience.",
+    installEyebrow: "TAKE DEADLINE WITH YOU",
+    installHeading: "Use Deadline like an app",
+    installIntro: "Add Deadline to your home screen or computer. It opens in its own app window, and your tasks stay synced to your account.",
+    installPromptHeading: "Install Deadline",
+    installPromptText: "On supported browsers, install directly from here. Otherwise, follow the steps for your device.",
+    installButton: "Install app",
+    installAlreadyInstalled: "Deadline is already installed on this device.",
+    installAccepted: "Installation started. Find Deadline on your home screen or in your app list.",
+    installDismissed: "Installation wasn't completed. You can try again from your browser menu.",
+    installPromptFailed: "Couldn't open the install prompt. Use the browser menu or follow the steps below.",
+    installAndroidTitle: "Android (Chrome)",
+    installAndroidText: "Open this page in Chrome, tap the three-dot menu, then choose Install app or Add to Home screen.",
+    installAppleTitle: "iPhone or iPad (Safari)",
+    installAppleText: "Open this page in Safari, tap Share, choose Add to Home Screen, then tap Add.",
+    installDesktopTitle: "Computer (Chrome or Edge)",
+    installDesktopText: "Select Install app in the address bar or open the browser menu and choose Install Deadline.",
+    installOtherTitle: "Other browsers",
+    installOtherText: "Open the browser's Share or menu option and look for Add to Home Screen or Install app.",
+    installNoteTitle: "Your tasks stay in sync",
+    installNoteText: "The app opens in its own window, and your account keeps your data in sync. An internet connection is needed to load and update tasks."
   },
   th: {
     dashboard: "รายการงาน",
@@ -503,6 +538,7 @@ const siteTranslations = {
     openProfileMenu: "เปิดเมนูตั้งค่า",
     switchTheme: "เปลี่ยนธีม",
     settings: "การตั้งค่า",
+    installApp: "ติดตั้งเป็นแอป",
     signIn: "เข้าสู่ระบบ",
     privacy: "ความเป็นส่วนตัว",
     signOut: "ออกจากระบบ",
@@ -608,7 +644,29 @@ const siteTranslations = {
     previewTaskTwoMeta: "แจ้งความคืบหน้าและขั้นตอนถัดไป",
     homeStudy: "การเรียน",
     homeWork: "งาน",
-    homeClosing: "พร้อมวางแผนงานให้ชัดเจนขึ้นหรือยัง?"
+    homeClosing: "พร้อมวางแผนงานให้ชัดเจนขึ้นหรือยัง?",
+    installTitle: "ติดตั้ง Deadline เป็นแอป",
+    installDescription: "เพิ่ม Deadline ไปยังหน้าจอหลักหรือคอมพิวเตอร์ เพื่อเปิดใช้งานได้เหมือนแอป",
+    installEyebrow: "พก Deadline ไปกับคุณ",
+    installHeading: "ใช้งาน Deadline เหมือนแอป",
+    installIntro: "เพิ่ม Deadline ไปยังหน้าจอหลักหรือคอมพิวเตอร์ เปิดใช้งานในหน้าต่างแอป และซิงก์งานกับบัญชีของคุณ",
+    installPromptHeading: "ติดตั้ง Deadline",
+    installPromptText: "หากเบราว์เซอร์รองรับ คุณสามารถติดตั้งจากปุ่มนี้ได้ หากไม่รองรับ ให้ทำตามขั้นตอนสำหรับอุปกรณ์ของคุณ",
+    installButton: "ติดตั้งแอป",
+    installAlreadyInstalled: "ติดตั้ง Deadline บนอุปกรณ์นี้แล้ว",
+    installAccepted: "เริ่มติดตั้งแล้ว คุณจะพบ Deadline บนหน้าจอหลักหรือในรายการแอป",
+    installDismissed: "ยังติดตั้งไม่เสร็จ คุณลองอีกครั้งได้จากเมนูเบราว์เซอร์",
+    installPromptFailed: "เปิดหน้าต่างติดตั้งไม่ได้ ให้ใช้เมนูเบราว์เซอร์หรือทำตามขั้นตอนด้านล่าง",
+    installAndroidTitle: "Android (Chrome)",
+    installAndroidText: "เปิดหน้านี้ด้วย Chrome แตะเมนูจุดสามจุด แล้วเลือกติดตั้งแอปหรือเพิ่มลงในหน้าจอหลัก",
+    installAppleTitle: "iPhone หรือ iPad (Safari)",
+    installAppleText: "เปิดหน้านี้ด้วย Safari แตะปุ่มแชร์ เลือกเพิ่มไปยังหน้าจอโฮม แล้วแตะเพิ่ม",
+    installDesktopTitle: "คอมพิวเตอร์ (Chrome หรือ Edge)",
+    installDesktopText: "กดปุ่มติดตั้งในแถบที่อยู่ หรือเปิดเมนูเบราว์เซอร์แล้วเลือกติดตั้ง Deadline",
+    installOtherTitle: "เบราว์เซอร์อื่น",
+    installOtherText: "เปิดเมนูแชร์หรือเมนูเบราว์เซอร์ แล้วมองหาตัวเลือกเพิ่มไปยังหน้าจอหลักหรือติดตั้งแอป",
+    installNoteTitle: "งานซิงก์กับบัญชีของคุณ",
+    installNoteText: "แอปจะเปิดในหน้าต่างแยก และงานจะซิงก์กับบัญชีของคุณ ต้องเชื่อมต่ออินเทอร์เน็ตเพื่อโหลดและอัปเดตงาน"
   }
 };
 
@@ -646,6 +704,57 @@ window.deadlineApplyLogoTheme = applyLogoTheme;
 
 function siteText(key) {
   return siteTranslations[siteLanguage][key];
+}
+
+let deferredInstallPrompt = null;
+window.addEventListener("beforeinstallprompt", event => {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  const installButton = document.getElementById("installAppButton");
+  if (installButton) installButton.hidden = false;
+});
+
+function showInstallStatus(key) {
+  const status = document.getElementById("installAppStatus");
+  if (!status) return;
+  status.dataset.siteI18n = key;
+  status.textContent = siteText(key);
+  status.hidden = false;
+}
+
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  const installButton = document.getElementById("installAppButton");
+  if (installButton) installButton.hidden = true;
+  showInstallStatus("installAlreadyInstalled");
+});
+
+const installAppButton = document.getElementById("installAppButton");
+if (installAppButton) {
+  if (isStandaloneApp) {
+    installAppButton.hidden = true;
+    showInstallStatus("installAlreadyInstalled");
+  } else {
+    installAppButton.hidden = !deferredInstallPrompt;
+  }
+
+  installAppButton.addEventListener("click", async () => {
+    if (!deferredInstallPrompt) return;
+    const installPrompt = deferredInstallPrompt;
+    deferredInstallPrompt = null;
+    installAppButton.disabled = true;
+    try {
+      await installPrompt.prompt();
+      const { outcome } = await installPrompt.userChoice;
+      showInstallStatus(outcome === "accepted" ? "installAccepted" : "installDismissed");
+    } catch (error) {
+      console.error("Could not open the app installation prompt:", error);
+      showInstallStatus("installPromptFailed");
+    } finally {
+      installAppButton.disabled = false;
+      installAppButton.hidden = true;
+    }
+  });
 }
 
 function updatePreviewDates() {

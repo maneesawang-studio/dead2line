@@ -211,21 +211,33 @@
     return;
   }
 
-  loadSupabaseSdk()
-    .then(() => {
-      const client = window.supabase.createClient(supabaseUrl, publishableKey);
-      window.deadlineSupabase = client;
-      return initializeAuth(client);
-    })
-    .catch(error => {
-      console.error("Supabase initialization failed:", error);
-      if (authPage === "dashboard") {
-        redirectToLogin("auth-unavailable");
-        return;
-      }
-      showStatus(message("authUnavailable"));
-      if (loginForm || signUpForm) setAuthReady(false);
-    });
+  function initializeSupabase() {
+    loadSupabaseSdk()
+      .then(() => {
+        const client = window.supabase.createClient(supabaseUrl, publishableKey);
+        window.deadlineSupabase = client;
+        return initializeAuth(client);
+      })
+      .catch(error => {
+        console.error("Supabase initialization failed:", error);
+        if (authPage === "dashboard") {
+          redirectToLogin("auth-unavailable");
+          return;
+        }
+        showStatus(message("authUnavailable"));
+        if (loginForm || signUpForm) setAuthReady(false);
+      });
+  }
+
+  if (authPage === "landing" || authPage === "public") {
+    if (document.readyState === "complete") {
+      initializeSupabase();
+    } else {
+      window.addEventListener("load", initializeSupabase, { once: true });
+    }
+  } else {
+    initializeSupabase();
+  }
 
   async function initializeAuth(client) {
     let session;
