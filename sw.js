@@ -1,4 +1,4 @@
-const CACHE_NAME = "deadline-v29";
+const CACHE_NAME = "deadline-v30";
 const BASE_URL = new URL("./", self.location.href);
 const CACHEABLE_DESTINATIONS = new Set(["document", "font", "image", "script", "style"]);
 const CORE_ASSETS = [
@@ -39,6 +39,29 @@ self.addEventListener("activate", event => {
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
   if (!CACHEABLE_DESTINATIONS.has(event.request.destination)) return;
+
+  if (event.request.destination === "document"
+    || event.request.destination === "style"
+    || event.request.destination === "script") {
+    event.respondWith(
+      fetch(event.request).then(response => {
+        if (!response.ok || response.type !== "basic") return response;
+
+        const responseToCache = response.clone();
+        return caches.open(CACHE_NAME)
+          .then(cache => cache.put(event.request, responseToCache))
+          .catch(error => {
+            console.error("Could not cache a site response:", error);
+          })
+          .then(() => response);
+      }).catch(() =>
+        caches.match(event.request).then(cachedResponse =>
+          cachedResponse || Response.error()
+        )
+      )
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then(cachedResponse => {

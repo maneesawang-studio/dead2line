@@ -923,7 +923,11 @@ body.dark-mode .btn-sort:hover {
 .btn-check:hover,
 .btn-check.completed {
   background-color: var(--primary-blue);
-  color: #FFFFFF;
+  color: #ffffff;
+}
+
+.btn-check.completed {
+  border: 0;
 }
 
 .btn-more {
@@ -1438,7 +1442,7 @@ font-size: 12px;
 }
 
 .profile-link-group .profile-row {
-  border-radius: 8px;
+  border-radius: 24px;
 }
 
 .task-operation-status {
@@ -1476,13 +1480,13 @@ body.dark-mode .task-operation-status {
 
 .auth-resend-link {
   display: block;
-  margin: -4px 0 16px;
+  margin: 0px 0 16px;
   padding: 0;
   border: 0;
   background: none;
   color: var(--primary-blue);
   font: inherit;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   text-align: left;
   text-decoration: underline;
@@ -1745,6 +1749,14 @@ body.dark-mode .login-card {
 .login-form {
   display: grid;
   gap: 16px;
+}
+
+.login-form .auth-resend-link {
+  margin: 0;
+}
+
+.login-card > #forgotPasswordButton {
+  margin: 12px 0 0;
 }
 
 .site-form-group {

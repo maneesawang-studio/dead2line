@@ -96,6 +96,7 @@ const server = http.createServer((request, response) => {
 
       response.writeHead(200, {
         "Content-Type": contentTypes[path.extname(filePath).toLowerCase()] || "application/octet-stream",
+        "Cache-Control": "no-cache",
         "X-Content-Type-Options": "nosniff",
         "Referrer-Policy": "strict-origin-when-cross-origin",
         "X-Frame-Options": "DENY",
