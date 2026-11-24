@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contact Deadline support about your account, privacy, or a technical issue.">
+  <meta name="robots" content="noindex,follow">
+  <meta name="theme-color" content="#F2F2F7">
+  <meta name="apple-mobile-web-app-title" content="Deadline">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="icon" type="image/png" sizes="96x96" href="../Asset/Deadline-96.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="../Asset/Deadline-white-512.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <title>Deadline | Contact support</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="site-page" data-auth-page="public" data-site-title="contactTitle" data-site-description="contactDescription" data-nav-active="contact">
+  <nav class="navbar" id="siteNavigation"></nav>
+
+  <main class="site-main login-main">
+    <section class="site-card login-card contact-card" aria-labelledby="contactHeading">
+      <p class="site-eyebrow" data-site-i18n="contactEyebrow">SUPPORT</p>
+      <h1 id="contactHeading" data-site-i18n="contactHeading">How can we help?</h1>
+      <p class="site-lead" data-site-i18n="contactLead">Send a message to the Deadline support team.</p>
+
+      <form class="login-form" id="supportContactForm">
+        <div class="site-form-group">
+          <label for="supportEmail" data-site-i18n="contactEmailLabel">Your email</label>
+          <input type="email" id="supportEmail" name="email" autocomplete="email" maxlength="254" required>
+        </div>
+        <div class="site-form-group">
+          <label for="supportTopic" data-site-i18n="contactTopicLabel">What do you need help with?</label>
+          <select id="supportTopic" name="topic" required>
+            <option value="general" data-site-i18n="contactTopicGeneral">General question</option>
+            <option value="technical" data-site-i18n="contactTopicTechnical">Technical issue</option>
+            <option value="account" data-site-i18n="contactTopicAccount">Account access</option>
+            <option value="privacy" data-site-i18n="contactTopicPrivacy">Privacy or account deletion</option>
+          </select>
+        </div>
+        <div class="site-form-group">
+          <label for="supportMessage" data-site-i18n="contactMessageLabel">Message</label>
+          <textarea id="supportMessage" name="message" rows="6" minlength="10" maxlength="3000" required></textarea>
+        </div>
+        <input class="contact-honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <p class="contact-privacy-note" data-site-i18n="contactPrivacyNote">Don't include passwords, verification codes, or sensitive task details. Replies will be sent to the email you provide.</p>
+        <button class="site-primary-button" id="supportSubmit" type="submit" data-site-i18n="contactSend">Send message</button>
+      </form>
+      <p class="auth-status" id="supportContactStatus" role="status" aria-live="polite" hidden></p>
+      <a class="contact-privacy-link" href="../privacy/" data-site-i18n="privacy">Privacy</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span data-site-i18n="footerNote">Stay organized and keep your deadlines in sight.</span>
+    <nav class="site-footer-links" aria-label="Footer navigation" data-site-i18n-aria-label="footerNavigation">
+      <a href="../" data-site-i18n="homeNav">Home</a>
+      <a href="../faq/" data-site-i18n="faqNav">FAQ</a>
+      <a href="../privacy/" data-site-i18n="privacy">Privacy</a>
+    </nav>
+  </footer>
+
+  <script src="../site-pages.js"></script>
+  <script src="../supabase-config.js"></script>
+  <script src="../supabase-auth.js"></script>
+</body>
+</html>

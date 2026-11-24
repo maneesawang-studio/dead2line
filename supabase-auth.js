@@ -10,6 +10,9 @@
   const publishableKey = typeof config.publishableKey === "string" ? config.publishableKey.trim() : "";
   const authPage = document.body.dataset.authPage;
   const loginForm = document.getElementById("loginForm");
+  const passwordRecoveryForm = document.getElementById("passwordRecoveryForm");
+  const forgotPasswordButton = document.getElementById("forgotPasswordButton");
+  const passwordRecoverySubmit = document.getElementById("passwordRecoverySubmit");
   const signUpForm = document.getElementById("signUpForm");
   const loginButton = document.getElementById("loginSubmit");
   const signUpButton = document.getElementById("signUpSubmit");
@@ -35,6 +38,16 @@
       sessionFailed: "We couldn't verify your sign-in. Refresh the page and try again.",
       signingIn: "Signing in...",
       signInFailed: "Couldn't sign in.",
+      forgotPassword: "Forgot password?",
+      sendingPasswordReset: "Sending a password reset email...",
+      passwordResetSent: "If an account exists for that email, a password reset link is on its way. Check your inbox.",
+      passwordResetFailed: "Couldn't send the password reset email.",
+      passwordResetExpired: "This password reset link is invalid or has expired. Request a new one below.",
+      chooseNewPassword: "Choose a new password for your account.",
+      newPasswordMismatch: "The new passwords don't match.",
+      updatingPassword: "Updating your password...",
+      passwordUpdated: "Your password was updated. Opening your tasks...",
+      passwordUpdateFailed: "Couldn't update your password.",
       signingUp: "Creating your account...",
       signUpFailed: "Couldn't create your account.",
       passwordMismatch: "The passwords don't match.",
@@ -62,6 +75,16 @@
       sessionFailed: "ตรวจสอบสถานะการเข้าสู่ระบบไม่สำเร็จ กรุณาโหลดหน้าใหม่แล้วลองอีกครั้ง",
       signingIn: "กำลังเข้าสู่ระบบ...",
       signInFailed: "เข้าสู่ระบบไม่สำเร็จ",
+      forgotPassword: "ลืมรหัสผ่าน?",
+      sendingPasswordReset: "กำลังส่งอีเมลตั้งรหัสผ่านใหม่...",
+      passwordResetSent: "หากมีบัญชีที่ใช้อีเมลนี้ ระบบจะส่งลิงก์ตั้งรหัสผ่านใหม่ให้ กรุณาตรวจสอบกล่องจดหมาย",
+      passwordResetFailed: "ส่งอีเมลตั้งรหัสผ่านใหม่ไม่สำเร็จ",
+      passwordResetExpired: "ลิงก์ตั้งรหัสผ่านใหม่ไม่ถูกต้องหรือหมดอายุแล้ว กรุณาขอลิงก์ใหม่ด้านล่าง",
+      chooseNewPassword: "ตั้งรหัสผ่านใหม่สำหรับบัญชีของคุณ",
+      newPasswordMismatch: "รหัสผ่านใหม่ทั้งสองช่องไม่ตรงกัน",
+      updatingPassword: "กำลังเปลี่ยนรหัสผ่าน...",
+      passwordUpdated: "เปลี่ยนรหัสผ่านแล้ว กำลังเปิดรายการงาน...",
+      passwordUpdateFailed: "เปลี่ยนรหัสผ่านไม่สำเร็จ",
       signingUp: "กำลังสร้างบัญชี...",
       signUpFailed: "สร้างบัญชีไม่สำเร็จ",
       passwordMismatch: "รหัสผ่านทั้งสองช่องไม่ตรงกัน",
@@ -96,6 +119,7 @@
 
   function setAuthReady(ready) {
     if (loginButton) loginButton.disabled = !ready;
+    if (forgotPasswordButton) forgotPasswordButton.disabled = !ready;
     if (signUpButton) signUpButton.disabled = !ready;
   }
 
@@ -259,11 +283,15 @@
     if (loginForm || signUpForm) {
       const callbackError = new URLSearchParams(window.location.hash.slice(1));
       const expiredEmailLink = callbackError.get("error_code") === "otp_expired";
+      const callbackType = callbackError.get("type");
+      const loginReason = new URLSearchParams(window.location.search).get("reason");
+      const isPasswordRecovery = Boolean(loginForm && (
+        callbackType === "recovery" || loginReason === "password-reset"
+      ));
       if (callbackError.has("error")) {
         window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
       }
 
-      const loginReason = new URLSearchParams(window.location.search).get("reason");
       if (loginForm && loginReason === "email-confirmed") {
         if (session) {
           try {
@@ -281,6 +309,46 @@
         showStatus(message("emailConfirmed"), "success");
       }
 
+      if (isPasswordRecovery) {
+        if (loginForm) loginForm.hidden = Boolean(session);
+        if (forgotPasswordButton) forgotPasswordButton.hidden = Boolean(session);
+        if (resendConfirmationButton) resendConfirmationButton.hidden = Boolean(session);
+        if (passwordRecoveryForm) passwordRecoveryForm.hidden = !session;
+        if (session) {
+          showStatus(message("chooseNewPassword"), "pending");
+        } else {
+          showStatus(message("passwordResetExpired"));
+        }
+        setAuthReady(true);
+
+        if (session && passwordRecoveryForm) {
+          passwordRecoveryForm.addEventListener("submit", async event => {
+            event.preventDefault();
+            const password = document.getElementById("recoveryPassword").value;
+            const passwordConfirm = document.getElementById("recoveryPasswordConfirm").value;
+            if (password !== passwordConfirm) {
+              showStatus(message("newPasswordMismatch"));
+              return;
+            }
+
+            if (passwordRecoverySubmit) passwordRecoverySubmit.disabled = true;
+            showStatus(message("updatingPassword"), "pending");
+            try {
+              const { error } = await client.auth.updateUser({ password });
+              if (error) throw error;
+              showStatus(message("passwordUpdated"), "success");
+              window.setTimeout(redirectToDashboard, 1200);
+            } catch (error) {
+              console.error("Supabase password update failed:", error);
+              showStatus(`${message("passwordUpdateFailed")} ${error.message || ""}`);
+            } finally {
+              if (passwordRecoverySubmit) passwordRecoverySubmit.disabled = false;
+            }
+          });
+        }
+        return;
+      }
+
       if (session) {
         redirectToDashboard();
         return;
@@ -296,6 +364,28 @@
       setAuthReady(true);
 
       if (loginForm) {
+        if (forgotPasswordButton) {
+          forgotPasswordButton.addEventListener("click", async () => {
+            const emailInput = document.getElementById("loginEmail");
+            if (!emailInput.reportValidity()) return;
+
+            forgotPasswordButton.disabled = true;
+            showStatus(message("sendingPasswordReset"), "pending");
+            try {
+              const { error } = await client.auth.resetPasswordForEmail(emailInput.value.trim(), {
+                redirectTo: new URL("login/?reason=password-reset", publicSiteUrl).href
+              });
+              if (error) throw error;
+              showStatus(message("passwordResetSent"), "success");
+            } catch (error) {
+              console.error("Supabase password reset request failed:", error);
+              showStatus(`${message("passwordResetFailed")} ${error.message || ""}`);
+            } finally {
+              forgotPasswordButton.disabled = false;
+            }
+          });
+        }
+
         if (resendConfirmationButton) {
           resendConfirmationButton.addEventListener("click", async () => {
             const emailInput = document.getElementById("loginEmail");

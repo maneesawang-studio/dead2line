@@ -1763,6 +1763,74 @@ body.dark-mode .site-form-group input {
   outline: 2px solid rgba(0, 153, 255, 0.25);
 }
 
+.contact-card {
+  max-width: 560px;
+}
+
+.contact-card .site-form-group select,
+.contact-card .site-form-group textarea {
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  background-color: #F4F7FB;
+  color: var(--text-dark);
+  font: inherit;
+  font-size: 14px;
+}
+
+.contact-card .site-form-group select {
+  height: 44px;
+  padding: 0 12px;
+}
+
+.contact-card .site-form-group textarea {
+  min-height: 132px;
+  padding: 11px 12px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.contact-card .site-form-group select:focus,
+.contact-card .site-form-group textarea:focus {
+  outline: 2px solid rgba(0, 153, 255, 0.25);
+}
+
+body.dark-mode .contact-card .site-form-group select,
+body.dark-mode .contact-card .site-form-group textarea {
+  background-color: #181818;
+}
+
+.contact-privacy-note {
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.contact-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.contact-card .auth-status {
+  margin-top: 16px;
+}
+
+.contact-privacy-link {
+  display: inline-block;
+  margin-top: 16px;
+  color: var(--primary-blue);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contact-privacy-link:hover {
+  text-decoration: underline;
+}
+
 .site-primary-button {
   min-height: 44px;
   border-radius: 999px;
@@ -2013,6 +2081,55 @@ body.dark-mode .landing-nav-login#siteGuestLoginLink:hover {
   margin-top: 20px;
   color: var(--text-muted);
   font-size: 12px;
+}
+
+.landing-install-promo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 540px;
+  margin-top: 22px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background-color: var(--bg-white);
+  box-shadow: var(--shadow-soft);
+}
+
+.landing-install-promo img {
+  flex: 0 0 44px;
+  border-radius: 10px;
+  background-color: #F2F2F7;
+}
+
+.landing-install-copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.landing-install-copy h2 {
+  color: var(--text-dark);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.landing-install-copy p {
+  margin-top: 3px;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.landing-install-promo a {
+  flex: 0 0 auto;
+  color: var(--primary-blue);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.landing-install-promo a:hover {
+  text-decoration: underline;
 }
 
 .landing-preview {

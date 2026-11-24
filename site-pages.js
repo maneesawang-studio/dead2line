@@ -86,6 +86,7 @@ if (nav) {
         <a class="site-nav-link" id="tasksNavLink" href="${tasksHref}"${currentPage("tasks")}><span data-i18n="tasksNav" data-site-i18n="tasksNav">Tasks</span></a>
         <a class="site-nav-link" href="${localizedSiteUrl("about/")}"${currentPage("about")}><span data-i18n="aboutNav" data-site-i18n="aboutNav">About</span></a>
         <a class="site-nav-link" href="${localizedSiteUrl("faq/")}"${currentPage("faq")}><span data-i18n="faqNav" data-site-i18n="faqNav">FAQ</span></a>
+        <a class="site-nav-link" href="${siteUrl("contact/")}"${currentPage("contact")}><span data-i18n="contactNav" data-site-i18n="contactNav">Contact</span></a>
         ${hasVisiblePagePreferences ? "" : `
           <div class="site-nav-preferences">
             <button type="button" class="site-nav-preference" id="guestThemeToggle" data-i18n-aria-label="switchTheme" data-i18n-title="switchTheme" data-site-i18n-aria-label="switchTheme" data-site-i18n-title="switchTheme">
@@ -244,13 +245,14 @@ if (nav) {
     }
     [
       { id: "profileAboutLink", page: "about", key: "aboutNav", text: "About" },
-      { id: "profileFaqLink", page: "faq", key: "faqNav", text: "FAQ" }
-    ].forEach(({ id, page, key, text }) => {
+      { id: "profileFaqLink", page: "faq", key: "faqNav", text: "FAQ" },
+      { id: "profileContactLink", page: "contact", key: "contactNav", text: "Contact", href: siteUrl("contact/") }
+    ].forEach(({ id, page, key, text, href }) => {
       if (document.getElementById(id)) return;
       const link = document.createElement("a");
       link.id = id;
       link.className = "profile-row profile-row-link";
-      link.href = localizedSiteUrl(`${page}/`);
+      link.href = href || localizedSiteUrl(`${page}/`);
       link.dataset.i18n = key;
       link.dataset.siteI18n = key;
       link.textContent = text;
@@ -268,9 +270,10 @@ if (nav) {
       faq: new URL(localizedSiteUrl("faq/")).pathname,
       settings: sitePath("settings/"),
       privacy: sitePath("privacy/"),
+      contact: sitePath("contact/"),
       login: sitePath("login/")
     };
-    const primaryPages = ["home", "tasks", "about", "faq"];
+    const primaryPages = ["home", "tasks", "about", "faq", "contact"];
     const currentLinks = nav.querySelectorAll(primaryPages.includes(activePage)
       ? ".site-nav-link[href]"
       : ".profile-row-link[href]");
@@ -365,6 +368,7 @@ const siteTranslations = {
     openNavigation: "Open navigation",
     closeNavigation: "Close navigation",
     aboutNav: "About",
+    contactNav: "Contact",
     aboutMenu: "About Deadline",
     faqNav: "FAQ",
     mainNavigation: "Main navigation",
@@ -396,6 +400,10 @@ const siteTranslations = {
     email: "Email",
     password: "Password",
     confirmPassword: "Confirm password",
+    newPassword: "New password",
+    confirmNewPassword: "Confirm new password",
+    updatePassword: "Update password",
+    forgotPassword: "Forgot password?",
     signInButton: "Sign in",
     signUpButton: "Create account",
     needAccount: "Don't have an account?",
@@ -427,6 +435,16 @@ const siteTranslations = {
     faqLoginAnswer: "Sign in with your Deadline account email and password. If you don't have an account, select Sign up.",
     faqDataQuestion: "Can other users see my tasks?",
     faqDataAnswer: "No. Your tasks are saved to your account and kept separate from other users' tasks.",
+    faqRecoveryQuestion: "What if I forget my password?",
+    faqRecoveryAnswer: "On the sign-in page, enter your email and select Forgot password? Use the link in your email to choose a new password. If it expires, request another link.",
+    faqRemindersQuestion: "Will Deadline remind me about upcoming tasks?",
+    faqRemindersAnswer: "Deadline doesn't send push or email reminders yet. Open your task list to check upcoming and overdue work.",
+    faqOfflineQuestion: "Can I use Deadline without internet?",
+    faqOfflineAnswer: "No. Installing Deadline adds an app-like shortcut, but you need an internet connection to load or update your tasks.",
+    faqBackupQuestion: "Can I export or restore my tasks?",
+    faqBackupAnswer: "The app doesn't currently provide a user-facing export or restore option. Keep a separate copy of critical information.",
+    faqAccountQuestion: "How do I delete my account?",
+    faqAccountAnswer: "You can delete individual tasks from your dashboard, but account deletion isn't available in settings. Use the contact form to request account deletion.",
     backToTasks: "Back to home",
     footerNote: "Stay organized and keep your deadlines in sight.",
     footerNavigation: "Footer navigation",
@@ -436,9 +454,13 @@ const siteTranslations = {
     privacyTitle: "Privacy Policy",
     privacyDescription: "See what information Deadline stores, how task data is associated with your account, and the controls available for your data.",
     privacyDataHeading: "Your data",
-    privacyDataText: "Tasks are stored in Supabase and linked to your account. Theme and language preferences are saved in your browser.",
+    privacyDataText: "Your email is used for your account. Task titles, details, categories, deadlines, and subtasks are stored in Supabase and linked to your account. Theme and language preferences are saved in your browser.",
+    privacyServiceHeading: "Storage and access",
+    privacyServiceText: "Supabase provides sign-in and task storage. Database policies are designed to limit task access to the signed-in account. Support messages, including your reply email, topic, and message, are sent through Resend for email delivery. The site also requests fonts from Google Fonts.",
     privacyControlHeading: "Managing your data",
-    privacyControlText: "You can edit or delete tasks at any time. Signing out won't delete them. To request account deletion, contact the administrator.",
+    privacyControlText: "You can edit or permanently delete tasks from your dashboard. Signing out won't delete them. Account deletion isn't available in settings; use the contact form to request it.",
+    privacyLimitHeading: "Important limitations",
+    privacyLimitText: "The app doesn't currently offer task export or restore, and it doesn't send reminders. Keep a separate copy of important information and use another reminder for critical deadlines.",
     homeTitle: "Task Manager & Deadline Tracker",
     homeDescription: "Organize tasks, add subtasks, track progress, and see upcoming deadlines in one simple task management app.",
     homeEyebrow: "TASKS IN ORDER. DEADLINES IN SIGHT.",
@@ -462,7 +484,7 @@ const siteTranslations = {
     stepTrackTitle: "Track progress and finish",
     stepTrackText: "See what's due soon, update your tasks, and move finished work out of your active list.",
     homePrivacyHeading: "Your tasks stay yours.",
-    homePrivacyText: "Tasks are saved to your account and kept separate from other users' tasks.",
+    homePrivacyText: "Tasks are stored with your account and kept separate from other users' tasks. An internet connection is required, and Deadline doesn't send reminders yet.",
     homePrivacyLink: "Read our privacy policy",
     previewSample: "SAMPLE DATA",
     previewDashboard: "Manage tasks and deadlines",
@@ -492,6 +514,9 @@ const siteTranslations = {
     homeClosing: "Ready for a clearer plan?",
     installTitle: "Install Deadline as an app",
     installDescription: "Add Deadline to your home screen or computer for a simple app-like experience.",
+    installPromoHeading: "Install Deadline for quick access",
+    installPromoText: "Add Deadline to your home screen and open your tasks in its own app window.",
+    installPromoLink: "See how",
     installEyebrow: "TAKE DEADLINE WITH YOU",
     installHeading: "Use Deadline like an app",
     installIntro: "Add Deadline to your home screen or computer. It opens in its own app window, and your tasks stay synced to your account.",
@@ -511,7 +536,27 @@ const siteTranslations = {
     installOtherTitle: "Other browsers",
     installOtherText: "Open the browser's Share or menu option and look for Add to Home Screen or Install app.",
     installNoteTitle: "Your tasks stay in sync",
-    installNoteText: "The app opens in its own window, and your account keeps your data in sync. An internet connection is needed to load and update tasks."
+    installNoteText: "The app opens in its own window, and your account keeps your data in sync. An internet connection is needed to load and update tasks.",
+    contactTitle: "Contact support",
+    contactDescription: "Contact Deadline support about your account, privacy, or a technical issue.",
+    contactEyebrow: "SUPPORT",
+    contactHeading: "How can we help?",
+    contactLead: "Send a message to the Deadline support team.",
+    contactEmailLabel: "Your email",
+    contactTopicLabel: "What do you need help with?",
+    contactTopicGeneral: "General question",
+    contactTopicTechnical: "Technical issue",
+    contactTopicAccount: "Account access",
+    contactTopicPrivacy: "Privacy or account deletion",
+    contactMessageLabel: "Message",
+    contactPrivacyNote: "Don't include passwords, verification codes, or sensitive task details. Replies will be sent to the email you provide.",
+    contactSend: "Send message",
+    contactSending: "Sending message...",
+    contactSent: "Message sent. We'll reply to the email you provided.",
+    contactFailed: "Couldn't send your message. Please try again later.",
+    contactRateLimited: "Too many messages. Please wait a while and try again.",
+    contactUnavailable: "The support form isn't available right now. Please try again later.",
+    contactPageLink: "Contact support"
   },
   th: {
     dashboard: "รายการงาน",
@@ -520,6 +565,7 @@ const siteTranslations = {
     openNavigation: "เปิดเมนูนำทาง",
     closeNavigation: "ปิดเมนูนำทาง",
     aboutNav: "เกี่ยวกับ",
+    contactNav: "ติดต่อ",
     aboutMenu: "เกี่ยวกับ Deadline",
     faqNav: "คำถามที่พบบ่อย",
     mainNavigation: "เมนูหลัก",
@@ -551,6 +597,10 @@ const siteTranslations = {
     email: "อีเมล",
     password: "รหัสผ่าน",
     confirmPassword: "ยืนยันรหัสผ่าน",
+    newPassword: "รหัสผ่านใหม่",
+    confirmNewPassword: "ยืนยันรหัสผ่านใหม่",
+    updatePassword: "เปลี่ยนรหัสผ่าน",
+    forgotPassword: "ลืมรหัสผ่าน?",
     signInButton: "เข้าสู่ระบบ",
     signUpButton: "สร้างบัญชี",
     needAccount: "ยังไม่มีบัญชี?",
@@ -582,6 +632,16 @@ const siteTranslations = {
     faqLoginAnswer: "เข้าสู่ระบบด้วยอีเมลและรหัสผ่านของบัญชี Deadline หากยังไม่มีบัญชี ให้เลือกลงทะเบียน",
     faqDataQuestion: "ผู้ใช้อื่นจะเห็นงานของฉันหรือไม่?",
     faqDataAnswer: "ไม่ งานจะบันทึกแยกตามบัญชี และผู้ใช้อื่นจะไม่เห็นงานของคุณ",
+    faqRecoveryQuestion: "ถ้าลืมรหัสผ่านต้องทำอย่างไร?",
+    faqRecoveryAnswer: "ที่หน้าเข้าสู่ระบบ กรอกอีเมลแล้วเลือก “ลืมรหัสผ่าน?” จากนั้นเปิดลิงก์ในอีเมลเพื่อตั้งรหัสผ่านใหม่ หากลิงก์หมดอายุ ให้ขอลิงก์ใหม่",
+    faqRemindersQuestion: "Deadline แจ้งเตือนงานใกล้ถึงกำหนดไหม?",
+    faqRemindersAnswer: "ขณะนี้ Deadline ยังไม่ส่งการแจ้งเตือนผ่านแอปหรืออีเมล โปรดเปิดหน้ารายการงานเพื่อตรวจงานที่ใกล้ถึงกำหนดหรือเลยกำหนด",
+    faqOfflineQuestion: "ใช้งาน Deadline โดยไม่ต่ออินเทอร์เน็ตได้ไหม?",
+    faqOfflineAnswer: "ยังไม่ได้ การติดตั้งช่วยเพิ่มทางลัดที่เปิดเหมือนแอป แต่ต้องเชื่อมต่ออินเทอร์เน็ตเพื่อโหลดหรือแก้ไขรายการงาน",
+    faqBackupQuestion: "ส่งออกหรือกู้คืนรายการงานได้ไหม?",
+    faqBackupAnswer: "ขณะนี้แอปยังไม่มีฟังก์ชันส่งออกหรือกู้คืนข้อมูลสำหรับผู้ใช้ โปรดเก็บข้อมูลสำคัญไว้อีกชุดหนึ่ง",
+    faqAccountQuestion: "ลบบัญชีได้อย่างไร?",
+    faqAccountAnswer: "คุณลบงานแต่ละรายการได้จากหน้ารายการงาน แต่ยังไม่มีเมนูลบบัญชี หากต้องการลบบัญชี โปรดใช้แบบฟอร์มติดต่อ Support",
     backToTasks: "กลับหน้าหลัก",
     footerNote: "จัดการงานและกำหนดส่งให้ชัดเจนขึ้น",
     footerNavigation: "เมนูส่วนท้าย",
@@ -591,9 +651,13 @@ const siteTranslations = {
     privacyTitle: "นโยบายความเป็นส่วนตัว",
     privacyDescription: "ดูข้อมูลที่ Deadline จัดเก็บ วิธีเชื่อมโยงข้อมูลงานกับบัญชีของคุณ และวิธีจัดการหรือลบข้อมูล",
     privacyDataHeading: "ข้อมูลของคุณ",
-    privacyDataText: "งานของคุณบันทึกไว้ใน Supabase และเชื่อมกับบัญชีของคุณ ส่วนธีมและภาษาบันทึกไว้ในเบราว์เซอร์",
+    privacyDataText: "อีเมลใช้สำหรับบัญชีของคุณ ส่วนชื่องาน รายละเอียด หมวดหมู่ วันครบกำหนด และงานย่อยบันทึกไว้ใน Supabase และเชื่อมกับบัญชีของคุณ ธีมและภาษาบันทึกไว้ในเบราว์เซอร์",
+    privacyServiceHeading: "การจัดเก็บและการเข้าถึง",
+    privacyServiceText: "Supabase ให้บริการเข้าสู่ระบบและจัดเก็บงาน โดยมีนโยบายฐานข้อมูลที่ออกแบบให้จำกัดการเข้าถึงงานไว้กับบัญชีที่เข้าสู่ระบบ ข้อความติดต่อ รวมถึงอีเมลสำหรับตอบกลับ หัวข้อ และข้อความ จะส่งผ่าน Resend เพื่อจัดส่งทางอีเมล เว็บไซต์ยังร้องขอฟอนต์จาก Google Fonts",
     privacyControlHeading: "การจัดการข้อมูลของคุณ",
-    privacyControlText: "คุณแก้ไขหรือลบงานได้ทุกเมื่อ การออกจากระบบจะไม่ลบงาน หากต้องการลบบัญชี โปรดติดต่อผู้ดูแลระบบ",
+    privacyControlText: "คุณแก้ไขหรือลบงานจากหน้ารายการงานได้ การลบเป็นการถาวรและการออกจากระบบจะไม่ลบงาน ขณะนี้ยังไม่มีเมนูลบบัญชี หากต้องการขอลบบัญชี โปรดใช้แบบฟอร์มติดต่อ",
+    privacyLimitHeading: "ข้อจำกัดที่ควรทราบ",
+    privacyLimitText: "ขณะนี้แอปยังไม่มีฟังก์ชันส่งออกหรือกู้คืนงาน และยังไม่ส่งการแจ้งเตือน โปรดเก็บข้อมูลสำคัญไว้อีกชุดหนึ่งและใช้การแจ้งเตือนอื่นสำหรับกำหนดส่งที่สำคัญ",
     homeTitle: "แอปจัดการงานและติดตามกำหนดส่ง",
     homeDescription: "จัดระเบียบงาน เพิ่มงานย่อย ติดตามความคืบหน้า และดูวันครบกำหนดได้ในที่เดียวด้วยแอปจัดการงาน Deadline",
     homeEyebrow: "จัดระเบียบงาน เห็นกำหนดส่งชัดเจน",
@@ -617,7 +681,7 @@ const siteTranslations = {
     stepTrackTitle: "ติดตามความคืบหน้า",
     stepTrackText: "ดูงานที่ใกล้ครบกำหนด อัปเดตสถานะ และย้ายงานที่เสร็จแล้วออกจากรายการกำลังทำ",
     homePrivacyHeading: "งานของคุณแยกตามบัญชี",
-    homePrivacyText: "งานจะบันทึกไว้กับบัญชีของคุณและแยกจากงานของผู้ใช้อื่น",
+    homePrivacyText: "งานจะบันทึกกับบัญชีของคุณและแยกจากผู้ใช้อื่น ต้องใช้อินเทอร์เน็ต และขณะนี้ Deadline ยังไม่ส่งการแจ้งเตือน",
     homePrivacyLink: "อ่านนโยบายความเป็นส่วนตัว",
     previewSample: "ข้อมูลตัวอย่าง",
     previewDashboard: "จัดการงานและกำหนดส่ง",
@@ -647,6 +711,9 @@ const siteTranslations = {
     homeClosing: "พร้อมวางแผนงานให้ชัดเจนขึ้นหรือยัง?",
     installTitle: "ติดตั้ง Deadline เป็นแอป",
     installDescription: "เพิ่ม Deadline ไปยังหน้าจอหลักหรือคอมพิวเตอร์ เพื่อเปิดใช้งานได้เหมือนแอป",
+    installPromoHeading: "ติดตั้ง Deadline ไว้บนหน้าจอหลัก",
+    installPromoText: "เปิดดูงานได้สะดวกในหน้าต่างแอป ไม่ต้องค้นหาเว็บทุกครั้ง",
+    installPromoLink: "ดูวิธีติดตั้ง",
     installEyebrow: "พก Deadline ไปกับคุณ",
     installHeading: "ใช้งาน Deadline เหมือนแอป",
     installIntro: "เพิ่ม Deadline ไปยังหน้าจอหลักหรือคอมพิวเตอร์ เปิดใช้งานในหน้าต่างแอป และซิงก์งานกับบัญชีของคุณ",
@@ -666,7 +733,27 @@ const siteTranslations = {
     installOtherTitle: "เบราว์เซอร์อื่น",
     installOtherText: "เปิดเมนูแชร์หรือเมนูเบราว์เซอร์ แล้วมองหาตัวเลือกเพิ่มไปยังหน้าจอหลักหรือติดตั้งแอป",
     installNoteTitle: "งานซิงก์กับบัญชีของคุณ",
-    installNoteText: "แอปจะเปิดในหน้าต่างแยก และงานจะซิงก์กับบัญชีของคุณ ต้องเชื่อมต่ออินเทอร์เน็ตเพื่อโหลดและอัปเดตงาน"
+    installNoteText: "แอปจะเปิดในหน้าต่างแยก และงานจะซิงก์กับบัญชีของคุณ ต้องเชื่อมต่ออินเทอร์เน็ตเพื่อโหลดและอัปเดตงาน",
+    contactTitle: "ติดต่อ Support",
+    contactDescription: "ติดต่อทีม Support ของ Deadline เรื่องบัญชี ความเป็นส่วนตัว หรือปัญหาทางเทคนิค",
+    contactEyebrow: "ฝ่ายช่วยเหลือ",
+    contactHeading: "ให้เราช่วยอะไรได้บ้าง?",
+    contactLead: "ส่งข้อความถึงทีม Support ของ Deadline",
+    contactEmailLabel: "อีเมลสำหรับติดต่อกลับ",
+    contactTopicLabel: "ต้องการความช่วยเหลือเรื่องใด?",
+    contactTopicGeneral: "คำถามทั่วไป",
+    contactTopicTechnical: "ปัญหาทางเทคนิค",
+    contactTopicAccount: "การเข้าใช้บัญชี",
+    contactTopicPrivacy: "ความเป็นส่วนตัวหรือการลบบัญชี",
+    contactMessageLabel: "ข้อความ",
+    contactPrivacyNote: "อย่าส่งรหัสผ่าน รหัสยืนยัน หรือรายละเอียดงานที่เป็นความลับ เราจะตอบกลับไปยังอีเมลที่คุณกรอก",
+    contactSend: "ส่งข้อความ",
+    contactSending: "กำลังส่งข้อความ...",
+    contactSent: "ส่งข้อความแล้ว เราจะตอบกลับไปยังอีเมลที่คุณกรอก",
+    contactFailed: "ส่งข้อความไม่สำเร็จ กรุณาลองใหม่ภายหลัง",
+    contactRateLimited: "ส่งข้อความถี่เกินไป กรุณารอสักครู่แล้วลองใหม่",
+    contactUnavailable: "ขณะนี้แบบฟอร์มติดต่อยังใช้ไม่ได้ กรุณาลองใหม่ภายหลัง",
+    contactPageLink: "ติดต่อ Support"
   }
 };
 
@@ -1035,5 +1122,63 @@ if (!isDashboard) {
       });
     });
   }
+}
+
+const supportContactForm = document.getElementById("supportContactForm");
+if (supportContactForm) {
+  const supportContactStatus = document.getElementById("supportContactStatus");
+  const supportSubmit = document.getElementById("supportSubmit");
+
+  function showSupportContactStatus(key, kind) {
+    if (!supportContactStatus) return;
+    supportContactStatus.hidden = false;
+    supportContactStatus.dataset.kind = kind;
+    supportContactStatus.dataset.siteI18n = key;
+    supportContactStatus.textContent = siteText(key);
+  }
+
+  supportContactForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    const config = window.DEADLINE_SUPABASE_CONFIG || {};
+    const supabaseUrl = typeof config.url === "string" ? config.url.replace(/\/+$/, "") : "";
+    if (!supabaseUrl || !config.publishableKey) {
+      showSupportContactStatus("contactUnavailable", "error");
+      return;
+    }
+
+    const formData = new FormData(supportContactForm);
+    const payload = Object.fromEntries(formData.entries());
+    if (supportSubmit) supportSubmit.disabled = true;
+    showSupportContactStatus("contactSending", "pending");
+
+    try {
+      const response = await fetch(`${supabaseUrl}/functions/v1/contact-support`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": config.publishableKey
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (response.status === 429) {
+        showSupportContactStatus("contactRateLimited", "error");
+        return;
+      }
+      if (response.status === 503) {
+        showSupportContactStatus("contactUnavailable", "error");
+        return;
+      }
+      if (!response.ok) throw new Error(`Contact request failed with status ${response.status}.`);
+
+      supportContactForm.reset();
+      showSupportContactStatus("contactSent", "success");
+    } catch (error) {
+      console.error("Could not submit a support request:", error);
+      showSupportContactStatus("contactFailed", "error");
+    } finally {
+      if (supportSubmit) supportSubmit.disabled = false;
+    }
+  });
 }
 })();
