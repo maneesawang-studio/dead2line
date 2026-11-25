@@ -978,7 +978,7 @@ html[data-theme="dark"] body .follow-up-date {
 .btn-check {
   width: 40px;
   height: 40px;
-  border: 1.5px solid currentColor;
+  border: 1.75px solid currentColor;
   border-radius: 50%;
   color: #0099FF;
   display: flex;
