@@ -29,6 +29,7 @@ const demoTasks = [
     desc: "Focus on a comparison chart of online channels and the plan for next year.",
     category: "Jobs",
     deadlineDate: dateFromToday(3),
+    followUpDate: dateFromToday(5),
     deadlineTime: "10 a.m.",
     status: "in-progress",
     subtasks: [
@@ -110,6 +111,8 @@ const translations = {
     freelance: "Freelance",
     finance: "Finance",
     deadline: "Deadline",
+    followUpDate: "Follow-up date (optional)",
+    followUp: date => `Follow-up on ${date}`,
     searchPlaceholder: "Search tasks",
     sortDeadlines: "Sort tasks by deadline",
     noResults: "No tasks match your search or filters.",
@@ -194,6 +197,8 @@ const translations = {
     freelance: "ฟรีแลนซ์",
     finance: "การเงิน",
     deadline: "กำหนดส่ง",
+    followUpDate: "วันที่ติดตามผล (ไม่บังคับ)",
+    followUp: date => `ติดตามผลวันที่ ${date}`,
     searchPlaceholder: "ค้นหางาน",
     sortDeadlines: "เรียงงานตามกำหนดส่ง",
     noResults: "ไม่พบงานที่ตรงกับคำค้นหาหรือตัวกรอง",
@@ -529,6 +534,7 @@ function taskFromDatabase(row) {
     desc: row.description,
     category: row.category,
     deadlineDate: row.deadline_date,
+    followUpDate: row.follow_up_date || "",
     deadlineTime: row.deadline_time,
     status: row.status,
     subtasks: row.subtasks
@@ -542,6 +548,7 @@ function taskToDatabase(task, userId) {
     description: task.desc,
     category: task.category,
     deadline_date: task.deadlineDate,
+    follow_up_date: task.followUpDate || null,
     deadline_time: task.deadlineTime,
     status: task.status,
     subtasks: task.subtasks
@@ -552,7 +559,7 @@ window.loadDeadlineTasks = async function(client, user) {
   try {
     const { data, error } = await client
       .from("tasks")
-      .select("id, title, description, category, deadline_date, deadline_time, status, subtasks")
+      .select("id, title, description, category, deadline_date, follow_up_date, deadline_time, status, subtasks")
       .eq("user_id", user.id)
       .order("deadline_date", { ascending: true });
 
@@ -660,8 +667,16 @@ function renderTasks() {
     const daysLeft = getDaysLeft(task.deadlineDate);
     const isUrgent = daysLeft <= 3 && task.status === "in-progress";
     const isCompleted = task.status === "finish";
+    const badgeClass = isCompleted ? "completed" : isUrgent ? "urgent" : daysLeft > 14 ? "distant" : "normal";
     const { day, year } = formatDateParts(task.deadlineDate, task.displayDayOverride);
     const deadlineTime = typeof task.deadlineTime === "string" ? task.deadlineTime.trim() : "";
+    const followUpDate = task.followUpDate
+      ? new Intl.DateTimeFormat(currentLanguage === "th" ? "th-TH-u-ca-buddhist" : "en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+      }).format(new Date(`${task.followUpDate}T00:00:00`))
+      : "";
 
     // ข้อความบน Badge แจ้งเตือนวัน
     let badgeText = t("daysLeft", daysLeft);
@@ -714,7 +729,7 @@ function renderTasks() {
         <div class="task-content-col">
           <div class="task-badges">
             <div class="task-badge-group">
-              <span class="badge ${isCompleted ? "completed" : isUrgent ? "urgent" : "normal"}">${escapeHtml(badgeText)}</span>
+              <span class="badge ${badgeClass}">${escapeHtml(badgeText)}</span>
               <span class="badge category">${escapeHtml(getCategoryLabel(task.category))}</span>
             </div>
             <div class="task-actions-col">
@@ -738,6 +753,15 @@ function renderTasks() {
           </div>
           <h2 class="task-title">${escapeHtml(task.title)}</h2>
           <p class="task-desc">${escapeHtml(task.desc)}</p>
+          ${followUpDate ? `
+            <div class="follow-up-date">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                <path d="M10 21h4"></path>
+              </svg>
+              <span>${escapeHtml(t("followUp", followUpDate))}</span>
+            </div>
+          ` : ""}
           ${subProgressHTML}
         </div>
       </div>
@@ -865,6 +889,7 @@ window.openEditModal = function(taskId) {
   document.getElementById("taskDescInput").value = task.desc || "";
   document.getElementById("taskCategoryInput").value = task.category;
   document.getElementById("taskDateInput").value = task.deadlineDate;
+  document.getElementById("taskFollowUpDateInput").value = task.followUpDate || "";
   document.getElementById("taskTimeInput").value = task.deadlineTime ? convertDisplayTimeToInput(task.deadlineTime) : "";
 
   subtaskFormList.innerHTML = "";
@@ -998,6 +1023,7 @@ btnOpenModal.addEventListener("click", () => {
   const today = localDateString();
   document.getElementById("taskDateInput").min = today;
   document.getElementById("taskDateInput").value = today;
+  document.getElementById("taskFollowUpDateInput").value = "";
   modalDirty = false;
   showTaskModal();
 });
@@ -1105,6 +1131,7 @@ title,
 desc: document.getElementById("taskDescInput").value.trim(),
 category: document.getElementById("taskCategoryInput").value,
 deadlineDate: document.getElementById("taskDateInput").value,
+followUpDate: document.getElementById("taskFollowUpDateInput").value,
 deadlineTime,
 subtasks
 };
@@ -1121,7 +1148,7 @@ try {
         .update(taskToDatabase({ ...task, ...taskData }, window.deadlineUser.id))
         .eq("id", task.id)
         .eq("user_id", window.deadlineUser.id)
-        .select("id, title, description, category, deadline_date, deadline_time, status, subtasks")
+        .select("id, title, description, category, deadline_date, follow_up_date, deadline_time, status, subtasks")
         .single();
       if (error) throw error;
       Object.assign(task, taskFromDatabase(data));
@@ -1130,7 +1157,7 @@ try {
       const { data, error } = await window.deadlineSupabase
         .from("tasks")
         .insert(taskToDatabase(newTask, window.deadlineUser.id))
-        .select("id, title, description, category, deadline_date, deadline_time, status, subtasks")
+        .select("id, title, description, category, deadline_date, follow_up_date, deadline_time, status, subtasks")
         .single();
       if (error) throw error;
       tasks.unshift(taskFromDatabase(data));
