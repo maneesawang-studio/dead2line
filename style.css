@@ -866,7 +866,12 @@ html[data-theme="dark"] body .badge.distant {
   background-color: #c5e8ff;
   color: #0099ff;
   font-size: 13px;
+  font-weight: 400;
   line-height: 1.4;
+}
+
+html[data-theme="dark"] body .follow-up-date {
+  background-color: #001422;
 }
 
 .follow-up-date svg {
