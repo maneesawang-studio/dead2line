@@ -3111,7 +3111,7 @@ html[data-theme="dark"] body .landing-bottom-cta h2 {
 
 @supports (-webkit-touch-callout: none) {
   @media (max-width: 640px) {
-    .modal-content .split-row .form-group input[type="date"],
+    .modal-content .form-group input[type="date"],
     .modal-content .split-row .form-group input[type="time"] {
       width: calc(100% - 20px);
       max-width: calc(100% - 20px);
