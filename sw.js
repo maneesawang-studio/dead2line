@@ -1,4 +1,4 @@
-const CACHE_NAME = "deadline-v31";
+const CACHE_NAME = "deadline-v32";
 const BASE_URL = new URL("./", self.location.href);
 const CACHEABLE_DESTINATIONS = new Set(["document", "font", "image", "script", "style"]);
 const CORE_DOCUMENTS = new Set([
@@ -52,10 +52,16 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
+  if (new URL(event.request.url).origin !== self.location.origin) return;
   if (!CACHEABLE_DESTINATIONS.has(event.request.destination)) return;
 
   if (event.request.destination === "document"
-    && CORE_DOCUMENTS.has(new URL(event.request.url).pathname)) {
+    || event.request.destination === "style"
+    || event.request.destination === "script") {
+    const cacheOptions = event.request.destination === "document"
+      && CORE_DOCUMENTS.has(new URL(event.request.url).pathname)
+      ? { ignoreSearch: true }
+      : undefined;
     const update = fetch(event.request).then(response => {
       if (!response.ok || response.type !== "basic") return response;
 
@@ -63,37 +69,14 @@ self.addEventListener("fetch", event => {
       return caches.open(CACHE_NAME)
         .then(cache => cache.put(event.request, responseToCache))
         .catch(error => {
-          console.error("Could not cache a core document:", error);
+          console.error("Could not cache a site response:", error);
         })
         .then(() => response);
     });
     event.waitUntil(update.then(() => undefined, () => undefined));
     event.respondWith(
-      caches.match(event.request, { ignoreSearch: true }).then(cachedResponse =>
+      caches.match(event.request, cacheOptions).then(cachedResponse =>
         cachedResponse || update
-      )
-    );
-    return;
-  }
-
-  if (event.request.destination === "document"
-    || event.request.destination === "style"
-    || event.request.destination === "script") {
-    event.respondWith(
-      fetch(event.request).then(response => {
-        if (!response.ok || response.type !== "basic") return response;
-
-        const responseToCache = response.clone();
-        return caches.open(CACHE_NAME)
-          .then(cache => cache.put(event.request, responseToCache))
-          .catch(error => {
-            console.error("Could not cache a site response:", error);
-          })
-          .then(() => response);
-      }).catch(() =>
-        caches.match(event.request).then(cachedResponse =>
-          cachedResponse || Response.error()
-        )
       )
     );
     return;
