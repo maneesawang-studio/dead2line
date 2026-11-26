@@ -84,9 +84,6 @@ if (nav) {
       <div class="site-navigation__links" id="primaryNavigation">
         <a class="site-navigation__link" href="${localizedSiteUrl("")}"${currentPage("home")}><span data-i18n="homeNav" data-site-i18n="homeNav">Home</span></a>
         <a class="site-navigation__link" id="tasksNavLink" href="${tasksHref}"${currentPage("tasks")}><span data-i18n="tasksNav" data-site-i18n="tasksNav">Tasks</span></a>
-        <a class="site-navigation__link" href="${localizedSiteUrl("about/")}"${currentPage("about")}><span data-i18n="aboutNav" data-site-i18n="aboutNav">About</span></a>
-        <a class="site-navigation__link" href="${localizedSiteUrl("faq/")}"${currentPage("faq")}><span data-i18n="faqNav" data-site-i18n="faqNav">FAQ</span></a>
-        <a class="site-navigation__link" href="${siteUrl("contact/")}"${currentPage("contact")}><span data-i18n="contactNav" data-site-i18n="contactNav">Contact</span></a>
         ${hasVisiblePagePreferences ? "" : `
           <div class="site-navigation__preferences">
             <button type="button" class="site-navigation__preference" id="guestThemeToggle" data-i18n-aria-label="switchTheme" data-i18n-title="switchTheme" data-site-i18n-aria-label="switchTheme" data-site-i18n-title="switchTheme">
@@ -127,11 +124,9 @@ if (nav) {
           </div>
           <p class="status-message" id="profileAuthStatus" role="status" aria-live="polite" hidden></p>
           ${preferences}
-          <a class="account-menu__item account-menu__item--link" href="${siteUrl("settings/")}" data-i18n="settings" data-site-i18n="settings">Settings</a>
-          <a class="account-menu__item account-menu__item--link" id="profileInstallLink" href="${siteUrl("install/")}" data-i18n="installApp" data-site-i18n="installApp">Install app</a>
-          <hr>
-          <a class="account-menu__item account-menu__item--link" href="${localizedSiteUrl("privacy/")}" data-i18n="privacy" data-site-i18n="privacy">Privacy</a>
+          <a class="account-menu__item account-menu__item--link" href="${siteUrl("settings/")}" data-i18n="settings" data-site-i18n="settings">Settings and privacy</a>
           <a class="account-menu__item account-menu__item--link" id="loginMenuLink" href="${siteUrl("login/")}" data-i18n="signIn" data-site-i18n="signIn">Sign in</a>
+          <hr>
           <button type="button" class="account-menu__item account-menu__item--sign-out" id="signOutButton" data-i18n="signOut" data-site-i18n="signOut" hidden>Sign out</button>
         </div>
       </div>`;
@@ -228,53 +223,6 @@ if (nav) {
   }
   placeGuestPreferences();
   window.addEventListener("resize", placeGuestPreferences);
-  if (profileMenu) {
-    const privacyPath = sitePath("privacy/");
-    const privacyLink = Array.from(profileMenu.querySelectorAll(".account-menu__item--link"))
-      .find(link => new URL(link.href, window.location.href).pathname === privacyPath);
-    if (!document.getElementById("profileInstallLink")) {
-      const link = document.createElement("a");
-      link.id = "profileInstallLink";
-      link.className = "account-menu__item account-menu__item--link";
-      link.href = siteUrl("install/");
-      link.dataset.i18n = "installApp";
-      link.dataset.siteI18n = "installApp";
-      link.textContent = "Install app";
-      if (privacyLink) profileMenu.insertBefore(link, privacyLink);
-      else profileMenu.appendChild(link);
-    }
-    [
-      { id: "profileAboutLink", page: "about", key: "aboutNav", text: "About" },
-      { id: "profileFaqLink", page: "faq", key: "faqNav", text: "FAQ" },
-      { id: "profileContactLink", page: "contact", key: "contactNav", text: "Contact", href: siteUrl("contact/") }
-    ].forEach(({ id, page, key, text, href }) => {
-      if (document.getElementById(id)) return;
-      const link = document.createElement("a");
-      link.id = id;
-      link.className = "account-menu__item account-menu__item--link";
-      link.href = href || localizedSiteUrl(`${page}/`);
-      link.dataset.i18n = key;
-      link.dataset.siteI18n = key;
-      link.textContent = text;
-      if (activePage === page) link.setAttribute("aria-current", "page");
-      if (privacyLink) profileMenu.insertBefore(link, privacyLink);
-      else profileMenu.appendChild(link);
-    });
-    const secondaryLinks = [
-      "profileInstallLink",
-      "profileAboutLink",
-      "profileFaqLink",
-      "profileContactLink"
-    ].map(id => profileMenu.querySelector(`#${id}`)).filter(Boolean);
-    if (privacyLink) secondaryLinks.push(privacyLink);
-    if (secondaryLinks.length) {
-      const linksGroup = document.createElement("div");
-      linksGroup.className = "account-menu__link-group";
-      profileMenu.insertBefore(linksGroup, secondaryLinks[0]);
-      secondaryLinks.forEach(link => linksGroup.appendChild(link));
-    }
-  }
-
   if (toggle) {
     const activePaths = {
       home: new URL(localizedSiteUrl("")).pathname,
@@ -286,7 +234,7 @@ if (nav) {
       contact: sitePath("contact/"),
       login: sitePath("login/")
     };
-    const primaryPages = ["home", "tasks", "about", "faq", "contact"];
+    const primaryPages = ["home", "tasks"];
     const currentLinks = nav.querySelectorAll(primaryPages.includes(activePage)
       ? ".site-navigation__link[href]"
       : ".account-menu__item--link[href]");
@@ -324,8 +272,12 @@ if (nav) {
   window.setDeadlineAuthenticatedNavigation = isAuthenticated => {
     const brandLink = inner.querySelector(".brand");
     if (brandLink) brandLink.href = isAuthenticated ? siteUrl("app/") : localizedSiteUrl("");
-    const backLink = document.querySelector(".site-page__back-link");
-    if (backLink) backLink.href = isAuthenticated ? siteUrl("app/") : localizedSiteUrl("");
+    const backHref = ["about", "faq", "contact", "install", "privacy"].includes(document.body.dataset.navActive)
+      ? siteUrl("settings/")
+      : isAuthenticated ? siteUrl("app/") : localizedSiteUrl("");
+    document.querySelectorAll(".site-page__back-link, .site-page__mobile-back").forEach(link => {
+      link.href = backHref;
+    });
     actions.querySelectorAll(".site-navigation__guest-link").forEach(link => {
       link.hidden = isAuthenticated;
     });
@@ -399,7 +351,7 @@ const siteTranslations = {
     previewAccount: "Not signed in",
     openProfileMenu: "Open settings menu",
     switchTheme: "Switch theme",
-    settings: "Settings",
+    settings: "Settings and privacy",
     installApp: "Install app",
     signIn: "Sign in",
     privacy: "Privacy",
@@ -459,9 +411,11 @@ const siteTranslations = {
     faqAccountQuestion: "How do I delete my account?",
     faqAccountAnswer: "You can delete individual tasks from your dashboard, but account deletion isn't available in settings. Use the contact form to request account deletion.",
     backToTasks: "Back to home",
+    backToSettings: "Back to settings",
     footerNote: "Stay organized and keep your deadlines in sight.",
     footerNavigation: "Footer navigation",
     settingsHeading: "Settings",
+    settingsLinksHeading: "Related links",
     appearanceHeading: "Display and language",
     privacyHeading: "Privacy policy",
     privacyTitle: "Privacy Policy",
@@ -597,7 +551,7 @@ const siteTranslations = {
     previewAccount: "ยังไม่ได้เข้าสู่ระบบ",
     openProfileMenu: "เปิดเมนูตั้งค่า",
     switchTheme: "เปลี่ยนธีม",
-    settings: "การตั้งค่า",
+    settings: "การตั้งค่าและความเป็นส่วนตัว",
     installApp: "ติดตั้งเป็นแอป",
     signIn: "เข้าสู่ระบบ",
     privacy: "ความเป็นส่วนตัว",
@@ -657,9 +611,11 @@ const siteTranslations = {
     faqAccountQuestion: "ลบบัญชีได้อย่างไร?",
     faqAccountAnswer: "คุณลบงานแต่ละรายการได้จากหน้ารายการงาน แต่ยังไม่มีเมนูลบบัญชี หากต้องการลบบัญชี โปรดใช้แบบฟอร์มติดต่อ Support",
     backToTasks: "กลับหน้าหลัก",
+    backToSettings: "กลับไปที่การตั้งค่า",
     footerNote: "จัดการงานและกำหนดส่งให้ชัดเจนขึ้น",
     footerNavigation: "เมนูส่วนท้าย",
     settingsHeading: "การตั้งค่า",
+    settingsLinksHeading: "ลิงก์ที่เกี่ยวข้อง",
     appearanceHeading: "การแสดงผลและภาษา",
     privacyHeading: "นโยบายความเป็นส่วนตัว",
     privacyTitle: "นโยบายความเป็นส่วนตัว",

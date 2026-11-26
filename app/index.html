@@ -107,10 +107,9 @@
           <span id="languageLabel">Language</span>
           <span class="account-menu__state" id="languageState">English</span>
         </button>
-        <a class="account-menu__item account-menu__item--link" href="../settings/" data-i18n="settings">Settings</a>
+        <a class="account-menu__item account-menu__item--link" href="../settings/" data-i18n="settings">Settings and privacy</a>
         <a class="account-menu__item account-menu__item--link" id="loginMenuLink" href="../login/" data-i18n="signIn">Sign in</a>
         <hr>
-        <a class="account-menu__item account-menu__item--link" href="../privacy/" data-i18n="privacy">Privacy</a>
         <button type="button" class="account-menu__item account-menu__item--sign-out" id="signOutButton" data-i18n="signOut" hidden>Sign out</button>
       </div>
     </div>
@@ -168,9 +167,15 @@
           <input type="text" id="searchInput" aria-label="Search tasks" placeholder="Search tasks">
         </div>
         <button class="task-controls__sort-button" id="btnSort" title="Sort by earliest deadline" aria-label="Sort by earliest deadline" aria-pressed="true" data-sort-direction="ascending">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 19V5"></path>
-            <path d="m6 11 6-6 6 6"></path>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <g class="task-controls__sort-arrow task-controls__sort-arrow--ascending">
+              <path d="M7 20V4"></path>
+              <path d="m3 8 4-4 4 4"></path>
+            </g>
+            <g class="task-controls__sort-arrow task-controls__sort-arrow--descending">
+              <path d="M17 4v16"></path>
+              <path d="m13 16 4 4 4-4"></path>
+            </g>
           </svg>
         </button>
       </div>

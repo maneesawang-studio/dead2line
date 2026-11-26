@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Find answers to common questions about tasks, deadlines, account access, and settings in Deadline.">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <meta name="color-scheme" content="light dark">
@@ -160,7 +160,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 </head>
-<body class="site-page" data-auth-page="public" data-site-title="faqTitle" data-site-description="faqDescription" data-nav-active="faq">
+<body class="site-page site-page--mobile-flow" data-auth-page="public" data-site-title="faqTitle" data-site-description="faqDescription" data-nav-active="faq">
   <nav class="site-navigation">
     <div class="site-navigation__inner">
       <a class="brand" href="../" aria-label="Deadline">
@@ -197,10 +197,9 @@
             <span id="languageLabel" data-site-i18n="language">Language</span>
             <span class="account-menu__state" id="languageState">English</span>
           </button>
-          <a class="account-menu__item account-menu__item--link" href="../settings/" data-site-i18n="settings">Settings</a>
+          <a class="account-menu__item account-menu__item--link" href="../settings/" data-site-i18n="settings">Settings and privacy</a>
           <a class="account-menu__item account-menu__item--link" href="../login/" id="loginMenuLink" data-site-i18n="signIn">Sign in</a>
           <hr>
-          <a class="account-menu__item account-menu__item--link" href="../privacy/" data-site-i18n="privacy">Privacy</a>
           <button type="button" class="account-menu__item account-menu__item--sign-out" id="signOutButton" data-site-i18n="signOut" hidden>Sign out</button>
         </div>
       </div>
@@ -208,6 +207,11 @@
   </nav>
 
   <main class="site-page__main site-page__main--faq">
+    <a class="site-page__mobile-back" href="../settings/" aria-label="Back to settings" data-site-i18n-aria-label="backToSettings">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m15 18-6-6 6-6"></path>
+      </svg>
+    </a>
     <header class="site-page__header">
       <p class="site-page__eyebrow" data-site-i18n="helpCenterEyebrow">Help center</p>
       <h1 data-site-i18n="faqTitle">Frequently asked questions</h1>
@@ -261,7 +265,7 @@
       </details>
     </section>
 
-    <a class="site-page__back-link" href="../" data-site-i18n="backToTasks">Back to home</a>
+    <a class="site-page__back-link" href="../settings/" data-site-i18n="backToSettings">Back to settings</a>
   </main>
 
   <footer class="site-footer" data-site-i18n="footerNote">Stay organized and keep your deadlines in sight.</footer>
