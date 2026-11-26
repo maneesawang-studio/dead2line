@@ -44,59 +44,59 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body class="site-page" data-auth-page="public" data-site-title="installTitle" data-site-description="installDescription">
-  <nav class="navbar" id="siteNavigation"></nav>
+  <nav class="site-navigation" id="siteNavigation"></nav>
 
-  <main class="site-main install-main">
-    <header class="site-page-header">
-      <p class="site-eyebrow" data-site-i18n="installEyebrow">TAKE DEADLINE WITH YOU</p>
+  <main class="site-page__main site-page__main--install">
+    <header class="site-page__header">
+      <p class="site-page__eyebrow" data-site-i18n="installEyebrow">TAKE DEADLINE WITH YOU</p>
       <h1 data-site-i18n="installHeading">Use Deadline like an app</h1>
-      <p class="site-lead" data-site-i18n="installIntro">Add Deadline to your home screen or computer. It opens in its own app window, and your tasks stay synced to your account.</p>
+      <p class="site-page__lead" data-site-i18n="installIntro">Add Deadline to your home screen or computer. It opens in its own app window, and your tasks stay synced to your account.</p>
     </header>
 
-    <section class="site-card site-notice-card install-prompt-card" aria-labelledby="installPromptHeading">
-      <img class="install-app-icon" src="../Asset/Deadline-192.png" width="64" height="64" alt="">
-      <div class="install-prompt-copy">
+    <section class="site-card site-card--notice install-prompt" aria-labelledby="installPromptHeading">
+      <img class="install-prompt__icon" src="../Asset/Deadline-192.png" width="64" height="64" alt="">
+      <div class="install-prompt__copy">
         <h2 id="installPromptHeading" data-site-i18n="installPromptHeading">Install Deadline</h2>
         <p data-site-i18n="installPromptText">On supported browsers, install directly from here. Otherwise, follow the steps for your device.</p>
       </div>
-      <button class="site-primary-button" id="installAppButton" type="button" data-install-app data-site-i18n="installButton" hidden>Install app</button>
+      <button class="site-button" id="installAppButton" type="button" data-install-app data-site-i18n="installButton" hidden>Install app</button>
     </section>
-    <p class="auth-status" id="installAppStatus" role="status" aria-live="polite" hidden></p>
+    <p class="status-message" id="installAppStatus" role="status" aria-live="polite" hidden></p>
 
-    <section class="site-feature-grid install-instructions" aria-label="Installation instructions">
-      <article class="site-card site-feature-card">
-        <span class="site-feature-number">01</span>
+    <section class="site-features site-page__install-instructions" aria-label="Installation instructions">
+      <article class="site-card site-features__card">
+        <span class="site-features__number">01</span>
         <h2 data-site-i18n="installAndroidTitle">Android (Chrome)</h2>
         <p data-site-i18n="installAndroidText">Open this page in Chrome, tap the three-dot menu, then choose Install app or Add to Home screen.</p>
       </article>
-      <article class="site-card site-feature-card">
-        <span class="site-feature-number">02</span>
+      <article class="site-card site-features__card">
+        <span class="site-features__number">02</span>
         <h2 data-site-i18n="installAppleTitle">iPhone or iPad (Safari)</h2>
         <p data-site-i18n="installAppleText">Open this page in Safari, tap Share, choose Add to Home Screen, then tap Add.</p>
       </article>
-      <article class="site-card site-feature-card">
-        <span class="site-feature-number">03</span>
+      <article class="site-card site-features__card">
+        <span class="site-features__number">03</span>
         <h2 data-site-i18n="installDesktopTitle">Computer (Chrome or Edge)</h2>
         <p data-site-i18n="installDesktopText">Select Install app in the address bar or open the browser menu and choose Install Deadline.</p>
       </article>
-      <article class="site-card site-feature-card">
-        <span class="site-feature-number">04</span>
+      <article class="site-card site-features__card">
+        <span class="site-features__number">04</span>
         <h2 data-site-i18n="installOtherTitle">Other browsers</h2>
         <p data-site-i18n="installOtherText">Open the browser's Share or menu option and look for Add to Home Screen or Install app.</p>
       </article>
     </section>
 
-    <section class="site-card site-notice-card install-note">
+    <section class="site-card site-card--notice site-page__install-note">
       <h2 data-site-i18n="installNoteTitle">Your tasks stay in sync</h2>
       <p data-site-i18n="installNoteText">The app opens in its own window, and your account keeps your data in sync. An internet connection is needed to load and update tasks.</p>
     </section>
 
-    <a class="site-back-link" href="../" data-site-i18n="backToTasks">Back to home</a>
+    <a class="site-page__back-link" href="../" data-site-i18n="backToTasks">Back to home</a>
   </main>
 
   <footer class="site-footer">
     <span data-site-i18n="footerNote">Stay organized and keep your deadlines in sight.</span>
-    <nav class="site-footer-links" aria-label="Footer navigation" data-site-i18n-aria-label="footerNavigation">
+    <nav class="site-footer__links" aria-label="Footer navigation" data-site-i18n-aria-label="footerNavigation">
       <a href="../" data-site-i18n="homeNav">Home</a>
       <a href="../about/" data-site-i18n="aboutNav">About</a>
       <a href="../faq/" data-site-i18n="faqNav">FAQ</a>

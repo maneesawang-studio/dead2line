@@ -59,7 +59,7 @@ if (isStandaloneApp) {
   }
 }
 
-const nav = document.getElementById("siteNavigation") || document.querySelector(".navbar");
+const nav = document.getElementById("siteNavigation") || document.querySelector(".site-navigation");
 if (nav) {
   const activePage = document.body.dataset.navActive || "";
   const authPage = document.body.dataset.authPage || "";
@@ -72,31 +72,31 @@ if (nav) {
     !pageThemeToggle.closest("#profileMenu") &&
     !pageLanguageToggle.closest("#profileMenu")
   );
-  let inner = nav.querySelector(".navbar-inner");
+  let inner = nav.querySelector(".site-navigation__inner");
 
   function linksMarkup() {
     const tasksHref = siteUrl(authPage === "dashboard" ? "app/" : "login/");
     const currentPage = name => activePage === name ? ' aria-current="page"' : "";
     return `
-      <button type="button" class="site-nav-toggle" id="siteNavToggle" aria-expanded="false" aria-controls="primaryNavigation" aria-label="Open navigation">
+      <button type="button" class="site-navigation__toggle" id="siteNavToggle" aria-expanded="false" aria-controls="primaryNavigation" aria-label="Open navigation">
         <span></span><span></span><span></span>
       </button>
-      <div class="site-nav-links" id="primaryNavigation">
-        <a class="site-nav-link" href="${localizedSiteUrl("")}"${currentPage("home")}><span data-i18n="homeNav" data-site-i18n="homeNav">Home</span></a>
-        <a class="site-nav-link" id="tasksNavLink" href="${tasksHref}"${currentPage("tasks")}><span data-i18n="tasksNav" data-site-i18n="tasksNav">Tasks</span></a>
-        <a class="site-nav-link" href="${localizedSiteUrl("about/")}"${currentPage("about")}><span data-i18n="aboutNav" data-site-i18n="aboutNav">About</span></a>
-        <a class="site-nav-link" href="${localizedSiteUrl("faq/")}"${currentPage("faq")}><span data-i18n="faqNav" data-site-i18n="faqNav">FAQ</span></a>
-        <a class="site-nav-link" href="${siteUrl("contact/")}"${currentPage("contact")}><span data-i18n="contactNav" data-site-i18n="contactNav">Contact</span></a>
+      <div class="site-navigation__links" id="primaryNavigation">
+        <a class="site-navigation__link" href="${localizedSiteUrl("")}"${currentPage("home")}><span data-i18n="homeNav" data-site-i18n="homeNav">Home</span></a>
+        <a class="site-navigation__link" id="tasksNavLink" href="${tasksHref}"${currentPage("tasks")}><span data-i18n="tasksNav" data-site-i18n="tasksNav">Tasks</span></a>
+        <a class="site-navigation__link" href="${localizedSiteUrl("about/")}"${currentPage("about")}><span data-i18n="aboutNav" data-site-i18n="aboutNav">About</span></a>
+        <a class="site-navigation__link" href="${localizedSiteUrl("faq/")}"${currentPage("faq")}><span data-i18n="faqNav" data-site-i18n="faqNav">FAQ</span></a>
+        <a class="site-navigation__link" href="${siteUrl("contact/")}"${currentPage("contact")}><span data-i18n="contactNav" data-site-i18n="contactNav">Contact</span></a>
         ${hasVisiblePagePreferences ? "" : `
-          <div class="site-nav-preferences">
-            <button type="button" class="site-nav-preference" id="guestThemeToggle" data-i18n-aria-label="switchTheme" data-i18n-title="switchTheme" data-site-i18n-aria-label="switchTheme" data-site-i18n-title="switchTheme">
-              <svg class="site-nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <div class="site-navigation__preferences">
+            <button type="button" class="site-navigation__preference" id="guestThemeToggle" data-i18n-aria-label="switchTheme" data-i18n-title="switchTheme" data-site-i18n-aria-label="switchTheme" data-site-i18n-title="switchTheme">
+              <svg class="site-navigation__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <circle cx="12" cy="12" r="3"></circle>
                 <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path>
               </svg>
             </button>
-            <button type="button" class="site-nav-preference" id="guestLanguageToggle" data-i18n-aria-label="language" data-i18n-title="language" data-site-i18n-aria-label="language" data-site-i18n-title="language">
-              <svg class="site-nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <button type="button" class="site-navigation__preference" id="guestLanguageToggle" data-i18n-aria-label="language" data-i18n-title="language" data-site-i18n-aria-label="language" data-site-i18n-title="language">
+              <svg class="site-navigation__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                 <circle cx="12" cy="12" r="10"></circle>
                 <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
               </svg>
@@ -107,58 +107,58 @@ if (nav) {
 
   function profileMarkup(includePreferences) {
     const preferences = includePreferences ? `
-      <button type="button" class="profile-row theme-row" id="themeToggle">
+      <button type="button" class="account-menu__item account-menu__item--theme" id="themeToggle">
         <span id="themeLabel" data-i18n="switchTheme" data-site-i18n="switchTheme">Switch theme</span>
-        <span class="theme-state" id="themeState">Light</span>
+        <span class="account-menu__state" id="themeState">Light</span>
       </button>
-      <button type="button" class="profile-row theme-row" id="languageToggle">
+      <button type="button" class="account-menu__item account-menu__item--theme" id="languageToggle">
         <span id="languageLabel" data-i18n="language" data-site-i18n="language">Language</span>
-        <span class="theme-state" id="languageState">English</span>
+        <span class="account-menu__state" id="languageState">English</span>
       </button>` : "";
     return `
-      <div class="profile-wrapper">
-        <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open settings menu" hidden>
+      <div class="account-menu">
+        <button type="button" class="account-menu__trigger" id="btnProfile" aria-expanded="false" aria-label="Open settings menu" hidden>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12.22 2h-.44a2 2 0 0 0-2 1.72l-.17 1.18a2 2 0 0 1-1 1.48l-.43.25a2 2 0 0 1-1.78.09l-1.07-.48a2 2 0 0 0-2.5.73l-.22.38a2 2 0 0 0 .5 2.55l.9.72a2 2 0 0 1 .71 1.65v.5a2 2 0 0 1-.71 1.65l-.9.72a2 2 0 0 0-.5 2.55l.22.38a2 2 0 0 0 2.5.73l1.07-.48a2 2 0 0 1 1.78.09l.43.25a2 2 0 0 1 1 1.48l.17 1.18A2 2 0 0 0 11.78 22h.44a2 2 0 0 0 2-1.72l.17-1.18a2 2 0 0 1 1-1.48l.43-.25a2 2 0 0 1 1.78-.09l1.07.48a2 2 0 0 0 2.5-.73l.22-.38a2 2 0 0 0-.5-2.55l-.9-.72a2 2 0 0 1-.71-1.65v-.5a2 2 0 0 1 .71-1.65l.9-.72a2 2 0 0 0 .5-2.55l-.22-.38a2 2 0 0 0-2.5-.73l-1.07.48a2 2 0 0 1-1.78-.09l-.43-.25a2 2 0 0 1-1-1.48l-.17-1.18A2 2 0 0 0 12.22 2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
         </button>
-        <div class="profile-menu" id="profileMenu">
-          <div class="profile-account">
+        <div class="account-menu__panel" id="profileMenu">
+          <div class="account-menu__account">
             <span id="accountLabel" data-i18n="loggedInAccount" data-site-i18n="account">Account</span>
             <strong id="accountEmail" data-i18n="previewAccount" data-site-i18n="previewAccount">Not signed in</strong>
           </div>
-          <p class="auth-status" id="profileAuthStatus" role="status" aria-live="polite" hidden></p>
+          <p class="status-message" id="profileAuthStatus" role="status" aria-live="polite" hidden></p>
           ${preferences}
-          <a class="profile-row profile-row-link" href="${siteUrl("settings/")}" data-i18n="settings" data-site-i18n="settings">Settings</a>
-          <a class="profile-row profile-row-link" id="profileInstallLink" href="${siteUrl("install/")}" data-i18n="installApp" data-site-i18n="installApp">Install app</a>
+          <a class="account-menu__item account-menu__item--link" href="${siteUrl("settings/")}" data-i18n="settings" data-site-i18n="settings">Settings</a>
+          <a class="account-menu__item account-menu__item--link" id="profileInstallLink" href="${siteUrl("install/")}" data-i18n="installApp" data-site-i18n="installApp">Install app</a>
           <hr>
-          <a class="profile-row profile-row-link" href="${localizedSiteUrl("privacy/")}" data-i18n="privacy" data-site-i18n="privacy">Privacy</a>
-          <a class="profile-row profile-row-link" id="loginMenuLink" href="${siteUrl("login/")}" data-i18n="signIn" data-site-i18n="signIn">Sign in</a>
-          <button type="button" class="profile-row sign-out" id="signOutButton" data-i18n="signOut" data-site-i18n="signOut" hidden>Sign out</button>
+          <a class="account-menu__item account-menu__item--link" href="${localizedSiteUrl("privacy/")}" data-i18n="privacy" data-site-i18n="privacy">Privacy</a>
+          <a class="account-menu__item account-menu__item--link" id="loginMenuLink" href="${siteUrl("login/")}" data-i18n="signIn" data-site-i18n="signIn">Sign in</a>
+          <button type="button" class="account-menu__item account-menu__item--sign-out" id="signOutButton" data-i18n="signOut" data-site-i18n="signOut" hidden>Sign out</button>
         </div>
       </div>`;
   }
 
   if (!inner) {
-    nav.className = "navbar";
+    nav.className = "site-navigation";
     nav.innerHTML = `
-      <div class="navbar-inner">
-        <a class="logo" href="${localizedSiteUrl("")}" aria-label="Deadline">
+      <div class="site-navigation__inner">
+        <a class="brand" href="${localizedSiteUrl("")}" aria-label="Deadline">
           <img src="${siteUrl("Asset/Deadline-512.png")}" alt="">
-          <span class="logo-name">Deadline<span class="logo-dot">.</span></span>
+          <span class="brand__name">Deadline<span class="brand__dot">.</span></span>
         </a>
         ${linksMarkup()}
-        <div class="site-nav-actions">
+        <div class="site-navigation__actions">
           ${isLanding ? `
-            <a class="landing-nav-login site-nav-guest-link" id="landingLoginLink" href="${siteUrl("login/")}" data-i18n="signIn" data-site-i18n="signIn">Sign in</a>
-            <a class="landing-nav-login site-nav-guest-link" id="landingSignUpLink" href="${siteUrl("signup/")}" data-i18n="signUpLink" data-site-i18n="signUpLink">Sign up</a>
-            <a class="landing-nav-login" id="landingDashboardLink" href="${siteUrl("app/")}" data-i18n="openDashboard" data-site-i18n="openDashboard" hidden>Open dashboard</a>
+            <a class="site-navigation__auth-link site-navigation__guest-link" id="landingLoginLink" href="${siteUrl("login/")}" data-i18n="signIn" data-site-i18n="signIn">Sign in</a>
+            <a class="site-navigation__auth-link site-navigation__guest-link" id="landingSignUpLink" href="${siteUrl("signup/")}" data-i18n="signUpLink" data-site-i18n="signUpLink">Sign up</a>
+            <a class="site-navigation__auth-link" id="landingDashboardLink" href="${siteUrl("app/")}" data-i18n="openDashboard" data-site-i18n="openDashboard" hidden>Open dashboard</a>
           ` : ""}
           ${profileMarkup(true)}
         </div>
       </div>`;
   } else {
-    const brand = inner.querySelector(".logo");
-    const profile = inner.querySelector(".profile-wrapper");
-    if (!inner.querySelector(".site-nav-links")) {
+    const brand = inner.querySelector(".brand");
+    const profile = inner.querySelector(".account-menu");
+    if (!inner.querySelector(".site-navigation__links")) {
       const links = document.createElement("div");
       links.innerHTML = linksMarkup();
       const toggle = links.firstElementChild;
@@ -169,19 +169,19 @@ if (nav) {
 
     if (!profile) {
       const actions = document.createElement("div");
-      actions.className = "site-nav-actions";
+      actions.className = "site-navigation__actions";
       const preferencesAlreadyOnPage = Boolean(document.getElementById("themeToggle") || document.getElementById("languageToggle"));
       actions.innerHTML = profileMarkup(!preferencesAlreadyOnPage);
       inner.appendChild(actions);
     }
   }
 
-  inner = nav.querySelector(".navbar-inner");
-  let actions = inner.querySelector(".site-nav-actions");
-  const profile = inner.querySelector(".profile-wrapper");
+  inner = nav.querySelector(".site-navigation__inner");
+  let actions = inner.querySelector(".site-navigation__actions");
+  const profile = inner.querySelector(".account-menu");
   if (!actions) {
     actions = document.createElement("div");
-    actions.className = "site-nav-actions";
+    actions.className = "site-navigation__actions";
     if (profile) actions.appendChild(profile);
     inner.appendChild(actions);
   }
@@ -190,7 +190,7 @@ if (nav) {
   if (!guestLoginLink && authPage !== "login") {
     guestLoginLink = document.createElement("a");
     guestLoginLink.id = "siteGuestLoginLink";
-    guestLoginLink.className = "landing-nav-login site-nav-guest-link";
+    guestLoginLink.className = "site-navigation__auth-link site-navigation__guest-link";
     guestLoginLink.href = siteUrl("login/");
     guestLoginLink.dataset.i18n = "signIn";
     guestLoginLink.dataset.siteI18n = "signIn";
@@ -202,7 +202,7 @@ if (nav) {
   if (!guestSignUpLink && authPage !== "signup") {
     guestSignUpLink = document.createElement("a");
     guestSignUpLink.id = "siteGuestSignUpLink";
-    guestSignUpLink.className = "landing-nav-login site-nav-guest-link";
+    guestSignUpLink.className = "site-navigation__auth-link site-navigation__guest-link";
     guestSignUpLink.href = siteUrl("signup/");
     guestSignUpLink.dataset.i18n = "signUpLink";
     guestSignUpLink.dataset.siteI18n = "signUpLink";
@@ -210,11 +210,11 @@ if (nav) {
     actions.appendChild(guestSignUpLink);
   }
 
-  const primaryLinks = nav.querySelector(".site-nav-links");
+  const primaryLinks = nav.querySelector(".site-navigation__links");
   const toggle = document.getElementById("siteNavToggle");
   const profileButton = document.getElementById("btnProfile");
   const profileMenu = document.getElementById("profileMenu");
-  const guestPreferences = nav.querySelector(".site-nav-preferences");
+  const guestPreferences = nav.querySelector(".site-navigation__preferences");
   if (toggle) actions.appendChild(toggle);
   function placeGuestPreferences() {
     if (!guestPreferences || !primaryLinks) return;
@@ -230,12 +230,12 @@ if (nav) {
   window.addEventListener("resize", placeGuestPreferences);
   if (profileMenu) {
     const privacyPath = sitePath("privacy/");
-    const privacyLink = Array.from(profileMenu.querySelectorAll(".profile-row-link"))
+    const privacyLink = Array.from(profileMenu.querySelectorAll(".account-menu__item--link"))
       .find(link => new URL(link.href, window.location.href).pathname === privacyPath);
     if (!document.getElementById("profileInstallLink")) {
       const link = document.createElement("a");
       link.id = "profileInstallLink";
-      link.className = "profile-row profile-row-link";
+      link.className = "account-menu__item account-menu__item--link";
       link.href = siteUrl("install/");
       link.dataset.i18n = "installApp";
       link.dataset.siteI18n = "installApp";
@@ -251,7 +251,7 @@ if (nav) {
       if (document.getElementById(id)) return;
       const link = document.createElement("a");
       link.id = id;
-      link.className = "profile-row profile-row-link";
+      link.className = "account-menu__item account-menu__item--link";
       link.href = href || localizedSiteUrl(`${page}/`);
       link.dataset.i18n = key;
       link.dataset.siteI18n = key;
@@ -269,7 +269,7 @@ if (nav) {
     if (privacyLink) secondaryLinks.push(privacyLink);
     if (secondaryLinks.length) {
       const linksGroup = document.createElement("div");
-      linksGroup.className = "profile-link-group";
+      linksGroup.className = "account-menu__link-group";
       profileMenu.insertBefore(linksGroup, secondaryLinks[0]);
       secondaryLinks.forEach(link => linksGroup.appendChild(link));
     }
@@ -288,8 +288,8 @@ if (nav) {
     };
     const primaryPages = ["home", "tasks", "about", "faq", "contact"];
     const currentLinks = nav.querySelectorAll(primaryPages.includes(activePage)
-      ? ".site-nav-link[href]"
-      : ".profile-row-link[href]");
+      ? ".site-navigation__link[href]"
+      : ".account-menu__item--link[href]");
     currentLinks.forEach(link => {
       if (new URL(link.href, window.location.href).pathname === activePaths[activePage]) {
         link.setAttribute("aria-current", "page");
@@ -299,7 +299,7 @@ if (nav) {
     });
 
     function setExpanded(expanded) {
-      nav.classList.toggle("nav-open", expanded);
+      nav.classList.toggle("site-navigation--open", expanded);
       toggle.setAttribute("aria-expanded", String(expanded));
       const language = document.documentElement.lang === "th";
       toggle.setAttribute("aria-label", expanded
@@ -322,12 +322,11 @@ if (nav) {
   }
 
   window.setDeadlineAuthenticatedNavigation = isAuthenticated => {
-    nav.classList.toggle("nav-authenticated", isAuthenticated);
-    const brandLink = inner.querySelector(".logo");
+    const brandLink = inner.querySelector(".brand");
     if (brandLink) brandLink.href = isAuthenticated ? siteUrl("app/") : localizedSiteUrl("");
-    const backLink = document.querySelector(".site-back-link");
+    const backLink = document.querySelector(".site-page__back-link");
     if (backLink) backLink.href = isAuthenticated ? siteUrl("app/") : localizedSiteUrl("");
-    actions.querySelectorAll(".site-nav-guest-link").forEach(link => {
+    actions.querySelectorAll(".site-navigation__guest-link").forEach(link => {
       link.hidden = isAuthenticated;
     });
     if (guestPreferences) guestPreferences.hidden = isAuthenticated;
@@ -336,13 +335,13 @@ if (nav) {
 
     if (isAuthenticated) {
       if (toggle) {
-        nav.classList.remove("nav-open");
+        nav.classList.remove("site-navigation--open");
         toggle.hidden = true;
         toggle.setAttribute("aria-expanded", "false");
       }
       if (primaryLinks) primaryLinks.remove();
     } else {
-      if (profileMenu) profileMenu.classList.remove("show");
+      if (profileMenu) profileMenu.classList.remove("account-menu__panel--open");
       if (profileButton) profileButton.setAttribute("aria-expanded", "false");
       if (primaryLinks && !primaryLinks.parentElement) {
         inner.insertBefore(primaryLinks, actions);
@@ -362,12 +361,12 @@ if (nav) {
     const currentScrollY = window.scrollY;
     if (window.matchMedia("(max-width: 768px)").matches) {
       if (currentScrollY <= 24 || currentScrollY < previousScrollY - 2) {
-        nav.classList.remove("navbar-hidden");
+        nav.classList.remove("site-navigation--hidden");
       } else if (currentScrollY > previousScrollY + 2) {
-        nav.classList.add("navbar-hidden");
+        nav.classList.add("site-navigation--hidden");
       }
     } else {
-      nav.classList.remove("navbar-hidden");
+      nav.classList.remove("site-navigation--hidden");
     }
     previousScrollY = currentScrollY;
   }, { passive: true });
@@ -814,7 +813,7 @@ window.deadlineSetThemeMode = setThemeMode;
 window.deadlineApplyDocumentTheme = applyDocumentTheme;
 
 function applyLogoTheme(theme) {
-  document.querySelectorAll(".logo img, .login-brand img").forEach(image => {
+  document.querySelectorAll(".brand img, .login-card__brand img").forEach(image => {
     const lightSource = image.dataset.lightSource || image.getAttribute("src");
     image.dataset.lightSource = lightSource;
     image.src = theme === "dark"
@@ -913,7 +912,6 @@ function applySitePreferences() {
   document.documentElement.lang = siteLanguage;
   localizePublicPageLinks();
   applyDocumentTheme(siteTheme);
-  document.body.classList.toggle("dark-mode", siteTheme === "dark");
   applyLogoTheme(siteTheme);
   document.querySelectorAll("[data-site-i18n]").forEach(element => {
     element.textContent = siteText(element.dataset.siteI18n);
@@ -963,19 +961,19 @@ function installActionConfirmation() {
   let modal = document.getElementById("actionConfirmModal");
   if (!modal) {
     modal = document.createElement("div");
-    modal.className = "modal-overlay confirmation-overlay";
+    modal.className = "modal";
     modal.id = "actionConfirmModal";
     modal.setAttribute("aria-hidden", "true");
     modal.innerHTML = `
-      <section class="modal-content confirmation-content" role="dialog" aria-modal="true" aria-labelledby="actionConfirmTitle" aria-describedby="actionConfirmMessage">
-        <div class="modal-header">
+      <section class="modal__content modal__content--confirmation" role="dialog" aria-modal="true" aria-labelledby="actionConfirmTitle" aria-describedby="actionConfirmMessage">
+        <div class="modal__header">
           <h3 id="actionConfirmTitle"></h3>
-          <button type="button" class="btn-close-modal" id="actionConfirmClose">&times;</button>
+          <button type="button" class="modal__close-button" id="actionConfirmClose">&times;</button>
         </div>
-        <p class="confirmation-message" id="actionConfirmMessage"></p>
-        <div class="modal-footer">
-          <button type="button" class="btn-cancel" id="actionConfirmCancel"></button>
-          <button type="button" class="btn-submit" id="actionConfirmAccept"></button>
+        <p class="modal__message" id="actionConfirmMessage"></p>
+        <div class="modal__footer">
+          <button type="button" class="button-cancel" id="actionConfirmCancel"></button>
+          <button type="button" class="button-submit" id="actionConfirmAccept"></button>
         </div>
       </section>`;
     document.body.appendChild(modal);
@@ -997,12 +995,12 @@ function installActionConfirmation() {
     if (!resolveConfirmation) return;
     const resolve = resolveConfirmation;
     resolveConfirmation = null;
-    modal.classList.remove("show");
+    modal.classList.remove("modal--open");
     modal.setAttribute("aria-hidden", "true");
     const taskModal = document.getElementById("addModal");
-    if (taskModal && taskModal.classList.contains("show")) taskModal.setAttribute("aria-hidden", "false");
+    if (taskModal && taskModal.classList.contains("modal--open")) taskModal.setAttribute("aria-hidden", "false");
     if (!previousModalOpen) {
-      document.body.classList.remove("modal-open");
+      document.body.classList.remove("site-page--modal-open");
       document.body.style.top = previousBodyTop;
       document.body.style.paddingRight = previousBodyPaddingRight;
       window.scrollTo(0, previousScrollY);
@@ -1021,7 +1019,7 @@ function installActionConfirmation() {
     if (event.target === modal) close(false);
   });
   document.addEventListener("keydown", event => {
-    if (!modal.classList.contains("show")) return;
+    if (!modal.classList.contains("modal--open")) return;
     if (event.key === "Escape") {
       event.preventDefault();
       close(false);
@@ -1044,7 +1042,7 @@ function installActionConfirmation() {
   window.deadlineConfirmAction = ({ title: dialogTitle, message: dialogMessage, confirmLabel, cancelLabel, destructive = false }) => {
     if (resolveConfirmation) throw new Error("An action confirmation is already open.");
     previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    previousModalOpen = document.body.classList.contains("modal-open");
+    previousModalOpen = document.body.classList.contains("site-page--modal-open");
     previousScrollY = window.scrollY;
     previousBodyTop = document.body.style.top;
     previousBodyPaddingRight = document.body.style.paddingRight;
@@ -1052,7 +1050,7 @@ function installActionConfirmation() {
       const isDesktop = window.matchMedia("(min-width: 769px)").matches;
       const scrollbarWidth = isDesktop ? 0 : window.innerWidth - document.documentElement.clientWidth;
       if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
-      document.body.classList.add("modal-open");
+      document.body.classList.add("site-page--modal-open");
       document.body.style.top = `-${previousScrollY}px`;
     }
 
@@ -1061,10 +1059,10 @@ function installActionConfirmation() {
     closeButton.setAttribute("aria-label", document.documentElement.lang === "th" ? "ปิด" : "Close");
     cancelButton.textContent = cancelLabel;
     confirmButton.textContent = confirmLabel;
-    confirmButton.classList.toggle("confirmation-destructive", destructive);
+    confirmButton.classList.toggle("button-submit--destructive", destructive);
     const taskModal = document.getElementById("addModal");
-    if (taskModal && taskModal.classList.contains("show")) taskModal.setAttribute("aria-hidden", "true");
-    modal.classList.add("show");
+    if (taskModal && taskModal.classList.contains("modal--open")) taskModal.setAttribute("aria-hidden", "true");
+    modal.classList.add("modal--open");
     modal.setAttribute("aria-hidden", "false");
 
     return new Promise(resolve => {
@@ -1130,7 +1128,7 @@ if (!isDashboard) {
   const profileMenu = document.getElementById("profileMenu");
   if (profileButton && profileMenu) profileButton.addEventListener("click", event => {
     event.stopPropagation();
-    const isOpen = profileMenu.classList.toggle("show");
+    const isOpen = profileMenu.classList.toggle("account-menu__panel--open");
     profileButton.setAttribute("aria-expanded", String(isOpen));
   });
 
@@ -1138,14 +1136,14 @@ if (!isDashboard) {
     const confirmationModal = document.getElementById("actionConfirmModal");
     if (confirmationModal && confirmationModal.contains(event.target)) return;
     if (profileMenu && profileButton && !profileMenu.contains(event.target) && !profileButton.contains(event.target)) {
-      profileMenu.classList.remove("show");
+      profileMenu.classList.remove("account-menu__panel--open");
       profileButton.setAttribute("aria-expanded", "false");
     }
   });
 
   document.addEventListener("keydown", event => {
     if (event.key === "Escape") {
-      if (profileMenu) profileMenu.classList.remove("show");
+      if (profileMenu) profileMenu.classList.remove("account-menu__panel--open");
       if (profileButton) profileButton.setAttribute("aria-expanded", "false");
     }
   });

@@ -1,4 +1,4 @@
-const CACHE_NAME = "deadline-v35";
+const CACHE_NAME = "deadline-v42";
 const BASE_URL = new URL("./", self.location.href);
 const CACHEABLE_DESTINATIONS = new Set(["document", "font", "image", "script", "style"]);
 const CORE_DOCUMENTS = new Set([

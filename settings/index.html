@@ -43,31 +43,31 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body class="site-page" data-auth-page="public" data-site-title="settings" data-nav-active="settings">
-  <nav class="navbar">
-    <div class="navbar-inner">
-      <a class="logo" href="../" aria-label="Deadline">
+  <nav class="site-navigation">
+    <div class="site-navigation__inner">
+      <a class="brand" href="../" aria-label="Deadline">
         <img src="../Asset/Deadline-512.png" alt="Deadline">
-        <span class="logo-name">Deadline<span class="logo-dot">.</span></span>
+        <span class="brand__name">Deadline<span class="brand__dot">.</span></span>
       </a>
     </div>
   </nav>
-  <main class="site-main">
-    <header class="site-page-header">
-      <p class="site-eyebrow" data-site-i18n="preferencesEyebrow">Your preferences</p>
+  <main class="site-page__main">
+    <header class="site-page__header">
+      <p class="site-page__eyebrow" data-site-i18n="preferencesEyebrow">Your preferences</p>
       <h1 data-site-i18n="settingsHeading">Settings</h1>
     </header>
-    <section class="site-card site-notice-card">
+    <section class="site-card site-card--notice">
       <h2 data-site-i18n="appearanceHeading">Display and language</h2>
-      <button type="button" class="profile-row theme-row" id="themeToggle">
+      <button type="button" class="account-menu__item account-menu__item--theme" id="themeToggle">
         <span data-site-i18n="theme">Theme</span>
-        <span class="theme-state" id="themeState">Light</span>
+        <span class="account-menu__state" id="themeState">Light</span>
       </button>
-      <button type="button" class="profile-row theme-row" id="languageToggle">
+      <button type="button" class="account-menu__item account-menu__item--theme" id="languageToggle">
         <span data-site-i18n="language">Language</span>
-        <span class="theme-state" id="languageState">English</span>
+        <span class="account-menu__state" id="languageState">English</span>
       </button>
     </section>
-    <a class="site-back-link" href="../" data-site-i18n="backToTasks">Back to home</a>
+    <a class="site-page__back-link" href="../" data-site-i18n="backToTasks">Back to home</a>
   </main>
   <footer class="site-footer" data-site-i18n="footerNote">Stay organized and keep your deadlines in sight.</footer>
   <script src="../site-pages.js"></script>

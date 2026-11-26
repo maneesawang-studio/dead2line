@@ -43,20 +43,20 @@
 <link rel="stylesheet" href="../style.css">
 </head>
 <body class="site-page" data-auth-page="public" data-site-title="contactTitle" data-site-description="contactDescription" data-nav-active="contact">
-  <nav class="navbar" id="siteNavigation"></nav>
+  <nav class="site-navigation" id="siteNavigation"></nav>
 
-  <main class="site-main login-main">
+  <main class="site-page__main site-page__main--login">
     <section class="site-card login-card contact-card" aria-labelledby="contactHeading">
-      <p class="site-eyebrow" data-site-i18n="contactEyebrow">SUPPORT</p>
+      <p class="site-page__eyebrow" data-site-i18n="contactEyebrow">SUPPORT</p>
       <h1 id="contactHeading" data-site-i18n="contactHeading">How can we help?</h1>
-      <p class="site-lead" data-site-i18n="contactLead">Send a message to the Deadline support team.</p>
+      <p class="site-page__lead" data-site-i18n="contactLead">Send a message to the Deadline support team.</p>
 
-      <form class="login-form" id="supportContactForm">
-        <div class="site-form-group">
+      <form class="login-card__form" id="supportContactForm">
+        <div class="site-form-field">
           <label for="supportEmail" data-site-i18n="contactEmailLabel">Your email</label>
           <input type="email" id="supportEmail" name="email" autocomplete="email" maxlength="254" required>
         </div>
-        <div class="site-form-group">
+        <div class="site-form-field">
           <label for="supportTopic" data-site-i18n="contactTopicLabel">What do you need help with?</label>
           <select id="supportTopic" name="topic" required>
             <option value="general" data-site-i18n="contactTopicGeneral">General question</option>
@@ -65,22 +65,22 @@
             <option value="privacy" data-site-i18n="contactTopicPrivacy">Privacy or account deletion</option>
           </select>
         </div>
-        <div class="site-form-group">
+        <div class="site-form-field">
           <label for="supportMessage" data-site-i18n="contactMessageLabel">Message</label>
           <textarea id="supportMessage" name="message" rows="6" minlength="10" maxlength="3000" required></textarea>
         </div>
-        <input class="contact-honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <p class="contact-privacy-note" data-site-i18n="contactPrivacyNote">Don't include passwords, verification codes, or sensitive task details. Replies will be sent to the email you provide.</p>
-        <button class="site-primary-button" id="supportSubmit" type="submit" data-site-i18n="contactSend">Send message</button>
+        <input class="contact-card__honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <p class="contact-card__privacy-note" data-site-i18n="contactPrivacyNote">Don't include passwords, verification codes, or sensitive task details. Replies will be sent to the email you provide.</p>
+        <button class="site-button" id="supportSubmit" type="submit" data-site-i18n="contactSend">Send message</button>
       </form>
-      <p class="auth-status" id="supportContactStatus" role="status" aria-live="polite" hidden></p>
-      <a class="contact-privacy-link" href="../privacy/" data-site-i18n="privacy">Privacy</a>
+      <p class="status-message" id="supportContactStatus" role="status" aria-live="polite" hidden></p>
+      <a class="contact-card__privacy-link" href="../privacy/" data-site-i18n="privacy">Privacy</a>
     </section>
   </main>
 
   <footer class="site-footer">
     <span data-site-i18n="footerNote">Stay organized and keep your deadlines in sight.</span>
-    <nav class="site-footer-links" aria-label="Footer navigation" data-site-i18n-aria-label="footerNavigation">
+    <nav class="site-footer__links" aria-label="Footer navigation" data-site-i18n-aria-label="footerNavigation">
       <a href="../" data-site-i18n="homeNav">Home</a>
       <a href="../faq/" data-site-i18n="faqNav">FAQ</a>
       <a href="../privacy/" data-site-i18n="privacy">Privacy</a>

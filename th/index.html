@@ -142,88 +142,88 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body class="site-page landing-page" data-auth-page="landing" data-site-title="homeTitle" data-site-description="homeDescription" data-nav-active="home">
+<body class="site-page site-page--landing" data-auth-page="landing" data-site-title="homeTitle" data-site-description="homeDescription" data-nav-active="home">
   <nav id="siteNavigation" aria-label="Main navigation" data-site-i18n-aria-label="mainNavigation"></nav>
 
-  <p class="auth-status landing-auth-status" id="landingAuthStatus" role="status" aria-live="polite" hidden></p>
-  <main class="landing-main">
-    <section class="landing-hero">
-      <div class="landing-copy">
-        <p class="landing-eyebrow" data-site-i18n="homeEyebrow">YOUR WORK, RIGHT ON TIME</p>
+  <p class="status-message status-message--landing" id="landingAuthStatus" role="status" aria-live="polite" hidden></p>
+  <main class="site-page__main site-page__main--landing">
+    <section class="site-page__hero">
+      <div class="site-page__content">
+        <p class="site-page__eyebrow" data-site-i18n="homeEyebrow">YOUR WORK, RIGHT ON TIME</p>
         <h1 data-auth-view="guest" data-site-i18n="homeHeadline">Plan your tasks. Stay ahead of deadlines.</h1>
         <h1 data-auth-view="authenticated" id="landingGreeting" hidden></h1>
-        <p class="landing-lead" data-auth-view="guest" data-site-i18n="homeLead">Organize tasks, track progress, and see upcoming deadlines in one place. Break bigger tasks into smaller steps and know what to focus on next.</p>
-        <p class="landing-lead" data-auth-view="authenticated" data-site-i18n="homeSignedInLead" hidden>Your tasks are ready. Open your dashboard to review what's next.</p>
-        <div class="landing-actions" data-auth-view="guest">
-          <a class="landing-primary" href="signup/" data-site-i18n="getStarted">Create an account</a>
-          <a class="landing-secondary" href="#preview" data-site-i18n="seePreview">See the dashboard preview</a>
+        <p class="site-page__lead" data-auth-view="guest" data-site-i18n="homeLead">Organize tasks, track progress, and see upcoming deadlines in one place. Break bigger tasks into smaller steps and know what to focus on next.</p>
+        <p class="site-page__lead" data-auth-view="authenticated" data-site-i18n="homeSignedInLead" hidden>Your tasks are ready. Open your dashboard to review what's next.</p>
+        <div class="site-page__actions" data-auth-view="guest">
+          <a class="site-page__primary-button" href="signup/" data-site-i18n="getStarted">Create an account</a>
+          <a class="site-page__secondary-button" href="#preview" data-site-i18n="seePreview">See the dashboard preview</a>
         </div>
-        <div class="landing-actions" data-auth-view="authenticated" hidden>
-          <a class="landing-primary" href="app/" data-site-i18n="openDashboard">Open my dashboard</a>
-          <a class="landing-secondary" href="#preview" data-site-i18n="seePreview">See the dashboard preview</a>
+        <div class="site-page__actions" data-auth-view="authenticated" hidden>
+          <a class="site-page__primary-button" href="app/" data-site-i18n="openDashboard">Open my dashboard</a>
+          <a class="site-page__secondary-button" href="#preview" data-site-i18n="seePreview">See the dashboard preview</a>
         </div>
-        <aside class="landing-install-promo" aria-labelledby="landingInstallHeading" data-auth-view="guest">
+        <aside class="landing-install" aria-labelledby="landingInstallHeading" data-auth-view="guest">
           <img src="../Asset/Deadline-192.png" width="44" height="44" alt="">
-          <div class="landing-install-copy">
+          <div class="landing-install__copy">
             <h2 id="landingInstallHeading" data-site-i18n="installPromoHeading">Install Deadline for quick access</h2>
             <p data-site-i18n="installPromoText">Add Deadline to your home screen and open your tasks in its own app window.</p>
           </div>
           <a href="../install/" data-site-i18n="installPromoLink">See how</a>
         </aside>
-        <p class="landing-caption" data-site-i18n="homeCaption">Simple tools. Clear next steps.</p>
+        <p class="site-page__caption" data-site-i18n="homeCaption">Simple tools. Clear next steps.</p>
       </div>
 
-      <div class="landing-preview" id="preview" role="img" aria-label="Deadline task dashboard preview with sample tasks" data-site-i18n-aria-label="previewAriaLabel">
-        <div class="preview-window">
-          <div class="preview-window-top">
+      <div class="site-page__preview" id="preview" role="img" aria-label="Deadline task dashboard preview with sample tasks" data-site-i18n-aria-label="previewAriaLabel">
+        <div class="dashboard-preview__window">
+          <div class="dashboard-preview__header">
             <span></span><span></span><span></span>
             <strong>Deadline. <small data-site-i18n="previewSample">SAMPLE DATA</small></strong>
           </div>
-          <div class="preview-window-body">
-            <div class="preview-dashboard">
+          <div class="dashboard-preview__body">
+            <div class="dashboard-preview">
               <header class="page-header">
-                <p class="current-date" id="previewCurrentDate"></p>
-                <h2 class="page-title" data-site-i18n="previewDashboard">Manage tasks and deadlines</h2>
+                <p class="page-header__date" id="previewCurrentDate"></p>
+                <h2 class="page-header__title" data-site-i18n="previewDashboard">Manage tasks and deadlines</h2>
               </header>
 
-              <section class="summary-bar">
-                <div class="stats-card">
-                  <div class="stat-item">
-                    <span class="stat-label blue" data-site-i18n="homeInProgress">In progress</span>
-                    <span class="stat-value">04</span>
+              <section class="dashboard-summary">
+                <div class="dashboard-summary__stats">
+                  <div class="dashboard-stat">
+                    <span class="dashboard-stat__label dashboard-stat__label--blue" data-site-i18n="homeInProgress">In progress</span>
+                    <span class="dashboard-stat__value">04</span>
                   </div>
-                  <span class="stat-divider" aria-hidden="true"></span>
-                  <div class="stat-item">
-                    <span class="stat-label red" data-site-i18n="previewUrgent">≤ 3 days</span>
-                    <span class="stat-value">02</span>
+                  <span class="dashboard-summary__divider" aria-hidden="true"></span>
+                  <div class="dashboard-stat">
+                    <span class="dashboard-stat__label dashboard-stat__label--red" data-site-i18n="previewUrgent">≤ 3 days</span>
+                    <span class="dashboard-stat__value">02</span>
                   </div>
-                  <span class="stat-divider" aria-hidden="true"></span>
-                  <div class="stat-item">
-                    <span class="stat-label green" data-site-i18n="homeFinished">Finished</span>
-                    <span class="stat-value">08</span>
+                  <span class="dashboard-summary__divider" aria-hidden="true"></span>
+                  <div class="dashboard-stat">
+                    <span class="dashboard-stat__label dashboard-stat__label--green" data-site-i18n="homeFinished">Finished</span>
+                    <span class="dashboard-stat__value">08</span>
                   </div>
                 </div>
-                <span class="btn-add" aria-hidden="true">
-                  <span class="btn-add-icon">+</span>
+                <span class="button-add" aria-hidden="true">
+                  <span class="button-add__icon">+</span>
                   <span data-site-i18n="previewAdd">Add</span>
                 </span>
               </section>
 
-              <section class="controls-bar">
-                <div class="status-tabs">
-                  <span class="tab-btn active" data-site-i18n="homeInProgress">In progress</span>
-                  <span class="tab-btn" data-site-i18n="homeFinished">Finished</span>
+              <section class="task-controls">
+                <div class="task-controls__tabs">
+                  <span class="task-controls__tab task-controls__tab--active" data-site-i18n="homeInProgress">In progress</span>
+                  <span class="task-controls__tab" data-site-i18n="homeFinished">Finished</span>
                 </div>
-                <div class="search-sort-group">
-                  <div class="search-box">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <div class="task-controls__search-group">
+                  <div class="task-controls__search">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <circle cx="11" cy="11" r="8"></circle>
                       <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
                     <span data-site-i18n="previewSearch">Search tasks</span>
                   </div>
-                  <span class="btn-sort" aria-hidden="true">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <span class="task-controls__sort-button" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M12 19V5"></path>
                       <path d="m6 11 6-6 6 6"></path>
                     </svg>
@@ -231,37 +231,37 @@
                 </div>
               </section>
 
-              <section class="filter-pills" aria-hidden="true">
-                <span class="pill active" data-site-i18n="previewAll">All</span>
-                <span class="pill" data-site-i18n="previewUrgent">≤ 3 days</span>
-                <span class="pill" data-site-i18n="previewTodayFilter">Today</span>
-                <span class="pill" data-site-i18n="previewOverdue">Overdue</span>
-                <span class="pill" data-site-i18n="previewJobs">Jobs</span>
-                <span class="pill" data-site-i18n="homeStudy">Study</span>
-                <span class="pill" data-site-i18n="previewFreelance">Freelance</span>
-                <span class="pill" data-site-i18n="previewFinance">Finance</span>
+              <section class="task-filters" aria-hidden="true">
+                <span class="task-filters__pill task-filters__pill--active" data-site-i18n="previewAll">All</span>
+                <span class="task-filters__pill" data-site-i18n="previewUrgent">≤ 3 days</span>
+                <span class="task-filters__pill" data-site-i18n="previewTodayFilter">Today</span>
+                <span class="task-filters__pill" data-site-i18n="previewOverdue">Overdue</span>
+                <span class="task-filters__pill" data-site-i18n="previewJobs">Jobs</span>
+                <span class="task-filters__pill" data-site-i18n="homeStudy">Study</span>
+                <span class="task-filters__pill" data-site-i18n="previewFreelance">Freelance</span>
+                <span class="task-filters__pill" data-site-i18n="previewFinance">Finance</span>
               </section>
 
-              <section class="task-list-container">
+              <section class="task-list">
                 <article class="task-card">
-                  <div class="task-date-col">
-                    <span class="deadline-label" data-site-i18n="previewDeadline">Deadline</span>
-                    <strong class="deadline-day" id="previewDayOne">24</strong>
-                    <span class="deadline-year"><span id="previewMonthOne">Nov</span> <span id="previewYearOne">2026</span></span>
+                  <div class="task-card__date">
+                    <span class="task-card__deadline-label" data-site-i18n="previewDeadline">Deadline</span>
+                    <strong class="task-card__deadline-day" id="previewDayOne">24</strong>
+                    <span class="task-card__deadline-year"><span id="previewMonthOne">Nov</span> <span id="previewYearOne">2026</span></span>
                   </div>
-                  <div class="task-content-col">
-                    <div class="task-badges">
-                      <div class="task-badge-group">
-                        <span class="badge urgent" data-site-i18n="previewOneDayLeft">1 day left</span>
-                        <span class="badge category" data-site-i18n="homeStudy">Study</span>
+                  <div class="task-card__content">
+                    <div class="task-card__badges">
+                      <div class="task-card__badge-group">
+                        <span class="task-card__badge task-card__badge--urgent" data-site-i18n="previewOneDayLeft">1 day left</span>
+                        <span class="task-card__badge task-card__badge--category" data-site-i18n="homeStudy">Study</span>
                       </div>
-                      <div class="task-actions-col" aria-hidden="true">
-                        <span class="btn-check">
+                      <div class="task-card__actions" aria-hidden="true">
+                        <span class="task-card__status-button">
                           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12"></polyline>
                           </svg>
                         </span>
-                        <span class="btn-more">
+                        <span class="task-card__more-button">
                           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="5" r="1"></circle>
                             <circle cx="12" cy="12" r="1"></circle>
@@ -270,26 +270,26 @@
                         </span>
                       </div>
                     </div>
-                    <h3 class="task-title" data-site-i18n="previewTaskOne">Research presentation</h3>
-                    <p class="task-desc" data-site-i18n="previewTaskOneMeta">Outline key ideas and gather sources</p>
-                    <div class="sub-progress-section">
-                      <div class="progress-header">
+                    <h3 class="task-card__title" data-site-i18n="previewTaskOne">Research presentation</h3>
+                    <p class="task-card__description" data-site-i18n="previewTaskOneMeta">Outline key ideas and gather sources</p>
+                    <div class="task-card__subtasks">
+                      <div class="task-card__progress-header">
                         <span data-site-i18n="previewSubtasks">1 of 2 subtasks complete</span>
-                        <span class="progress-percent">50%</span>
+                        <span class="task-card__progress-percent">50%</span>
                       </div>
-                      <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 50%"></div></div>
-                      <ul class="subtask-list">
+                      <div class="task-card__progress-track"><div class="task-card__progress-fill" style="width: 50%"></div></div>
+                      <ul class="task-card__subtask-list">
                         <li>
-                          <label class="custom-checkbox done">
+                          <label class="task-card__checkbox task-card__checkbox--done">
                             <input type="checkbox" checked disabled>
-                            <span class="checkmark"></span>
+                            <span class="task-card__checkmark"></span>
                             <span data-site-i18n="previewSubtaskOne">Outline key ideas</span>
                           </label>
                         </li>
                         <li>
-                          <label class="custom-checkbox">
+                          <label class="task-card__checkbox">
                             <input type="checkbox" disabled>
-                            <span class="checkmark"></span>
+                            <span class="task-card__checkmark"></span>
                             <span data-site-i18n="previewSubtaskTwo">Gather sources</span>
                           </label>
                         </li>
@@ -299,24 +299,24 @@
                 </article>
 
                 <article class="task-card">
-                  <div class="task-date-col">
-                    <span class="deadline-label" data-site-i18n="previewDeadline">Deadline</span>
-                    <strong class="deadline-day" id="previewDayTwo">27</strong>
-                    <span class="deadline-year"><span id="previewMonthTwo">Nov</span> <span id="previewYearTwo">2026</span></span>
+                  <div class="task-card__date">
+                    <span class="task-card__deadline-label" data-site-i18n="previewDeadline">Deadline</span>
+                    <strong class="task-card__deadline-day" id="previewDayTwo">27</strong>
+                    <span class="task-card__deadline-year"><span id="previewMonthTwo">Nov</span> <span id="previewYearTwo">2026</span></span>
                   </div>
-                  <div class="task-content-col">
-                    <div class="task-badges">
-                      <div class="task-badge-group">
-                        <span class="badge normal" data-site-i18n="previewFourDaysLeft">4 days left</span>
-                        <span class="badge category" data-site-i18n="homeWork">Work</span>
+                  <div class="task-card__content">
+                    <div class="task-card__badges">
+                      <div class="task-card__badge-group">
+                        <span class="task-card__badge task-card__badge--normal" data-site-i18n="previewFourDaysLeft">4 days left</span>
+                        <span class="task-card__badge task-card__badge--category" data-site-i18n="homeWork">Work</span>
                       </div>
-                      <div class="task-actions-col" aria-hidden="true">
-                        <span class="btn-check">
+                      <div class="task-card__actions" aria-hidden="true">
+                        <span class="task-card__status-button">
                           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12"></polyline>
                           </svg>
                         </span>
-                        <span class="btn-more">
+                        <span class="task-card__more-button">
                           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="5" r="1"></circle>
                             <circle cx="12" cy="12" r="1"></circle>
@@ -325,8 +325,8 @@
                         </span>
                       </div>
                     </div>
-                    <h3 class="task-title" data-site-i18n="previewTaskTwo">Weekly team update</h3>
-                    <p class="task-desc" data-site-i18n="previewTaskTwoMeta">Share progress and next steps</p>
+                    <h3 class="task-card__title" data-site-i18n="previewTaskTwo">Weekly team update</h3>
+                    <p class="task-card__description" data-site-i18n="previewTaskTwoMeta">Share progress and next steps</p>
                   </div>
                 </article>
               </section>
@@ -338,7 +338,7 @@
 
     <section class="landing-features" id="features" aria-labelledby="featureSectionHeading">
       <header class="landing-section-heading">
-        <p class="landing-eyebrow" data-site-i18n="featureSectionEyebrow">FEATURES THAT KEEP YOU MOVING</p>
+        <p class="site-page__eyebrow" data-site-i18n="featureSectionEyebrow">FEATURES THAT KEEP YOU MOVING</p>
         <h2 id="featureSectionHeading" data-site-i18n="featureSectionHeading">Keep every task and deadline in view.</h2>
         <p data-site-i18n="featureSectionText">Keep deadlines visible, break larger tasks into manageable steps, and shape your workspace around the way you work.</p>
       </header>
@@ -347,24 +347,24 @@
       <article><span>03</span><h2 data-site-i18n="featurePersonalTitle">Make it your own</h2><p data-site-i18n="featurePersonalText">Choose English or Thai, switch between light and dark themes, and filter tasks by category.</p></article>
     </section>
 
-    <section class="landing-how" id="how-it-works" aria-labelledby="howItWorksHeading">
+    <section class="landing-steps-section" id="how-it-works" aria-labelledby="howItWorksHeading">
       <header class="landing-section-heading">
-        <p class="landing-eyebrow" data-site-i18n="howItWorksEyebrow">HOW IT WORKS</p>
+        <p class="site-page__eyebrow" data-site-i18n="howItWorksEyebrow">HOW IT WORKS</p>
         <h2 id="howItWorksHeading" data-site-i18n="howItWorksHeading">From task to done in three simple steps.</h2>
       </header>
       <ol class="landing-steps">
         <li>
-          <span class="landing-step-number" aria-hidden="true">01</span>
+          <span class="landing-steps__number" aria-hidden="true">01</span>
           <h3 data-site-i18n="stepAddTitle">Add a task and deadline</h3>
           <p data-site-i18n="stepAddText">Give it a clear title and due date. Add a category or notes when they help.</p>
         </li>
         <li>
-          <span class="landing-step-number" aria-hidden="true">02</span>
+          <span class="landing-steps__number" aria-hidden="true">02</span>
           <h3 data-site-i18n="stepBreakTitle">Break it into subtasks</h3>
           <p data-site-i18n="stepBreakText">Turn bigger tasks into smaller steps and keep track of what's complete.</p>
         </li>
         <li>
-          <span class="landing-step-number" aria-hidden="true">03</span>
+          <span class="landing-steps__number" aria-hidden="true">03</span>
           <h3 data-site-i18n="stepTrackTitle">Track progress and finish</h3>
           <p data-site-i18n="stepTrackText">See what's due soon, update your tasks, and move finished work out of your active list.</p>
         </li>
@@ -379,16 +379,16 @@
       <a href="privacy/" data-site-i18n="homePrivacyLink">Read our privacy policy</a>
     </section>
 
-    <section class="landing-bottom-cta">
+    <section class="site-page__bottom-cta">
       <h2 data-site-i18n="homeClosing">Ready for a clearer plan?</h2>
-      <a class="landing-primary" href="signup/" data-auth-view="guest" data-site-i18n="getStarted">Create an account</a>
-      <a class="landing-primary" href="app/" data-auth-view="authenticated" hidden data-site-i18n="openDashboard">Open my dashboard</a>
-      <a class="landing-secondary" href="../install/" data-site-i18n="installApp">Install app</a>
+      <a class="site-page__primary-button" href="signup/" data-auth-view="guest" data-site-i18n="getStarted">Create an account</a>
+      <a class="site-page__primary-button" href="app/" data-auth-view="authenticated" hidden data-site-i18n="openDashboard">Open my dashboard</a>
+      <a class="site-page__secondary-button" href="../install/" data-site-i18n="installApp">Install app</a>
     </section>
   </main>
   <footer class="site-footer">
     <span data-site-i18n="footerNote">Stay organized and keep your deadlines in sight.</span>
-    <nav class="site-footer-links" aria-label="Footer navigation" data-site-i18n-aria-label="footerNavigation">
+    <nav class="site-footer__links" aria-label="Footer navigation" data-site-i18n-aria-label="footerNavigation">
       <a href="./" data-site-i18n="homeNav">Home</a>
       <a href="about/" data-site-i18n="aboutNav">About</a>
       <a href="faq/" data-site-i18n="faqNav">FAQ</a>

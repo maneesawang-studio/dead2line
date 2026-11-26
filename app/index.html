@@ -71,104 +71,104 @@
 <body data-auth-page="dashboard" data-nav-active="tasks">
 
   <!-- แถบเมนูด้านบน -->
-  <nav class="navbar">
-    <div class="navbar-inner">
-    <a class="logo" href="../" aria-label="Deadline">
+  <nav class="site-navigation">
+    <div class="site-navigation__inner">
+    <a class="brand" href="../" aria-label="Deadline">
       <img src="../Asset/Deadline-512.png" alt="Deadline">
-      <span class="logo-name">Deadline<span class="logo-dot">.</span></span>
+      <span class="brand__name">Deadline<span class="brand__dot">.</span></span>
     </a>
-    <div class="profile-wrapper">
-      <button type="button" class="user-profile" id="btnProfile" aria-expanded="false" aria-label="Open settings menu" hidden>
+    <div class="account-menu">
+      <button type="button" class="account-menu__trigger" id="btnProfile" aria-expanded="false" aria-label="Open settings menu" hidden>
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12.22 2h-.44a2 2 0 0 0-2 1.72l-.17 1.18a2 2 0 0 1-1 1.48l-.43.25a2 2 0 0 1-1.78.09l-1.07-.48a2 2 0 0 0-2.5.73l-.22.38a2 2 0 0 0 .5 2.55l.9.72a2 2 0 0 1 .71 1.65v.5a2 2 0 0 1-.71 1.65l-.9.72a2 2 0 0 0-.5 2.55l.22.38a2 2 0 0 0 2.5.73l1.07-.48a2 2 0 0 1 1.78.09l.43.25a2 2 0 0 1 1 1.48l.17 1.18A2 2 0 0 0 11.78 22h.44a2 2 0 0 0 2-1.72l.17-1.18a2 2 0 0 1 1-1.48l.43-.25a2 2 0 0 1 1.78-.09l1.07.48a2 2 0 0 0 2.5-.73l.22-.38a2 2 0 0 0-.5-2.55l-.9-.72a2 2 0 0 1-.71-1.65v-.5a2 2 0 0 1 .71-1.65l.9-.72a2 2 0 0 0 .5-2.55l-.22-.38a2 2 0 0 0-2.5-.73l-1.07.48a2 2 0 0 1-1.78-.09l-.43-.25a2 2 0 0 1-1-1.48l-.17-1.18A2 2 0 0 0 12.22 2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
       </button>
-      <div class="profile-menu" id="profileMenu">
-        <div class="profile-account">
+      <div class="account-menu__panel" id="profileMenu">
+        <div class="account-menu__account">
           <span id="accountLabel">Logged-in account</span>
           <strong id="accountEmail" data-i18n="previewAccount">Not signed in</strong>
         </div>
-        <p class="auth-status" id="authStatus" role="status" aria-live="polite" hidden></p>
-        <button type="button" class="profile-row theme-row" id="themeToggle">
-          <span class="theme-icon" aria-hidden="true">
+        <p class="status-message" id="authStatus" role="status" aria-live="polite" hidden></p>
+        <button type="button" class="account-menu__item account-menu__item--theme" id="themeToggle">
+          <span class="account-menu__theme-icon" aria-hidden="true">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="3"></circle>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"></path>
             </svg>
           </span>
           <span id="themeLabel">Switch theme</span>
-          <span class="theme-state" id="themeState">Light</span>
+          <span class="account-menu__state" id="themeState">Light</span>
         </button>
-        <button type="button" class="profile-row theme-row" id="languageToggle">
-          <span class="theme-icon" aria-hidden="true">
+        <button type="button" class="account-menu__item account-menu__item--theme" id="languageToggle">
+          <span class="account-menu__theme-icon" aria-hidden="true">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10"></circle>
               <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
             </svg>
           </span>
           <span id="languageLabel">Language</span>
-          <span class="theme-state" id="languageState">English</span>
+          <span class="account-menu__state" id="languageState">English</span>
         </button>
-        <a class="profile-row profile-row-link" href="../settings/" data-i18n="settings">Settings</a>
-        <a class="profile-row profile-row-link" id="loginMenuLink" href="../login/" data-i18n="signIn">Sign in</a>
+        <a class="account-menu__item account-menu__item--link" href="../settings/" data-i18n="settings">Settings</a>
+        <a class="account-menu__item account-menu__item--link" id="loginMenuLink" href="../login/" data-i18n="signIn">Sign in</a>
         <hr>
-        <a class="profile-row profile-row-link" href="../privacy/" data-i18n="privacy">Privacy</a>
-        <button type="button" class="profile-row sign-out" id="signOutButton" data-i18n="signOut" hidden>Sign out</button>
+        <a class="account-menu__item account-menu__item--link" href="../privacy/" data-i18n="privacy">Privacy</a>
+        <button type="button" class="account-menu__item account-menu__item--sign-out" id="signOutButton" data-i18n="signOut" hidden>Sign out</button>
       </div>
     </div>
     </div>
   </nav>
 
   <!-- พื้นที่เนื้อหาหลัก -->
-  <main class="container">
+  <main class="page-container">
     
     <!-- ส่วนหัว: วันที่และชื่อหน้า -->
     <header class="page-header">
-      <p class="current-date" id="currentDate">Sunday, November 22, 2026</p>
-      <h1 class="page-title" data-i18n="pageTitle">Manage tasks and deadlines</h1>
+      <p class="page-header__date" id="currentDate">Sunday, November 22, 2026</p>
+      <h1 class="page-header__title" data-i18n="pageTitle">Manage tasks and deadlines</h1>
     </header>
     <p class="task-operation-status" id="taskOperationStatus" role="alert" aria-live="polite" hidden></p>
 
     <!-- แถบสรุปสถานะ และปุ่ม + Add -->
-    <section class="summary-bar">
-      <div class="stats-card">
-        <div class="stat-item">
-          <span class="stat-label blue" data-i18n="inProgress">In progress</span>
-          <span class="stat-value" id="countInProgress">0</span>
+    <section class="dashboard-summary">
+      <div class="dashboard-summary__stats">
+        <div class="dashboard-stat">
+          <span class="dashboard-stat__label dashboard-stat__label--blue" data-i18n="inProgress">In progress</span>
+          <span class="dashboard-stat__value" id="countInProgress">0</span>
         </div>
-        <span class="stat-divider" aria-hidden="true"></span>
-        <div class="stat-item">
-          <span class="stat-label red" data-i18n="urgentFilter">(≤ 3 days)</span>
-          <span class="stat-value" id="countUrgent">0</span>
+        <span class="dashboard-summary__divider" aria-hidden="true"></span>
+        <div class="dashboard-stat">
+          <span class="dashboard-stat__label dashboard-stat__label--red" data-i18n="urgentFilter">(≤ 3 days)</span>
+          <span class="dashboard-stat__value" id="countUrgent">0</span>
         </div>
-        <span class="stat-divider" aria-hidden="true"></span>
-        <div class="stat-item">
-          <span class="stat-label green" data-i18n="finish">Finished</span>
-          <span class="stat-value" id="countFinish">0</span>
+        <span class="dashboard-summary__divider" aria-hidden="true"></span>
+        <div class="dashboard-stat">
+          <span class="dashboard-stat__label dashboard-stat__label--green" data-i18n="finish">Finished</span>
+          <span class="dashboard-stat__value" id="countFinish">0</span>
         </div>
       </div>
 
-      <button class="btn-add" id="btnOpenModal">
-        <span class="btn-add-icon">+</span>
+      <button class="button-add" id="btnOpenModal">
+        <span class="button-add__icon">+</span>
         <span data-i18n="add">Add</span>
       </button>
     </section>
 
     <!-- แถบควบคุม: สลับแท็บ (In progress / Finished) และช่องค้นหา -->
-    <section class="controls-bar">
-      <div class="status-tabs">
-        <button class="tab-btn active" type="button" data-tab="in-progress" aria-pressed="true" data-i18n="inProgress">In progress</button>
-        <button class="tab-btn" type="button" data-tab="finish" aria-pressed="false" data-i18n="finish">Finished</button>
+    <section class="task-controls">
+      <div class="task-controls__tabs">
+        <button class="task-controls__tab task-controls__tab--active" type="button" data-tab="in-progress" aria-pressed="true" data-i18n="inProgress">In progress</button>
+        <button class="task-controls__tab" type="button" data-tab="finish" aria-pressed="false" data-i18n="finish">Finished</button>
       </div>
 
-      <div class="search-sort-group">
-        <div class="search-box">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <div class="task-controls__search-group">
+        <div class="task-controls__search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
           <input type="text" id="searchInput" aria-label="Search tasks" placeholder="Search tasks">
         </div>
-        <button class="btn-sort" id="btnSort" title="Sort by earliest deadline" aria-label="Sort by earliest deadline" aria-pressed="true" data-sort-direction="ascending">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <button class="task-controls__sort-button" id="btnSort" title="Sort by earliest deadline" aria-label="Sort by earliest deadline" aria-pressed="true" data-sort-direction="ascending">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 19V5"></path>
             <path d="m6 11 6-6 6 6"></path>
           </svg>
@@ -177,36 +177,36 @@
     </section>
 
     <!-- แถบตัวกรองหมวดหมู่ -->
-    <section class="filter-pills" id="filterPills">
-      <button class="pill active" type="button" data-filter="All" aria-pressed="true" data-i18n="all">All</button>
-      <button class="pill" type="button" data-filter="urgent" aria-pressed="false" data-i18n="urgentFilter">(≤ 3 days)</button>
-      <button class="pill" type="button" data-filter="today" aria-pressed="false" data-i18n="todayFilter">Today</button>
-      <button class="pill" type="button" data-filter="overdue" aria-pressed="false" data-i18n="overdueFilter">Overdue</button>
-      <button class="pill" type="button" data-filter="Jobs" aria-pressed="false" data-i18n="jobs">Jobs</button>
-      <button class="pill" type="button" data-filter="Study" aria-pressed="false" data-i18n="study">Study</button>
-      <button class="pill" type="button" data-filter="Freelance" aria-pressed="false" data-i18n="freelance">Freelance</button>
-      <button class="pill" type="button" data-filter="Finance" aria-pressed="false" data-i18n="finance">Finance</button>
+    <section class="task-filters" id="filterPills">
+      <button class="task-filters__pill task-filters__pill--active" type="button" data-filter="All" aria-pressed="true" data-i18n="all">All</button>
+      <button class="task-filters__pill" type="button" data-filter="urgent" aria-pressed="false" data-i18n="urgentFilter">(≤ 3 days)</button>
+      <button class="task-filters__pill" type="button" data-filter="today" aria-pressed="false" data-i18n="todayFilter">Today</button>
+      <button class="task-filters__pill" type="button" data-filter="overdue" aria-pressed="false" data-i18n="overdueFilter">Overdue</button>
+      <button class="task-filters__pill" type="button" data-filter="Jobs" aria-pressed="false" data-i18n="jobs">Jobs</button>
+      <button class="task-filters__pill" type="button" data-filter="Study" aria-pressed="false" data-i18n="study">Study</button>
+      <button class="task-filters__pill" type="button" data-filter="Freelance" aria-pressed="false" data-i18n="freelance">Freelance</button>
+      <button class="task-filters__pill" type="button" data-filter="Finance" aria-pressed="false" data-i18n="finance">Finance</button>
     </section>
 
     <!-- รายการงานจะถูกโหลดจากบัญชีและแสดงผลด้วย script.js -->
-    <section class="task-list-container" id="taskListContainer"></section>
+    <section class="task-list" id="taskListContainer"></section>
 
   </main>
 
   <!-- หน้าต่าง Modal สำหรับเพิ่มงานใหม่ (เมื่อกดปุ่ม + Add) -->
-  <div class="modal-overlay" id="addModal">
-    <div class="modal-content">
-      <div class="modal-header">
+  <div class="modal" id="addModal">
+    <div class="modal__content">
+      <div class="modal__header">
         <h3 id="modalTitle">Add task</h3>
-        <button class="btn-close-modal" id="btnCloseModal" aria-label="Close">&times;</button>
+        <button class="modal__close-button" id="btnCloseModal" aria-label="Close">&times;</button>
       </div>
-      <form id="addTaskForm">
-        <div class="form-group">
-          <label for="taskTitleInput"><span data-i18n="title">Task title</span> <span class="required">*</span></label>
+      <form id="addTaskForm" class="task-form">
+        <div class="form-field">
+          <label for="taskTitleInput"><span data-i18n="title">Task title</span> <span class="form-field__required">*</span></label>
           <input type="text" id="taskTitleInput" required maxlength="120" placeholder="Enter a task title">
         </div>
         <div class="form-row">
-          <div class="form-group">
+          <div class="form-field">
             <label for="taskCategoryInput" data-i18n="category">Category</label>
             <select id="taskCategoryInput">
               <option value="Jobs" data-i18n="jobs">Jobs</option>
@@ -216,55 +216,55 @@
             </select>
           </div>
         </div>
-        <div class="form-row split-row">
-          <div class="form-group">
-            <label for="taskDateInput"><span data-i18n="deadline">Deadline</span> <span class="required">*</span></label>
+        <div class="form-row form-row--split">
+          <div class="form-field">
+            <label for="taskDateInput"><span data-i18n="deadline">Deadline</span> <span class="form-field__required">*</span></label>
             <input type="date" id="taskDateInput" required>
           </div>
-          <div class="form-group">
+          <div class="form-field">
             <label for="taskTimeInput" data-i18n="timeOptional">Time (optional)</label>
             <input type="time" id="taskTimeInput">
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-field">
           <label for="taskFollowUpDateInput" data-i18n="followUpDate">Follow-up date (optional)</label>
           <input type="date" id="taskFollowUpDateInput">
         </div>
-        <div class="form-group">
+        <div class="form-field">
           <label for="taskDescInput" data-i18n="details">Additional details (optional)</label>
           <textarea id="taskDescInput" rows="4" placeholder="Add any details or notes..."></textarea>
         </div>
-        <div class="sub-progress-form">
+        <div class="task-form__subtask-section">
           <label data-i18n="subProgress">Subtasks</label>
           <div id="subtaskFormList"></div>
-          <button type="button" class="btn-add-step" id="btnAddStep">
+          <button type="button" class="task-form__add-step-button" id="btnAddStep">
             <span id="addStepLabel">Add step</span>
-            <span class="add-step-number" id="addStepNumber">1</span>
+            <span class="task-form__step-number" id="addStepNumber">1</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
               <line x1="12" y1="5" x2="12" y2="19"></line>
               <line x1="5" y1="12" x2="19" y2="12"></line>
             </svg>
           </button>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn-delete" id="btnDeleteModal" hidden data-i18n="delete">Delete</button>
-          <button type="button" class="btn-cancel" id="btnCancelModal" data-i18n="cancel">Cancel</button>
-          <button type="submit" class="btn-submit" data-i18n="save">Save</button>
+        <div class="modal__footer">
+          <button type="button" class="button-delete" id="btnDeleteModal" hidden data-i18n="delete">Delete</button>
+          <button type="button" class="button-cancel" id="btnCancelModal" data-i18n="cancel">Cancel</button>
+          <button type="submit" class="button-submit" data-i18n="save">Save</button>
         </div>
       </form>
     </div>
   </div>
 
-  <div class="modal-overlay confirmation-overlay" id="actionConfirmModal" aria-hidden="true">
-    <section class="modal-content confirmation-content" role="dialog" aria-modal="true" aria-labelledby="actionConfirmTitle" aria-describedby="actionConfirmMessage">
-      <div class="modal-header">
+  <div class="modal" id="actionConfirmModal" aria-hidden="true">
+    <section class="modal__content modal__content--confirmation" role="dialog" aria-modal="true" aria-labelledby="actionConfirmTitle" aria-describedby="actionConfirmMessage">
+      <div class="modal__header">
         <h3 id="actionConfirmTitle">Confirm action</h3>
-        <button type="button" class="btn-close-modal" id="actionConfirmClose" aria-label="Close">&times;</button>
+        <button type="button" class="modal__close-button" id="actionConfirmClose" aria-label="Close">&times;</button>
       </div>
-      <p class="confirmation-message" id="actionConfirmMessage"></p>
-      <div class="modal-footer">
-        <button type="button" class="btn-cancel" id="actionConfirmCancel" data-i18n="cancel">Cancel</button>
-        <button type="button" class="btn-submit" id="actionConfirmAccept" data-i18n="confirm">Confirm</button>
+      <p class="modal__message" id="actionConfirmMessage"></p>
+      <div class="modal__footer">
+        <button type="button" class="button-cancel" id="actionConfirmCancel" data-i18n="cancel">Cancel</button>
+        <button type="button" class="button-submit" id="actionConfirmAccept" data-i18n="confirm">Confirm</button>
       </div>
     </section>
   </div>

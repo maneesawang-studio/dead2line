@@ -111,6 +111,7 @@ const translations = {
     freelance: "Freelance",
     finance: "Finance",
     deadline: "Deadline",
+    deadlineHeading: "Deadline’s",
     followUpDate: "Follow-up date (optional)",
     followUp: date => `Follow-up on ${date}`,
     searchPlaceholder: "Search tasks",
@@ -136,6 +137,7 @@ const translations = {
     completed: "Finished",
     markFinished: "Mark as finished",
     moveToProgress: "Move back to In progress",
+    taskActions: "Task actions",
     editTask: "Edit task",
     subProgress: "Subtasks",
     subProgressCount: (done, total) => `Subtasks completed: ${done}/${total}`,
@@ -197,6 +199,7 @@ const translations = {
     freelance: "ฟรีแลนซ์",
     finance: "การเงิน",
     deadline: "กำหนดส่ง",
+    deadlineHeading: "กำหนดส่ง",
     followUpDate: "วันที่ติดตามผล (ไม่บังคับ)",
     followUp: date => `ติดตามผลวันที่ ${date}`,
     searchPlaceholder: "ค้นหางาน",
@@ -222,6 +225,7 @@ const translations = {
     completed: "เสร็จแล้ว",
     markFinished: "ทำเครื่องหมายว่าเสร็จแล้ว",
     moveToProgress: "ย้ายกลับไปกำลังทำ",
+    taskActions: "ตัวเลือกงาน",
     editTask: "แก้ไขงาน",
     subProgress: "งานย่อย",
     subProgressCount: (done, total) => `งานย่อยที่เสร็จแล้ว ${done}/${total}`,
@@ -277,8 +281,8 @@ const countInProgressEl = document.getElementById("countInProgress");
 const countUrgentEl = document.getElementById("countUrgent");
 const countFinishEl = document.getElementById("countFinish");
 
-const tabButtons = document.querySelectorAll(".tab-btn");
-const filterPills = document.querySelectorAll(".pill");
+const tabButtons = document.querySelectorAll(".task-controls__tab");
+const filterPills = document.querySelectorAll(".task-filters__pill");
 const searchInput = document.getElementById("searchInput");
 const btnSort = document.getElementById("btnSort");
 
@@ -327,7 +331,6 @@ function updateSortButton() {
 
 function applyTheme() {
   window.deadlineApplyDocumentTheme(currentTheme);
-  document.body.classList.toggle("dark-mode", currentTheme === "dark");
   if (typeof window.deadlineApplyLogoTheme === "function") {
     window.deadlineApplyLogoTheme(currentTheme);
   }
@@ -382,8 +385,18 @@ function applyLanguage() {
 
 function closeProfileMenu() {
   if (!profileMenu) return;
-  profileMenu.classList.remove("show");
+  profileMenu.classList.remove("account-menu__panel--open");
   if (btnProfile) btnProfile.setAttribute("aria-expanded", "false");
+}
+
+function closeTaskActionMenus(returnFocus = false) {
+  taskListContainer.querySelectorAll(".task-card__action-menu:not([hidden])").forEach(menu => {
+    menu.hidden = true;
+    const trigger = menu.parentElement.querySelector('[data-action="toggle-task-menu"]');
+    if (!trigger) return;
+    trigger.setAttribute("aria-expanded", "false");
+    if (returnFocus) trigger.focus();
+  });
 }
 
 function showTaskModal() {
@@ -395,13 +408,13 @@ function showTaskModal() {
   if (scrollbarWidth > 0) {
     document.body.style.paddingRight = `${scrollbarWidth}px`;
   }
-  document.body.classList.add("modal-open");
+  document.body.classList.add("site-page--modal-open");
   document.body.style.top = `-${modalScrollY}px`;
-  addModal.classList.add("show");
+  addModal.classList.add("modal--open");
   addModal.setAttribute("aria-hidden", "false");
-  document.querySelector(".modal-content").setAttribute("role", "dialog");
-  document.querySelector(".modal-content").setAttribute("aria-modal", "true");
-  document.querySelector(".modal-content").setAttribute("aria-labelledby", "modalTitle");
+  document.querySelector(".modal__content").setAttribute("role", "dialog");
+  document.querySelector(".modal__content").setAttribute("aria-modal", "true");
+  document.querySelector(".modal__content").setAttribute("aria-labelledby", "modalTitle");
   requestAnimationFrame(() => document.getElementById("taskTitleInput").focus());
 }
 
@@ -412,9 +425,9 @@ async function hideTaskModal() {
     confirmLabelKey: "discard",
     destructive: true
   })) return;
-  addModal.classList.remove("show");
+  addModal.classList.remove("modal--open");
   addModal.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("modal-open");
+  document.body.classList.remove("site-page--modal-open");
   document.body.style.top = "";
   document.body.style.paddingRight = modalBodyPaddingRight;
   window.scrollTo(0, modalScrollY);
@@ -618,7 +631,7 @@ function updateStats() {
 function renderTasks() {
   updateStats();
   if (!taskDataReady) {
-    taskListContainer.innerHTML = `<div class="empty-state">${t("loadingTasks")}</div>`;
+    taskListContainer.innerHTML = `<div class="task-list__empty-state">${t("loadingTasks")}</div>`;
     return;
   }
 
@@ -659,112 +672,140 @@ function renderTasks() {
 
   // 5) สร้าง HTML ของแต่ละการ์ด
   if (filtered.length === 0) {
-    taskListContainer.innerHTML = `<div class="empty-state">${t("noResults")}</div>`;
+    taskListContainer.innerHTML = `<div class="task-list__empty-state">${t("noResults")}</div>`;
     return;
   }
 
-  taskListContainer.innerHTML = filtered.map(task => {
-    const daysLeft = getDaysLeft(task.deadlineDate);
-    const isUrgent = daysLeft <= 3 && task.status === "in-progress";
-    const isCompleted = task.status === "finish";
-    const badgeClass = isCompleted ? "completed" : isUrgent ? "urgent" : daysLeft > 14 ? "distant" : "normal";
-    const { day, year } = formatDateParts(task.deadlineDate, task.displayDayOverride);
-    const deadlineTime = typeof task.deadlineTime === "string" ? task.deadlineTime.trim() : "";
-    const followUpDate = task.followUpDate
-      ? new Intl.DateTimeFormat(currentLanguage === "th" ? "th-TH-u-ca-buddhist" : "en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric"
-      }).format(new Date(`${task.followUpDate}T00:00:00`))
-      : "";
+  const taskGroups = filtered.reduce((groups, task) => {
+    let group = groups[groups.length - 1];
+    if (!group || group.deadlineDate !== task.deadlineDate) {
+      group = { deadlineDate: task.deadlineDate, tasks: [] };
+      groups.push(group);
+    }
+    group.tasks.push(task);
+    return groups;
+  }, []);
 
-    // ข้อความบน Badge แจ้งเตือนวัน
-    let badgeText = t("daysLeft", daysLeft);
-    if (daysLeft === 0) badgeText = t("dueToday");
-    else if (daysLeft < 0) badgeText = t("daysOverdue", Math.abs(daysLeft));
-    if (task.status === "finish") badgeText = t("completed");
+  taskListContainer.innerHTML = taskGroups.map(group => {
+    const { day, year } = formatDateParts(group.deadlineDate, group.tasks[0].displayDayOverride);
+    const isUrgent = group.tasks.some(task =>
+      getDaysLeft(task.deadlineDate) <= 3 && task.status === "in-progress"
+    );
+    const taskCardsHTML = group.tasks.map(task => {
+      const daysLeft = getDaysLeft(task.deadlineDate);
+      const isUrgent = daysLeft <= 3 && task.status === "in-progress";
+      const isCompleted = task.status === "finish";
+      const badgeClass = isCompleted
+        ? "task-card__badge--completed"
+        : isUrgent
+          ? "task-card__badge--urgent"
+          : daysLeft > 14
+            ? "task-card__badge--distant"
+            : "task-card__badge--normal";
+      const deadlineTime = typeof task.deadlineTime === "string" ? task.deadlineTime.trim() : "";
+      const followUpDate = task.followUpDate
+        ? new Intl.DateTimeFormat(currentLanguage === "th" ? "th-TH-u-ca-buddhist" : "en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric"
+        }).format(new Date(`${task.followUpDate}T00:00:00`))
+        : "";
 
-    // คำนวณส่วน Sub-progress (ถ้ามี subtasks)
-    let subProgressHTML = "";
-    if (task.subtasks && task.subtasks.length > 0) {
-      const doneCount = task.subtasks.filter(s => s.done).length;
-      const totalCount = task.subtasks.length;
-      const percent = Math.round((doneCount / totalCount) * 100);
+      // ข้อความบน Badge แจ้งเตือนวัน
+      let badgeText = t("daysLeft", daysLeft);
+      if (daysLeft === 0) badgeText = t("dueToday");
+      else if (daysLeft < 0) badgeText = t("daysOverdue", Math.abs(daysLeft));
+      if (task.status === "finish") badgeText = t("completed");
 
-      const subtasksListItems = task.subtasks.map(sub => `
-        <li>
-          <label class="custom-checkbox ${sub.done ? "done" : ""}">
-            <input type="checkbox" data-action="toggle-subtask" data-task-id="${escapeHtml(task.id)}" data-subtask-id="${escapeHtml(sub.id)}" ${sub.done ? "checked" : ""}>
-            <span class="checkmark"></span>
-            ${escapeHtml(sub.text)}
-          </label>
-        </li>
-      `).join("");
+      // คำนวณส่วน Sub-progress (ถ้ามี subtasks)
+      let subProgressHTML = "";
+      if (task.subtasks && task.subtasks.length > 0) {
+        const doneCount = task.subtasks.filter(s => s.done).length;
+        const totalCount = task.subtasks.length;
+        const percent = Math.round((doneCount / totalCount) * 100);
 
-      subProgressHTML = `
-        <div class="sub-progress-section">
-          <div class="progress-header">
-            <span>${t("subProgressCount", doneCount, totalCount)}</span>
-            <span class="progress-percent">${percent}%</span>
+        const subtasksListItems = task.subtasks.map(sub => `
+          <li>
+            <label class="task-card__checkbox ${sub.done ? "task-card__checkbox--done" : ""}">
+              <input type="checkbox" data-action="toggle-subtask" data-task-id="${escapeHtml(task.id)}" data-subtask-id="${escapeHtml(sub.id)}" ${sub.done ? "checked" : ""}>
+              <span class="task-card__checkmark"></span>
+              ${escapeHtml(sub.text)}
+            </label>
+          </li>
+        `).join("");
+
+        subProgressHTML = `
+          <div class="task-card__subtasks">
+            <div class="task-card__progress-header">
+              <span>${t("subProgressCount", doneCount, totalCount)}</span>
+              <span class="task-card__progress-percent">${percent}%</span>
+            </div>
+            <div class="task-card__progress-track">
+              <div class="task-card__progress-fill" style="width: ${percent}%;"></div>
+            </div>
+            <ul class="task-card__subtask-list">
+              ${subtasksListItems}
+            </ul>
           </div>
-          <div class="progress-bar-bg">
-            <div class="progress-bar-fill" style="width: ${percent}%;"></div>
+        `;
+      }
+
+      return `
+        <div class="task-card__group-item">
+          <div class="task-card__content">
+            <div class="task-card__badges">
+              <div class="task-card__badge-group">
+                <span class="task-card__badge ${badgeClass}">${escapeHtml(badgeText)}</span>
+                <span class="task-card__badge task-card__badge--category">${escapeHtml(getCategoryLabel(task.category))}</span>
+                ${deadlineTime ? `<span class="task-card__badge task-card__badge--time task-card__deadline-time">${escapeHtml(formatDeadlineTime(deadlineTime))}</span>` : ""}
+              </div>
+              <div class="task-card__actions">
+                <button type="button" class="task-card__more-button" data-action="toggle-task-menu" data-task-id="${escapeHtml(task.id)}"
+                        title="${escapeHtml(t("taskActions"))}" aria-label="${escapeHtml(t("taskActions"))}"
+                        aria-haspopup="menu" aria-expanded="false">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="1"></circle>
+                    <circle cx="12" cy="5" r="1"></circle>
+                    <circle cx="12" cy="19" r="1"></circle>
+                  </svg>
+                </button>
+                <div class="task-card__action-menu" role="menu" hidden>
+                  <button type="button" role="menuitem" tabindex="-1"
+                          data-action="edit-task" data-task-id="${escapeHtml(task.id)}">${t("editTask")}</button>
+                  <button type="button" role="menuitem" tabindex="-1"
+                          data-action="toggle-status" data-task-id="${escapeHtml(task.id)}">
+                    ${t(task.status === "in-progress" ? "markFinished" : "moveToProgress")}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h2 class="task-card__title">${escapeHtml(task.title)}</h2>
+            <p class="task-card__description">${escapeHtml(task.desc)}</p>
+            ${followUpDate ? `
+              <div class="task-card__follow-up">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                  <path d="M10 21h4"></path>
+                </svg>
+                <span>${escapeHtml(t("followUp", followUpDate))}</span>
+              </div>
+            ` : ""}
+            ${subProgressHTML}
           </div>
-          <ul class="subtask-list">
-            ${subtasksListItems}
-          </ul>
         </div>
       `;
-    }
+    }).join("");
 
     return `
-      <div class="task-card">
-        <div class="task-date-col">
-          <span class="deadline-label">${t("deadline")}</span>
-          <strong class="deadline-day ${isUrgent ? "urgent" : ""}">${escapeHtml(day)}</strong>
-          <span class="deadline-year">${escapeHtml(year)}</span>
-          ${deadlineTime ? `<span class="deadline-time">${escapeHtml(formatDeadlineTime(deadlineTime))}</span>` : ""}
+      <article class="task-list__group">
+        <div class="task-card__deadline-heading">
+          <span class="task-card__deadline-label">${t("deadlineHeading")}</span>
+          <strong class="task-card__deadline-day task-card__deadline-date ${isUrgent ? "task-card__deadline-date--urgent" : ""}">${escapeHtml(day)} ${escapeHtml(year)}</strong>
         </div>
-
-        <div class="task-content-col">
-          <div class="task-badges">
-            <div class="task-badge-group">
-              <span class="badge ${badgeClass}">${escapeHtml(badgeText)}</span>
-              <span class="badge category">${escapeHtml(getCategoryLabel(task.category))}</span>
-            </div>
-            <div class="task-actions-col">
-              <button type="button" class="btn-check ${task.status === "finish" ? "completed" : ""}"
-                      data-action="toggle-status" data-task-id="${escapeHtml(task.id)}"
-                      title="${escapeHtml(task.status === "in-progress" ? t("markFinished") : t("moveToProgress"))}"
-                      aria-label="${escapeHtml(task.status === "in-progress" ? t("markFinished") : t("moveToProgress"))}">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-              </button>
-              <button type="button" class="btn-more" data-action="edit-task" data-task-id="${escapeHtml(task.id)}"
-                      title="${escapeHtml(t("editTask"))}" aria-label="${escapeHtml(t("editTask"))}">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="1"></circle>
-                  <circle cx="12" cy="5" r="1"></circle>
-                  <circle cx="12" cy="19" r="1"></circle>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <h2 class="task-title">${escapeHtml(task.title)}</h2>
-          <p class="task-desc">${escapeHtml(task.desc)}</p>
-          ${followUpDate ? `
-            <div class="follow-up-date">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
-                <path d="M10 21h4"></path>
-              </svg>
-              <span>${escapeHtml(t("followUp", followUpDate))}</span>
-            </div>
-          ` : ""}
-          ${subProgressHTML}
+        <div class="task-card task-card--group">
+          ${taskCardsHTML}
         </div>
-      </div>
+      </article>
     `;
   }).join("");
 }
@@ -880,7 +921,7 @@ window.openEditModal = function(taskId) {
   closeProfileMenu();
   editingTaskId = taskId;
   document.getElementById("modalTitle").textContent = t("editSchedule");
-  document.querySelector(".btn-submit").textContent = t("save");
+  document.querySelector(".button-submit").textContent = t("save");
   btnDeleteModal.hidden = false;
   modalDirty = false;
   document.getElementById("taskDateInput").removeAttribute("min");
@@ -905,11 +946,54 @@ taskListContainer.addEventListener("click", event => {
   if (!target || !taskListContainer.contains(target)) return;
 
   const taskId = target.dataset.taskId;
-  if (target.dataset.action === "toggle-status") {
+  if (target.dataset.action === "toggle-task-menu") {
+    const menu = target.parentElement.querySelector(".task-card__action-menu");
+    if (!menu) return;
+
+    const shouldOpen = menu.hidden;
+    closeTaskActionMenus();
+    if (shouldOpen) {
+      menu.hidden = false;
+      target.setAttribute("aria-expanded", "true");
+      menu.querySelector('[role="menuitem"]').focus();
+    }
+  } else if (target.dataset.action === "toggle-status") {
+    closeTaskActionMenus();
     window.toggleTaskStatus(taskId);
   } else if (target.dataset.action === "edit-task") {
+    closeTaskActionMenus();
     window.openEditModal(taskId);
   }
+});
+
+taskListContainer.addEventListener("keydown", event => {
+  const menu = event.target instanceof Element ? event.target.closest(".task-card__action-menu") : null;
+  if (!menu) return;
+
+  const items = Array.from(menu.querySelectorAll('[role="menuitem"]'));
+  const currentIndex = items.indexOf(document.activeElement);
+  let nextIndex = currentIndex;
+
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeTaskActionMenus(true);
+    return;
+  }
+  if (event.key === "ArrowDown") nextIndex = (currentIndex + 1) % items.length;
+  else if (event.key === "ArrowUp") nextIndex = (currentIndex - 1 + items.length) % items.length;
+  else if (event.key === "Home") nextIndex = 0;
+  else if (event.key === "End") nextIndex = items.length - 1;
+  else return;
+
+  event.preventDefault();
+  items[nextIndex].focus();
+});
+
+taskListContainer.addEventListener("focusout", event => {
+  const actions = event.target instanceof Element ? event.target.closest(".task-card__actions") : null;
+  if (!actions || (event.relatedTarget instanceof Node && actions.contains(event.relatedTarget))) return;
+  const menu = actions.querySelector(".task-card__action-menu");
+  if (menu && !menu.hidden) closeTaskActionMenus();
 });
 
 taskListContainer.addEventListener("change", event => {
@@ -930,17 +1014,17 @@ function convertDisplayTimeToInput(displayTime) {
 
 function createSubtaskFormRow(text = "", stepNumber = 1, done = false) {
   const row = document.createElement("div");
-  row.className = "subtask-form-row";
+  row.className = "task-form__subtask-row";
 
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
-  checkbox.className = "subtask-form-check";
+  checkbox.className = "task-form__subtask-checkbox";
   checkbox.checked = done;
   checkbox.setAttribute("aria-label", t("markStepComplete", stepNumber));
 
   const input = document.createElement("input");
   input.type = "text";
-  input.className = "subtask-form-input";
+  input.className = "task-form__subtask-input";
   input.placeholder = t("step", stepNumber);
   input.value = text;
 
@@ -957,7 +1041,7 @@ tabButtons.forEach(btn => {
 btn.addEventListener("click", () => {
 tabButtons.forEach(button => {
   const active = button === btn;
-  button.classList.toggle("active", active);
+  button.classList.toggle("task-controls__tab--active", active);
   button.setAttribute("aria-pressed", String(active));
 });
 currentTab = btn.dataset.tab;
@@ -969,7 +1053,7 @@ filterPills.forEach(pill => {
 pill.addEventListener("click", () => {
 filterPills.forEach(button => {
   const active = button === pill;
-  button.classList.toggle("active", active);
+  button.classList.toggle("task-filters__pill--active", active);
   button.setAttribute("aria-pressed", String(active));
 });
 currentFilter = pill.dataset.filter;
@@ -1015,7 +1099,7 @@ btnOpenModal.addEventListener("click", () => {
   editingTaskId = null;
   closeProfileMenu();
   document.getElementById("modalTitle").textContent = t("addSchedule");
-  document.querySelector(".btn-submit").textContent = t("save");
+  document.querySelector(".button-submit").textContent = t("save");
   btnDeleteModal.hidden = true;
   addTaskForm.reset();
   subtaskFormList.innerHTML = "";
@@ -1047,23 +1131,26 @@ btnDeleteModal.addEventListener("click", async () => {
 });
 btnProfile.addEventListener("click", (e) => {
   e.stopPropagation();
-  const isOpen = profileMenu.classList.toggle("show");
+  const isOpen = profileMenu.classList.toggle("account-menu__panel--open");
   btnProfile.setAttribute("aria-expanded", String(isOpen));
 });
 document.addEventListener("click", (e) => {
   if (actionConfirmModal.contains(e.target)) return;
   if (!profileMenu.contains(e.target) && !btnProfile.contains(e.target)) {
-    profileMenu.classList.remove("show");
+    profileMenu.classList.remove("account-menu__panel--open");
     btnProfile.setAttribute("aria-expanded", "false");
+  }
+  if (!(e.target instanceof Element) || !e.target.closest(".task-card__actions")) {
+    closeTaskActionMenus();
   }
 });
 // เพิ่มรายการ Sub-progress ในฟอร์ม
 btnAddStep.addEventListener("click", () => {
-const stepNumber = subtaskFormList.querySelectorAll(".subtask-form-row").length + 1;
+const stepNumber = subtaskFormList.querySelectorAll(".task-form__subtask-row").length + 1;
 subtaskFormList.appendChild(createSubtaskFormRow("", stepNumber, false));
 addStepNumber.textContent = String(stepNumber + 1);
 document.getElementById("addStepLabel").textContent = t("addStep");
-subtaskFormList.lastElementChild.querySelector(".subtask-form-input").focus();
+subtaskFormList.lastElementChild.querySelector(".task-form__subtask-input").focus();
 });
 
 addTaskForm.addEventListener("input", () => {
@@ -1075,7 +1162,7 @@ subtaskFormList.addEventListener("change", () => {
 });
 
 document.addEventListener("keydown", event => {
-  if (!addModal.classList.contains("show") || actionConfirmModal.classList.contains("show")) return;
+  if (!addModal.classList.contains("modal--open") || actionConfirmModal.classList.contains("modal--open")) return;
   if (event.key === "Escape") {
     event.preventDefault();
     hideTaskModal();
@@ -1119,10 +1206,10 @@ if (timeInput) {
   const displayHours = hours % 12 || 12;
   deadlineTime = `${displayHours}:${String(minutes).padStart(2, "0")} ${suffix}`;
 }
-const subtasks = Array.from(subtaskFormList.querySelectorAll(".subtask-form-row"))
+const subtasks = Array.from(subtaskFormList.querySelectorAll(".task-form__subtask-row"))
   .map(row => ({
-    text: row.querySelector(".subtask-form-input").value.trim(),
-    done: row.querySelector(".subtask-form-check").checked
+    text: row.querySelector(".task-form__subtask-input").value.trim(),
+    done: row.querySelector(".task-form__subtask-checkbox").checked
   }))
   .filter(subtask => subtask.text !== "")
   .map((subtask, index) => ({ id: Date.now() + index, text: subtask.text, done: subtask.done }));
@@ -1192,7 +1279,7 @@ hideTaskModal();
 currentTab = "in-progress";
 tabButtons.forEach(button => {
   const active = button.dataset.tab === "in-progress";
-  button.classList.toggle("active", active);
+  button.classList.toggle("task-controls__tab--active", active);
   button.setAttribute("aria-pressed", String(active));
 });
 renderTasks();
