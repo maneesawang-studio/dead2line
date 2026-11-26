@@ -70,7 +70,39 @@
           "name": "เพิ่มงานอย่างไร?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "ไปที่หน้า Tasks แล้วเลือก + Add จากนั้นกรอกชื่องานและกำหนดส่ง หมวดหมู่ เวลา บันทึก และงานย่อยเป็นตัวเลือกเพิ่มเติม"
+            "text": "ไปที่หน้า Tasks แล้วเลือก + Add จากนั้นกรอกชื่องานและกำหนดส่ง หมวดหมู่ เวลา วันติดตามผล รายละเอียด และงานย่อยเป็นตัวเลือกเพิ่มเติม"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "มีหมวดหมู่งานอะไรให้เลือกบ้าง?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "เลือก Jobs, Study, Freelance หรือ Finance ตอนสร้างหรือแก้ไขงาน หมวดหมู่ช่วยให้กรองและแยกรายการงานได้ง่ายขึ้น"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "วันติดตามผลใช้ทำอะไร?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "วันติดตามผลเป็นวันที่เลือกเพิ่มได้บนงาน เพื่อช่วยจำว่าควรกลับมาตรวจสอบงานเมื่อใด แต่ระบบจะไม่ส่งการแจ้งเตือนในวันดังกล่าว"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "งานย่อยทำงานอย่างไร?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "เพิ่มขั้นตอนย่อยในงานแล้วทำเครื่องหมายเมื่อทำเสร็จ งานย่อยช่วยติดตามความคืบหน้า แต่การทำงานย่อยครบไม่ได้ทำให้งานหลักเสร็จโดยอัตโนมัติ"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "แก้ไขหรือลบงานได้ไหม?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ได้ เปิดเมนูการทำงานของการ์ดงานเพื่อแก้ไขรายละเอียดหรือลบงาน การลบจะนำงานออกจากบัญชีและขณะนี้ไม่สามารถกู้คืนผ่านแอปได้"
           }
         },
         {
@@ -216,12 +248,29 @@
     <header class="site-page__header">
       <p class="site-page__eyebrow" data-site-i18n="helpCenterEyebrow">Help center</p>
       <h1 data-site-i18n="faqTitle">Frequently asked questions</h1>
+      <p class="site-page__lead" data-site-i18n="faqIntro">Find practical guidance for managing tasks, using your account, and understanding what Deadline can and cannot do.</p>
     </header>
 
     <section class="faq-list" aria-label="Frequently asked questions" data-site-i18n-aria-label="faqListLabel">
       <details class="site-card faq-list__item" open>
         <summary data-site-i18n="faqAddQuestion">How do I add a task?</summary>
         <p data-site-i18n="faqAddAnswer">On the Tasks page, select + Add, then enter a task title and deadline. Category, time, notes, and subtasks are optional.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqCategoryQuestion">Which task categories can I use?</summary>
+        <p data-site-i18n="faqCategoryAnswer">Choose Jobs, Study, Freelance, or Finance when creating or editing a task. Categories help you filter and scan your task list.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqFollowUpQuestion">What is the follow-up date for?</summary>
+        <p data-site-i18n="faqFollowUpAnswer">A follow-up date is an optional date shown on the task to help you remember when to check on it again. It does not trigger a notification.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqSubtasksQuestion">How do subtasks work?</summary>
+        <p data-site-i18n="faqSubtasksAnswer">Add smaller steps to a task and check them off as you go. Subtasks help you track progress, but they do not automatically finish the main task.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqEditQuestion">Can I edit or delete a task?</summary>
+        <p data-site-i18n="faqEditAnswer">Yes. Open the task actions to edit its details or choose delete. Deletion removes that task from your account and cannot currently be undone in the app.</p>
       </details>
       <details class="site-card faq-list__item">
         <summary data-site-i18n="faqProgressQuestion">How do I mark a task as finished?</summary>

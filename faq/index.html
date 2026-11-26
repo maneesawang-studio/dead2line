@@ -69,7 +69,39 @@
           "name": "How do I add a task?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "On the Tasks page, select + Add, then enter a task title and deadline. Category, time, notes, and subtasks are optional."
+            "text": "On the Tasks page, select + Add, then enter a task title and deadline. Category, time, follow-up date, notes, and subtasks are optional."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which task categories can I use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Choose Jobs, Study, Freelance, or Finance when creating or editing a task. Categories help you filter and scan your task list."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the follow-up date for?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A follow-up date is an optional date shown on the task to help you remember when to check on it again. It does not trigger a notification."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do subtasks work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Add smaller steps to a task and check them off as you go. Subtasks help you track progress, but they do not automatically finish the main task."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I edit or delete a task?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Open the task actions to edit its details or choose delete. Deletion removes that task from your account and cannot currently be undone in the app."
           }
         },
         {
@@ -215,12 +247,29 @@
     <header class="site-page__header">
       <p class="site-page__eyebrow" data-site-i18n="helpCenterEyebrow">Help center</p>
       <h1 data-site-i18n="faqTitle">Frequently asked questions</h1>
+      <p class="site-page__lead" data-site-i18n="faqIntro">Find practical guidance for managing tasks, using your account, and understanding what Deadline can and cannot do.</p>
     </header>
 
     <section class="faq-list" aria-label="Frequently asked questions" data-site-i18n-aria-label="faqListLabel">
       <details class="site-card faq-list__item" open>
         <summary data-site-i18n="faqAddQuestion">How do I add a task?</summary>
         <p data-site-i18n="faqAddAnswer">On the Tasks page, select + Add, then enter a task title and deadline. Category, time, notes, and subtasks are optional.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqCategoryQuestion">Which task categories can I use?</summary>
+        <p data-site-i18n="faqCategoryAnswer">Choose Jobs, Study, Freelance, or Finance when creating or editing a task. Categories help you filter and scan your task list.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqFollowUpQuestion">What is the follow-up date for?</summary>
+        <p data-site-i18n="faqFollowUpAnswer">A follow-up date is an optional date shown on the task to help you remember when to check on it again. It does not trigger a notification.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqSubtasksQuestion">How do subtasks work?</summary>
+        <p data-site-i18n="faqSubtasksAnswer">Add smaller steps to a task and check them off as you go. Subtasks help you track progress, but they do not automatically finish the main task.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqEditQuestion">Can I edit or delete a task?</summary>
+        <p data-site-i18n="faqEditAnswer">Yes. Open the task actions to edit its details or choose delete. Deletion removes that task from your account and cannot currently be undone in the app.</p>
       </details>
       <details class="site-card faq-list__item">
         <summary data-site-i18n="faqProgressQuestion">How do I mark a task as finished?</summary>

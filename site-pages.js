@@ -3,6 +3,7 @@ const scriptUrl = document.currentScript && document.currentScript.src;
 const siteRoot = new URL("./", scriptUrl || window.location.href);
 const siteUrl = path => new URL(String(path || "").replace(/^\/+/, ""), siteRoot).href;
 const sitePath = path => new URL(siteUrl(path)).pathname;
+const pageTransitionStorageKey = "deadline-page-transition";
 const localePath = /^\/(en|th)(?:\/|$)/.exec(window.location.pathname);
 const routeLanguage = localePath ? localePath[1] : null;
 let siteLanguage = routeLanguage || (localStorage.getItem("deadline-language") === "th" ? "th" : "en");
@@ -13,6 +14,64 @@ const localizedSiteUrl = (path, language = siteLanguage) => {
   return siteUrl(`${language}/${normalizedPath}`);
 };
 window.deadlineSiteUrl = siteUrl;
+
+if (document.body.classList.contains("site-page--mobile-flow")) {
+  try {
+    const direction = sessionStorage.getItem(pageTransitionStorageKey);
+    sessionStorage.removeItem(pageTransitionStorageKey);
+    const main = document.querySelector(".site-page__main");
+    if (
+      (direction === "forward" || direction === "back") &&
+      main &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      document.body.classList.add(`site-page--transition-${direction}`);
+      document.documentElement.classList.add("site-page--transitioning");
+      const animationName = direction === "back"
+        ? "site-page-enter-from-left"
+        : "site-page-enter-from-right";
+      const clearTransition = event => {
+        if (event.target !== main || event.animationName !== animationName) return;
+        main.removeEventListener("animationend", clearTransition);
+        document.body.classList.remove(`site-page--transition-${direction}`);
+        document.documentElement.classList.remove("site-page--transitioning");
+      };
+      main.addEventListener("animationend", clearTransition);
+    }
+  } catch (error) {
+    console.warn("Unable to restore the page transition direction.", error);
+  }
+
+  document.addEventListener("click", event => {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      !(event.target instanceof Element)
+    ) return;
+
+    const link = event.target.closest("a[href]");
+    if (!link || (link.target && link.target.toLowerCase() !== "_self") || link.hasAttribute("download")) return;
+
+    const target = new URL(link.href, window.location.href);
+    if (
+      target.origin !== window.location.origin ||
+      (target.pathname === window.location.pathname && target.search === window.location.search)
+    ) return;
+
+    const direction = link.matches(".site-page__mobile-back, .site-page__back-link")
+      ? "back"
+      : "forward";
+    try {
+      sessionStorage.setItem(pageTransitionStorageKey, direction);
+    } catch (error) {
+      console.warn("Unable to save the page transition direction.", error);
+    }
+  }, true);
+}
 
 function getLocalizedPublicPath(pathname) {
   const unprefixedPath = pathname.replace(/^\/(?:en|th)(?=\/|$)/, "/");
@@ -378,18 +437,37 @@ const siteTranslations = {
     aboutDescription: "Learn how Deadline helps you organize tasks, track progress, and manage deadlines with clear next steps.",
     aboutHeading: "Make every deadline manageable.",
     aboutIntro: "Deadline helps you organize tasks, see what needs attention, and break larger tasks into clear next steps.",
+    aboutPurposeHeading: "A clearer way to move work forward",
+    aboutPurposeText: "Deadline is a personal task manager for keeping responsibilities in view, from work and study to freelance projects and everyday planning. Add the details that matter to you, then return to one list to see what is active, finished, and coming up.",
     featureTasksTitle: "See what matters",
     featureTasksText: "See tasks in progress, finished tasks, and upcoming deadlines at a glance.",
     featureStepsTitle: "Break work into steps",
     featureStepsText: "Add subtasks and track your progress as you complete them.",
     featurePersonalTitle: "Make it your own",
     featurePersonalText: "Choose English or Thai, switch between light and dark themes, and filter tasks by category.",
+    aboutWorkflowHeading: "A simple workflow",
+    aboutWorkflowText: "Create a task with a title and due date, then add a category, time, notes, a follow-up date, or subtasks when useful. Update the task as you work and mark it finished when it is done. You can reopen a finished task later.",
+    aboutWhoHeading: "Made for individual task lists",
+    aboutWhoText: "Use Deadline to keep personal work, study, freelance, and finance-related tasks organized. Tasks are tied to the account you sign in with; Deadline is not a shared team workspace.",
+    aboutLimitsHeading: "What Deadline does not do yet",
+    aboutLimitsText: "Deadline currently needs an internet connection to load and update tasks. It does not send push or email reminders, and task export or self-service account deletion is not available yet. See the FAQ and privacy policy for details.",
+    aboutFaqLink: "Read frequently asked questions",
+    aboutPrivacyLink: "Read the privacy policy",
     previewTitle: "Your tasks, in one place",
     previewText: "Sign in to save tasks to your account. Your tasks are kept separate from other users' tasks.",
     faqTitle: "Task Manager and Deadline FAQ",
     faqDescription: "Find answers to common questions about tasks, deadlines, account access, and settings in Deadline.",
+    faqIntro: "Find practical guidance for managing tasks, using your account, and understanding what Deadline can and cannot do.",
     faqAddQuestion: "How do I add a task?",
     faqAddAnswer: "On the Tasks page, select + Add, then enter a task title and deadline. Category, time, follow-up date, notes, and subtasks are optional.",
+    faqCategoryQuestion: "Which task categories can I use?",
+    faqCategoryAnswer: "Choose Jobs, Study, Freelance, or Finance when creating or editing a task. Categories help you filter and scan your task list.",
+    faqFollowUpQuestion: "What is the follow-up date for?",
+    faqFollowUpAnswer: "A follow-up date is an optional date shown on the task to help you remember when to check on it again. It does not trigger a notification.",
+    faqSubtasksQuestion: "How do subtasks work?",
+    faqSubtasksAnswer: "Add smaller steps to a task and check them off as you go. Subtasks help you track progress, but they do not automatically finish the main task.",
+    faqEditQuestion: "Can I edit or delete a task?",
+    faqEditAnswer: "Yes. Open the task actions to edit its details or choose delete. Deletion removes that task from your account and cannot currently be undone in the app.",
     faqProgressQuestion: "How do I mark a task as finished?",
     faqProgressAnswer: "Select the checkmark on a task card. The task will then appear under Finished.",
     faqUrgentQuestion: "What does the red badge mean?",
@@ -420,14 +498,32 @@ const siteTranslations = {
     privacyHeading: "Privacy policy",
     privacyTitle: "Privacy Policy",
     privacyDescription: "See what information Deadline stores, how task data is associated with your account, and the controls available for your data.",
+    privacyIntro: "This policy explains what information Deadline handles, why it is used, which service providers help operate the app, and the choices available to you.",
+    privacyUpdated: "Last updated: November 27, 2026",
     privacyDataHeading: "Your data",
-    privacyDataText: "Your email is used for your account. Task titles, details, categories, deadlines, follow-up dates, and subtasks are stored in Supabase and linked to your account. Theme and language preferences are saved in your browser.",
+    privacyDataText: "When you create an account, Deadline processes your email address and account identifier to provide sign-in. If you use the task manager, task titles, descriptions, categories, due dates, times, follow-up dates, status, and subtasks are stored with your account. Do not put passwords or other highly sensitive information in task notes.",
+    privacyUseHeading: "How information is used",
+    privacyUseText: "Information is used to create and maintain your account, save and display your tasks across sessions, apply your language and theme choices, and respond when you contact support. Deadline does not need the contents of your tasks to send notifications; the app currently sends no task reminders.",
     privacyServiceHeading: "Storage and access",
-    privacyServiceText: "Supabase provides sign-in and task storage. Database policies are designed to limit task access to the signed-in account. Support messages, including your reply email, topic, and message, are sent through Resend for email delivery. The site also requests fonts from Google Fonts.",
+    privacyServiceText: "Supabase provides account authentication and task storage. Database access policies are configured so signed-in users can access only tasks associated with their own account. The site requests fonts from Google Fonts; your browser may connect to Google to retrieve them. These providers process information under their own service terms and privacy practices.",
+    privacyBrowserHeading: "Browser storage and preferences",
+    privacyBrowserText: "Deadline saves your theme and language preferences in your browser so they can be remembered on your next visit. The sign-in provider may also store session information in browser storage to keep you signed in. Clearing browser storage may reset preferences or sign you out, but it does not delete tasks already saved to your account.",
+    privacyContactDataHeading: "Support messages",
+    privacyContactDataText: "If you use the contact form, your reply email, selected topic, and message are sent to our support email through Resend so we can respond. The contact endpoint also uses a network address from request metadata to limit abuse. Please include only the information needed to resolve your request. Support correspondence is handled in email and is not stored as a task.",
+    privacySharingHeading: "When information is shared",
+    privacySharingText: "Your tasks are not displayed to other users. Information is shared with the providers described above only as needed to run the service and handle support, or when disclosure is required by applicable law. Deadline does not sell task content.",
     privacyControlHeading: "Managing your data",
-    privacyControlText: "You can edit or permanently delete tasks from your dashboard. Signing out won't delete them. Account deletion isn't available in settings; use the contact form to request it.",
+    privacyControlText: "You can review, edit, or delete individual tasks from your dashboard. Deleting a task is permanent in the app. Signing out does not delete tasks. Account deletion is not available in settings; use the contact form to request account deletion or ask about your information.",
+    privacyRetentionHeading: "How long information is kept",
+    privacyRetentionText: "Tasks remain associated with your account until you delete them or an account-deletion request is completed. Support messages may remain in support email records for as long as needed to handle your request and maintain relevant records. Service providers may retain limited copies in backups or logs according to their own retention practices.",
+    privacySecurityHeading: "Protecting your information",
+    privacySecurityText: "Deadline uses account-based access controls for task records, but no online service can promise absolute security. Use a unique password, sign out on shared devices, and avoid storing sensitive information in task descriptions or notes.",
     privacyLimitHeading: "Important limitations",
-    privacyLimitText: "The app doesn't currently offer task export or restore, and it doesn't send reminders. Keep a separate copy of important information and use another reminder for critical deadlines.",
+    privacyLimitText: "Deadline currently requires an internet connection and does not provide task export, task restore, or push and email reminders. Keep a separate copy of important information and use another reminder for critical deadlines.",
+    privacyChangesHeading: "Changes to this policy",
+    privacyChangesText: "This policy may be updated when Deadline or its data practices change. The latest version will be published on this page with an updated date.",
+    privacyContactHeading: "Questions or data requests",
+    privacyContactText: "For privacy questions or to request account deletion, contact support using the contact page linked below. We may ask for information needed to verify and respond to your request.",
     homeTitle: "Task Manager & Deadline Tracker",
     homeDescription: "Organize tasks, add subtasks, track progress, and see upcoming deadlines in one simple task management app.",
     homeEyebrow: "TASKS IN ORDER. DEADLINES IN SIGHT.",
@@ -578,18 +674,37 @@ const siteTranslations = {
     aboutDescription: "รู้จัก Deadline แอปจัดการงานที่ช่วยจัดลำดับความสำคัญ ติดตามความคืบหน้า และแบ่งงานใหญ่เป็นขั้นตอนที่ทำได้จริง",
     aboutHeading: "จัดการทุกกำหนดส่งให้ชัดเจน",
     aboutIntro: "Deadline ช่วยจัดระเบียบงาน ให้คุณเห็นว่างานไหนควรทำก่อน และแบ่งงานใหญ่เป็นขั้นตอนที่จัดการได้ง่ายขึ้น",
+    aboutPurposeHeading: "จัดการงานให้เห็นขั้นตอนถัดไปชัดขึ้น",
+    aboutPurposeText: "Deadline คือแอปจัดการงานส่วนบุคคลที่ช่วยให้คุณมองเห็นสิ่งที่ต้องรับผิดชอบ ทั้งงาน การเรียน ฟรีแลนซ์ และการวางแผนในชีวิตประจำวัน เพิ่มรายละเอียดเท่าที่จำเป็น แล้วกลับมาดูรายการเดียวเพื่อเช็กงานที่กำลังทำ งานที่เสร็จแล้ว และงานที่ใกล้ถึงกำหนด",
     featureTasksTitle: "เห็นสิ่งที่สำคัญ",
     featureTasksText: "ดูงานที่กำลังทำ งานที่เสร็จแล้ว และกำหนดส่งที่ใกล้ถึงได้ในพริบตา",
     featureStepsTitle: "แบ่งงานเป็นขั้นตอน",
     featureStepsText: "เพิ่มงานย่อยและติดตามความคืบหน้าเมื่อทำเสร็จ",
     featurePersonalTitle: "ปรับแอปได้ตามต้องการ",
     featurePersonalText: "เลือกภาษาไทยหรืออังกฤษ สลับธีมสว่างหรือมืด และกรองงานตามหมวดหมู่",
+    aboutWorkflowHeading: "เริ่มต้นและติดตามงานได้ง่าย ๆ",
+    aboutWorkflowText: "สร้างงานด้วยชื่อและวันครบกำหนด จากนั้นเพิ่มหมวดหมู่ เวลา รายละเอียด วันติดตามผล หรืองานย่อยได้ตามต้องการ อัปเดตงานระหว่างทำและทำเครื่องหมายว่าเสร็จเมื่อเรียบร้อยแล้ว โดยสามารถย้ายงานที่เสร็จแล้วกลับมาทำต่อได้",
+    aboutWhoHeading: "ออกแบบมาสำหรับรายการงานส่วนบุคคล",
+    aboutWhoText: "ใช้ Deadline จัดระเบียบงานส่วนตัว งานเรียน งานฟรีแลนซ์ และงานด้านการเงิน งานจะเชื่อมโยงกับบัญชีที่คุณเข้าสู่ระบบ Deadline ยังไม่ใช่พื้นที่ทำงานร่วมกันสำหรับทีม",
+    aboutLimitsHeading: "สิ่งที่ Deadline ยังทำไม่ได้",
+    aboutLimitsText: "ขณะนี้ต้องเชื่อมต่ออินเทอร์เน็ตเพื่อโหลดและแก้ไขงาน แอปยังไม่ส่งการแจ้งเตือนผ่านแอปหรืออีเมล และยังไม่มีฟังก์ชันส่งออกงานหรือลบบัญชีด้วยตนเอง อ่านรายละเอียดเพิ่มเติมได้ที่หน้าคำถามที่พบบ่อยและนโยบายความเป็นส่วนตัว",
+    aboutFaqLink: "อ่านคำถามที่พบบ่อย",
+    aboutPrivacyLink: "อ่านนโยบายความเป็นส่วนตัว",
     previewTitle: "งานของคุณในที่เดียว",
     previewText: "เมื่อเข้าสู่ระบบ งานจะถูกบันทึกไว้กับบัญชีของคุณและแยกจากงานของผู้ใช้อื่น",
     faqTitle: "คำถามเกี่ยวกับแอปจัดการงาน",
     faqDescription: "คำตอบสำหรับคำถามที่พบบ่อยเกี่ยวกับการจัดการงาน กำหนดส่ง บัญชีผู้ใช้ และการตั้งค่าใน Deadline",
+    faqIntro: "รวมคำแนะนำเกี่ยวกับการจัดการงาน การใช้งานบัญชี และความสามารถหรือข้อจำกัดของ Deadline",
     faqAddQuestion: "เพิ่มงานอย่างไร?",
     faqAddAnswer: "ไปที่หน้ารายการงานแล้วเลือก + เพิ่ม จากนั้นกรอกชื่องานและกำหนดส่ง ส่วนหมวดหมู่ เวลา วันติดตามผล รายละเอียด และงานย่อยจะกรอกหรือไม่ก็ได้",
+    faqCategoryQuestion: "มีหมวดหมู่งานอะไรให้เลือกบ้าง?",
+    faqCategoryAnswer: "เลือก Jobs, Study, Freelance หรือ Finance ตอนสร้างหรือแก้ไขงาน หมวดหมู่ช่วยให้กรองและแยกรายการงานได้ง่ายขึ้น",
+    faqFollowUpQuestion: "วันติดตามผลใช้ทำอะไร?",
+    faqFollowUpAnswer: "วันติดตามผลเป็นวันที่เลือกเพิ่มได้บนงาน เพื่อช่วยจำว่าควรกลับมาตรวจสอบงานเมื่อใด แต่ระบบจะไม่ส่งการแจ้งเตือนในวันดังกล่าว",
+    faqSubtasksQuestion: "งานย่อยทำงานอย่างไร?",
+    faqSubtasksAnswer: "เพิ่มขั้นตอนย่อยในงานแล้วทำเครื่องหมายเมื่อทำเสร็จ งานย่อยช่วยติดตามความคืบหน้า แต่การทำงานย่อยครบไม่ได้ทำให้งานหลักเสร็จโดยอัตโนมัติ",
+    faqEditQuestion: "แก้ไขหรือลบงานได้ไหม?",
+    faqEditAnswer: "ได้ เปิดเมนูการทำงานของการ์ดงานเพื่อแก้ไขรายละเอียดหรือลบงาน การลบจะนำงานออกจากบัญชีและขณะนี้ไม่สามารถกู้คืนผ่านแอปได้",
     faqProgressQuestion: "ทำเครื่องหมายว่างานเสร็จแล้วได้อย่างไร?",
     faqProgressAnswer: "กดเครื่องหมายถูกบนการ์ดงาน งานจะย้ายไปอยู่ในแท็บเสร็จแล้ว",
     faqUrgentQuestion: "ป้ายสีแดงหมายถึงอะไร?",
@@ -620,14 +735,32 @@ const siteTranslations = {
     privacyHeading: "นโยบายความเป็นส่วนตัว",
     privacyTitle: "นโยบายความเป็นส่วนตัว",
     privacyDescription: "ดูข้อมูลที่ Deadline จัดเก็บ วิธีเชื่อมโยงข้อมูลงานกับบัญชีของคุณ และวิธีจัดการหรือลบข้อมูล",
+    privacyIntro: "นโยบายนี้อธิบายว่า Deadline ใช้ข้อมูลอะไร เพื่อวัตถุประสงค์ใด มีผู้ให้บริการรายใดช่วยดูแลแอป และคุณมีทางเลือกจัดการข้อมูลอย่างไร",
+    privacyUpdated: "อัปเดตล่าสุด: 27 พฤศจิกายน 2026",
     privacyDataHeading: "ข้อมูลของคุณ",
-    privacyDataText: "อีเมลใช้สำหรับบัญชีของคุณ ส่วนชื่องาน รายละเอียด หมวดหมู่ วันครบกำหนด วันติดตามผล และงานย่อยบันทึกไว้ใน Supabase และเชื่อมกับบัญชีของคุณ ธีมและภาษาบันทึกไว้ในเบราว์เซอร์",
+    privacyDataText: "เมื่อสร้างบัญชี Deadline จะใช้ที่อยู่อีเมลและรหัสบัญชีเพื่อให้คุณเข้าสู่ระบบ หากใช้ตัวจัดการงาน ข้อมูลชื่องาน รายละเอียด หมวดหมู่ วันครบกำหนด เวลา วันติดตามผล สถานะ และงานย่อยจะบันทึกไว้กับบัญชี โปรดอย่าใส่รหัสผ่านหรือข้อมูลอ่อนไหวมากในบันทึกของงาน",
+    privacyUseHeading: "เราใช้ข้อมูลอย่างไร",
+    privacyUseText: "ข้อมูลใช้เพื่อสร้างและดูแลบัญชี บันทึกและแสดงงานเมื่อกลับมาใช้งาน จดจำภาษาและธีมที่เลือก และตอบกลับเมื่อคุณติดต่อ Support Deadline ไม่จำเป็นต้องใช้เนื้อหางานเพื่อส่งการแจ้งเตือน และขณะนี้แอปยังไม่ส่งการแจ้งเตือนงาน",
     privacyServiceHeading: "การจัดเก็บและการเข้าถึง",
-    privacyServiceText: "Supabase ให้บริการเข้าสู่ระบบและจัดเก็บงาน โดยมีนโยบายฐานข้อมูลที่ออกแบบให้จำกัดการเข้าถึงงานไว้กับบัญชีที่เข้าสู่ระบบ ข้อความติดต่อ รวมถึงอีเมลสำหรับตอบกลับ หัวข้อ และข้อความ จะส่งผ่าน Resend เพื่อจัดส่งทางอีเมล เว็บไซต์ยังร้องขอฟอนต์จาก Google Fonts",
+    privacyServiceText: "Supabase ให้บริการยืนยันตัวตนและจัดเก็บงาน โดยตั้งค่านโยบายฐานข้อมูลเพื่อให้ผู้ใช้ที่เข้าสู่ระบบเข้าถึงได้เฉพาะงานที่เชื่อมกับบัญชีของตน เว็บไซต์ร้องขอฟอนต์จาก Google Fonts ซึ่งเบราว์เซอร์ของคุณอาจเชื่อมต่อไปยัง Google เพื่อดาวน์โหลดฟอนต์ ผู้ให้บริการเหล่านี้ประมวลผลข้อมูลตามข้อกำหนดและแนวปฏิบัติด้านความเป็นส่วนตัวของตน",
+    privacyBrowserHeading: "พื้นที่จัดเก็บในเบราว์เซอร์และการตั้งค่า",
+    privacyBrowserText: "Deadline บันทึกตัวเลือกธีมและภาษาไว้ในเบราว์เซอร์เพื่อจดจำเมื่อคุณกลับมาใช้บริการ ผู้ให้บริการเข้าสู่ระบบอาจจัดเก็บข้อมูลเซสชันในเบราว์เซอร์เพื่อคงสถานะการเข้าสู่ระบบ การล้างข้อมูลเบราว์เซอร์อาจรีเซ็ตการตั้งค่าหรือทำให้คุณออกจากระบบ แต่จะไม่ลบงานที่บันทึกไว้ในบัญชี",
+    privacyContactDataHeading: "ข้อความที่ส่งถึง Support",
+    privacyContactDataText: "เมื่อใช้แบบฟอร์มติดต่อ อีเมลสำหรับตอบกลับ หัวข้อที่เลือก และข้อความจะถูกส่งไปยังอีเมล Support ผ่าน Resend เพื่อให้เราตอบกลับ ระบบรับคำขอยังใช้ข้อมูลที่อยู่เครือข่ายจากคำขอเพื่อจำกัดการใช้งานที่ไม่เหมาะสม โปรดส่งเฉพาะข้อมูลที่จำเป็นต่อการแก้ไขปัญหา ข้อความ Support จัดการผ่านอีเมลและไม่ได้จัดเก็บเป็นรายการงาน",
+    privacySharingHeading: "การเปิดเผยข้อมูล",
+    privacySharingText: "งานของคุณจะไม่แสดงให้ผู้ใช้อื่นเห็น ข้อมูลจะแชร์กับผู้ให้บริการที่กล่าวถึงข้างต้นเท่าที่จำเป็นต่อการให้บริการและดูแลคำขอ Support หรือเมื่อกฎหมายที่เกี่ยวข้องกำหนด Deadline ไม่ขายเนื้อหางานของคุณ",
     privacyControlHeading: "การจัดการข้อมูลของคุณ",
-    privacyControlText: "คุณแก้ไขหรือลบงานจากหน้ารายการงานได้ การลบเป็นการถาวรและการออกจากระบบจะไม่ลบงาน ขณะนี้ยังไม่มีเมนูลบบัญชี หากต้องการขอลบบัญชี โปรดใช้แบบฟอร์มติดต่อ",
+    privacyControlText: "คุณตรวจดู แก้ไข หรือลบงานแต่ละรายการจากหน้ารายการงานได้ การลบงานเป็นการถาวรในแอป การออกจากระบบไม่ลบงาน ขณะนี้ยังไม่มีเมนูลบบัญชี โปรดใช้แบบฟอร์มติดต่อเพื่อขอลบบัญชีหรือสอบถามเกี่ยวกับข้อมูลของคุณ",
+    privacyRetentionHeading: "การเก็บรักษาข้อมูล",
+    privacyRetentionText: "งานจะเชื่อมโยงกับบัญชีจนกว่าคุณจะลบงานหรือดำเนินการตามคำขอลบบัญชีเสร็จสิ้น ข้อความ Support อาจคงอยู่ในอีเมล Support เท่าที่จำเป็นต่อการจัดการคำขอและเก็บบันทึกที่เกี่ยวข้อง ผู้ให้บริการอาจเก็บสำเนาบางส่วนในระบบสำรองหรือบันทึกการใช้งานตามแนวทางการเก็บข้อมูลของผู้ให้บริการ",
+    privacySecurityHeading: "การดูแลความปลอดภัยของข้อมูล",
+    privacySecurityText: "Deadline ใช้การควบคุมสิทธิ์ตามบัญชีสำหรับข้อมูลงาน แต่ไม่มีบริการออนไลน์ใดรับประกันความปลอดภัยได้อย่างสมบูรณ์ โปรดใช้รหัสผ่านที่ไม่ซ้ำ ออกจากระบบบนอุปกรณ์ที่ใช้ร่วมกัน และหลีกเลี่ยงการบันทึกข้อมูลอ่อนไหวในรายละเอียดหรือบันทึกของงาน",
     privacyLimitHeading: "ข้อจำกัดที่ควรทราบ",
-    privacyLimitText: "ขณะนี้แอปยังไม่มีฟังก์ชันส่งออกหรือกู้คืนงาน และยังไม่ส่งการแจ้งเตือน โปรดเก็บข้อมูลสำคัญไว้อีกชุดหนึ่งและใช้การแจ้งเตือนอื่นสำหรับกำหนดส่งที่สำคัญ",
+    privacyLimitText: "ขณะนี้ Deadline ต้องใช้อินเทอร์เน็ต และยังไม่มีฟังก์ชันส่งออกหรือกู้คืนงาน รวมถึงการแจ้งเตือนผ่านแอปหรืออีเมล โปรดสำรองข้อมูลสำคัญไว้อีกชุดและใช้การแจ้งเตือนอื่นสำหรับกำหนดส่งที่สำคัญ",
+    privacyChangesHeading: "การเปลี่ยนแปลงนโยบาย",
+    privacyChangesText: "เราอาจปรับปรุงนโยบายนี้เมื่อ Deadline หรือแนวทางการใช้ข้อมูลเปลี่ยนแปลง โดยจะเผยแพร่ฉบับล่าสุดไว้ที่หน้านี้พร้อมวันที่อัปเดต",
+    privacyContactHeading: "สอบถามหรือขอจัดการข้อมูล",
+    privacyContactText: "หากมีคำถามด้านความเป็นส่วนตัวหรือต้องการขอลบบัญชี โปรดติดต่อ Support ผ่านลิงก์หน้าติดต่อด้านล่าง เราอาจขอข้อมูลที่จำเป็นเพื่อยืนยันและดำเนินการตามคำขอ",
     homeTitle: "แอปจัดการงานและติดตามกำหนดส่ง",
     homeDescription: "จัดระเบียบงาน เพิ่มงานย่อย ติดตามความคืบหน้า และดูวันครบกำหนดได้ในที่เดียวด้วยแอปจัดการงาน Deadline",
     homeEyebrow: "จัดระเบียบงาน เห็นกำหนดส่งชัดเจน",

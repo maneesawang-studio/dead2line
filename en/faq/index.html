@@ -70,7 +70,39 @@
           "name": "How do I add a task?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "On the Tasks page, select + Add, then enter a task title and deadline. Category, time, notes, and subtasks are optional."
+            "text": "On the Tasks page, select + Add, then enter a task title and deadline. Category, time, follow-up date, notes, and subtasks are optional."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which task categories can I use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Choose Jobs, Study, Freelance, or Finance when creating or editing a task. Categories help you filter and scan your task list."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the follow-up date for?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A follow-up date is an optional date shown on the task to help you remember when to check on it again. It does not trigger a notification."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do subtasks work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Add smaller steps to a task and check them off as you go. Subtasks help you track progress, but they do not automatically finish the main task."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I edit or delete a task?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Open the task actions to edit its details or choose delete. Deletion removes that task from your account and cannot currently be undone in the app."
           }
         },
         {
@@ -111,6 +143,46 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "No. Your tasks are saved to your account and kept separate from other users' tasks."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if I forget my password?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "On the sign-in page, enter your email and select Forgot password? Use the link in your email to choose a new password. If it expires, request another link."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will Deadline remind me about upcoming tasks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Deadline doesn't send push or email reminders yet. Open your task list to check upcoming and overdue work."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use Deadline without internet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Installing Deadline adds an app-like shortcut, but you need an internet connection to load or update your tasks."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I export or restore my tasks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The app doesn't currently provide a user-facing export or restore option. Keep a separate copy of critical information."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I delete my account?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can delete individual tasks from your dashboard, but account deletion isn't available in settings. Use the contact form to request account deletion."
           }
         }
       ]
@@ -176,12 +248,29 @@
     <header class="site-page__header">
       <p class="site-page__eyebrow" data-site-i18n="helpCenterEyebrow">Help center</p>
       <h1 data-site-i18n="faqTitle">Frequently asked questions</h1>
+      <p class="site-page__lead" data-site-i18n="faqIntro">Find practical guidance for managing tasks, using your account, and understanding what Deadline can and cannot do.</p>
     </header>
 
     <section class="faq-list" aria-label="Frequently asked questions" data-site-i18n-aria-label="faqListLabel">
       <details class="site-card faq-list__item" open>
         <summary data-site-i18n="faqAddQuestion">How do I add a task?</summary>
         <p data-site-i18n="faqAddAnswer">On the Tasks page, select + Add, then enter a task title and deadline. Category, time, notes, and subtasks are optional.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqCategoryQuestion">Which task categories can I use?</summary>
+        <p data-site-i18n="faqCategoryAnswer">Choose Jobs, Study, Freelance, or Finance when creating or editing a task. Categories help you filter and scan your task list.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqFollowUpQuestion">What is the follow-up date for?</summary>
+        <p data-site-i18n="faqFollowUpAnswer">A follow-up date is an optional date shown on the task to help you remember when to check on it again. It does not trigger a notification.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqSubtasksQuestion">How do subtasks work?</summary>
+        <p data-site-i18n="faqSubtasksAnswer">Add smaller steps to a task and check them off as you go. Subtasks help you track progress, but they do not automatically finish the main task.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqEditQuestion">Can I edit or delete a task?</summary>
+        <p data-site-i18n="faqEditAnswer">Yes. Open the task actions to edit its details or choose delete. Deletion removes that task from your account and cannot currently be undone in the app.</p>
       </details>
       <details class="site-card faq-list__item">
         <summary data-site-i18n="faqProgressQuestion">How do I mark a task as finished?</summary>
@@ -202,6 +291,27 @@
       <details class="site-card faq-list__item">
         <summary data-site-i18n="faqDataQuestion">Can other users see my tasks?</summary>
         <p data-site-i18n="faqDataAnswer">No. Your tasks are saved to your account and kept separate from other users' tasks.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqRecoveryQuestion">What if I forget my password?</summary>
+        <p data-site-i18n="faqRecoveryAnswer">On the sign-in page, enter your email and select Forgot password? Use the link in your email to choose a new password. If it expires, request another link.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqRemindersQuestion">Will Deadline remind me about upcoming tasks?</summary>
+        <p data-site-i18n="faqRemindersAnswer">Deadline doesn't send push or email reminders yet. Open your task list to check upcoming and overdue work.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqOfflineQuestion">Can I use Deadline without internet?</summary>
+        <p data-site-i18n="faqOfflineAnswer">No. Installing Deadline adds an app-like shortcut, but you need an internet connection to load or update your tasks.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqBackupQuestion">Can I export or restore my tasks?</summary>
+        <p data-site-i18n="faqBackupAnswer">The app doesn't currently provide a user-facing export or restore option. Keep a separate copy of critical information.</p>
+      </details>
+      <details class="site-card faq-list__item">
+        <summary data-site-i18n="faqAccountQuestion">How do I delete my account?</summary>
+        <p data-site-i18n="faqAccountAnswer">You can delete individual tasks from your dashboard, but account deletion isn't available in settings. Use the contact form to request account deletion.</p>
+        <a href="/contact/" data-site-i18n="contactPageLink">Contact support</a>
       </details>
     </section>
 
