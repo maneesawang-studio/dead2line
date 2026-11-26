@@ -61,7 +61,8 @@
       <p class="site-page__eyebrow" data-site-i18n="preferencesEyebrow">Your preferences</p>
       <h1 data-site-i18n="settingsHeading">Settings</h1>
     </header>
-    <section class="site-card site-card--notice">
+    <div class="settings-page__panel">
+    <section class="settings-page__section settings-page__section--preferences">
       <h2 data-site-i18n="appearanceHeading">Display and language</h2>
       <button type="button" class="account-menu__item account-menu__item--theme" id="themeToggle">
         <span class="settings-page__icon" aria-hidden="true">
@@ -84,7 +85,7 @@
         <span class="account-menu__state" id="languageState">English</span>
       </button>
     </section>
-    <section class="site-card site-card--notice">
+    <section class="settings-page__section settings-page__section--links">
       <h2 data-site-i18n="settingsLinksHeading">Related links</h2>
       <nav class="settings-page__links" aria-label="Related links" data-site-i18n-aria-label="settingsLinksHeading">
         <a href="../install/">
@@ -122,6 +123,7 @@
         </a>
       </nav>
     </section>
+    </div>
     <a class="site-page__back-link" href="../" data-site-i18n="backToTasks">Back to home</a>
   </main>
   <footer class="site-footer" data-site-i18n="footerNote">Stay organized and keep your deadlines in sight.</footer>
