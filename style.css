@@ -851,15 +851,11 @@ html[data-theme="dark"] body .task-controls__sort-button:hover {
 
 .task-filters {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   margin-bottom: 16px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.task-filters::-webkit-scrollbar {
-  display: none;
+  overflow: visible;
 }
 
 .task-filters__pill {
@@ -868,7 +864,7 @@ html[data-theme="dark"] body .task-controls__sort-button:hover {
   color: var(--text-muted);
   font-size: 14px;
   font-weight: 500;
-  padding: 0px 16px;
+  padding: 0px 8px;
   border-radius: 999px;
   white-space: nowrap;
   box-shadow: var(--shadow-soft);

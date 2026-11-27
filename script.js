@@ -344,14 +344,6 @@ function applyLanguage() {
     element.textContent = t(element.dataset.i18n);
   });
 
-  const dateLocale = currentLanguage === "th" ? "th-TH-u-ca-buddhist" : "en-US";
-  document.getElementById("currentDate").textContent = new Intl.DateTimeFormat(dateLocale, {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric"
-  }).format(REFERENCE_TODAY);
-
   searchInput.placeholder = t("searchPlaceholder");
   searchInput.setAttribute("aria-label", t("searchPlaceholder"));
   updateSortButton();
