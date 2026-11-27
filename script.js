@@ -459,20 +459,26 @@ function getDaysLeft(dateString) {
 
 function formatDateParts(dateString, overrideDay = null) {
   const dateObj = new Date(dateString + "T00:00:00");
-  const englishMonths = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."];
-  const thaiMonths = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+  const englishMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const thaiMonths = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
   let dayOfMonth = dateObj.getDate();
   let monthIndex = dateObj.getMonth();
 
-  if (overrideDay && currentLanguage === "en") {
-    return { day: overrideDay, year: dateObj.getFullYear() };
-  }
   if (overrideDay) {
-    const match = overrideDay.match(/^(\d{1,2})\s([A-Za-z]{3}\.?)$/);
+    const match = overrideDay.match(/^(\d{1,2})\s([A-Za-z]{3,9}\.?)$/);
     if (match) {
-      dayOfMonth = Number(match[1]);
-      monthIndex = englishMonths.findIndex(month => month.startsWith(match[2].replace(".", "")));
-      if (monthIndex < 0) monthIndex = dateObj.getMonth();
+      const monthName = match[2].replace(".", "").toLowerCase();
+      const overrideMonthIndex = englishMonths.findIndex(month =>
+        month.toLowerCase().startsWith(monthName)
+      );
+      if (overrideMonthIndex >= 0) {
+        dayOfMonth = Number(match[1]);
+        monthIndex = overrideMonthIndex;
+      } else if (currentLanguage === "en") {
+        return { day: overrideDay, year: dateObj.getFullYear() };
+      }
+    } else if (currentLanguage === "en") {
+      return { day: overrideDay, year: dateObj.getFullYear() };
     }
   }
 
