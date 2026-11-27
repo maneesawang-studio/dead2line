@@ -776,6 +776,8 @@ function renderTasks() {
                           data-action="toggle-status" data-task-id="${escapeHtml(task.id)}">
                     ${t(task.status === "in-progress" ? "markFinished" : "moveToProgress")}
                   </button>
+                  <button type="button" role="menuitem" tabindex="-1"
+                          data-action="delete-task" data-task-id="${escapeHtml(task.id)}">${t("delete")}</button>
                 </div>
               </div>
             </div>
@@ -963,6 +965,9 @@ taskListContainer.addEventListener("click", event => {
   } else if (target.dataset.action === "edit-task") {
     closeTaskActionMenus();
     window.openEditModal(taskId);
+  } else if (target.dataset.action === "delete-task") {
+    closeTaskActionMenus();
+    window.deleteTask(taskId);
   }
 });
 

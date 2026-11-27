@@ -7,7 +7,7 @@
   --primary-blue-hover: #0073D9;
   --badge-blue-bg: #0099FF;
   --badge-red-bg: #B42318;
-  --badge-green-bg: #34C759;
+  --badge-green-bg: #00af2c;
   --badge-gray-bg: #E2E8F0;
   
   --text-dark: #0F172A;
@@ -16,7 +16,7 @@
   --text-light: #94A3B8;
   
   --color-red: #EF4444;
-  --color-green: #34C759;
+  --color-green: #00af2c;
   --color-white: #FFFFFF;
   --color-black: #000000;
   --color-text-on-primary: #FFFFFF;
@@ -30,7 +30,7 @@
   --color-text-danger-badge: #8F0000;
   --color-text-category-badge: #555555;
   --color-text-auth-info: #1D4ED8;
-  --color-text-auth-success: #166534;
+  --color-text-auth-success: #00af2c;
   --color-text-auth-danger: #B91C1C;
   --color-text-disabled: #999999;
   --color-submit-primary: #1597FF;
@@ -40,7 +40,7 @@
   --color-landing-login-hover: #F0F9FF;
   --color-preview-dot-one: #FDA4AF;
   --color-preview-dot-two: #FCD34D;
-  --color-preview-dot-three: #86EFAC;
+  --color-preview-dot-three: #00af2c;
   --color-auth-info-bg: #EFF6FF;
   --color-auth-success-bg: #F0FDF4;
   --color-auth-danger-bg: #FEF2F2;
@@ -623,19 +623,19 @@ html:not([data-theme="dark"]) body .site-navigation__preference {
   --primary-blue-hover: #1688D5;
   --badge-blue-bg: #0099FF;
   --badge-red-bg: #B42318;
-  --badge-green-bg: #15803D;
+  --badge-green-bg: #00af2c;
   --badge-gray-bg: #303030;
   --text-dark: #F5F5F5;
   --text-body: #D0D0D0;
   --text-muted: #A0A0A0;
   --text-light: #777777;
-  --color-red: #FF6262;
-  --color-green: #15803D;
+  --color-red: #ff3333;
+  --color-green: #34C759;
   --color-text-secondary: #B5B5B5;
   --color-text-secondary-strong: #B5B5B5;
   --color-text-auth-info: #BFDBFE;
   --color-text-auth-success: #BBF7D0;
-  --color-text-auth-danger: #FECACA;
+  --color-text-auth-danger: #ff3333;
   --color-text-form-placeholder: #8A8A8A;
   --color-text-disabled: #A0A0A0;
   --surface-hover: #303030;
@@ -1049,6 +1049,11 @@ html[data-theme="dark"] body .task-controls__sort-button:hover {
   transition: background-color 0.16s ease, color 0.16s ease;
 }
 
+#taskListContainer .task-card__action-menu [role="menuitem"][data-action="delete-task"] {
+  color: var(--color-text-auth-danger);
+  font-weight: 600;
+}
+
 #taskListContainer .task-card__action-menu [role="menuitem"] + [role="menuitem"] {
   position: relative;
 }
@@ -1117,8 +1122,8 @@ html[data-theme="dark"] body .task-controls__sort-button:hover {
 }
 
 html[data-theme="dark"] body #taskListContainer .task-card__badge.task-card__badge--urgent {
-  background-color: #7F1D1D;
-  color: #FEE2E2;
+  background-color: #B42318;
+  color: #ffffff;
 }
 
 html[data-theme="dark"] body #taskListContainer .task-card__badge.task-card__badge--normal {
@@ -1138,8 +1143,8 @@ html[data-theme="dark"] body #taskListContainer .task-card__badge.task-card__bad
 }
 
 html[data-theme="dark"] body #taskListContainer .task-card__badge.task-card__badge--completed {
-  background-color: #14532D;
-  color: #DCFCE7;
+  background-color: #00af2c;
+  color: #ffffff;
 }
 
 #taskListContainer .task-card__title {
@@ -1175,7 +1180,7 @@ html[data-theme="dark"] body #taskListContainer .task-card__follow-up {
 }
 
 #taskListContainer .task-card__progress-track {
-  height: 10px;
+  height: 6px;
 }
 
 #taskListContainer .task-card__subtask-list {
@@ -1187,8 +1192,8 @@ html[data-theme="dark"] body #taskListContainer .task-card__follow-up {
 }
 
 #taskListContainer .task-card__checkmark {
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
 }
 
 html[data-theme="dark"] body #taskListContainer .task-card {
