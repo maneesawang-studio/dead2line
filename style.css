@@ -9,6 +9,14 @@
   --badge-red-bg: #B42318;
   --badge-green-bg: #00af2c;
   --badge-gray-bg: #E2E8F0;
+  --surface-badge-urgent: #FBB2BA;
+  --color-text-badge-urgent: #800000;
+  --surface-badge-normal: #F8C8FF;
+  --color-text-badge-normal: #510080;
+  --surface-badge-distant: #B2E3FB;
+  --color-text-badge-distant: #003780;
+  --surface-neutral-badge: #eaeaea;
+  --color-text-neutral-badge: #333333;
   
   --text-dark: #0F172A;
   --text-body: #334155;
@@ -53,7 +61,8 @@
   --surface-auth-input: #F4F7FB;
   --surface-checkbox: #CBD5E1;
   --surface-category-badge: #D9D9D9;
-  --surface-follow-up: #C5E8FF;
+  --surface-follow-up: #B2E3FB;
+  --color-text-follow-up: #00132C;
   --surface-progress-track: #E2E8F0;
   --surface-task-menu-hover: #F1F5F9;
   --surface-landing-cta: #E5F4FF;
@@ -625,6 +634,14 @@ html:not([data-theme="dark"]) body .site-navigation__preference {
   --badge-red-bg: #B42318;
   --badge-green-bg: #00af2c;
   --badge-gray-bg: #303030;
+  --surface-badge-urgent: #800000;
+  --color-text-badge-urgent: #FBB2BA;
+  --surface-badge-normal: #510080;
+  --color-text-badge-normal: #F8C8FF;
+  --surface-badge-distant: #003780;
+  --color-text-badge-distant: #B2E3FB;
+  --surface-neutral-badge: #333333;
+  --color-text-neutral-badge: #eaeaea;
   --text-dark: #F5F5F5;
   --text-body: #D0D0D0;
   --text-muted: #A0A0A0;
@@ -646,7 +663,8 @@ html:not([data-theme="dark"]) body .site-navigation__preference {
   --surface-auth-input: #181818;
   --surface-checkbox: #4A4A4A;
   --surface-category-badge: #303030;
-  --surface-follow-up: #001422;
+  --surface-follow-up: #00132C;
+  --color-text-follow-up: #B2E3FB;
   --surface-progress-track: #353535;
   --surface-task-menu-hover: #303030;
   --surface-landing-cta: #102A3A;
@@ -713,12 +731,12 @@ html[data-theme="dark"] body .task-card__progress-track {
 }
 
 html[data-theme="dark"] body .task-card__badge.task-card__badge--urgent {
-  color: var(--color-white);
+  color: var(--color-text-badge-urgent);
 }
 
 html[data-theme="dark"] body .task-card__badge.task-card__badge--category {
-  background-color: var(--surface-category-badge);
-  color: var(--color-text-category-badge);
+  background-color: var(--surface-neutral-badge);
+  color: var(--color-text-neutral-badge);
 }
 
 html[data-theme="dark"] body .task-card__checkmark,
@@ -1088,28 +1106,28 @@ html[data-theme="dark"] body .task-controls__sort-button:hover {
 }
 
 #taskListContainer .task-card__badge.task-card__badge--urgent {
-  background-color: #FEE2E2;
-  color: #7F1D1D;
+  background-color: var(--surface-badge-urgent);
+  color: var(--color-text-badge-urgent);
 }
 
 #taskListContainer .task-card__badge.task-card__badge--normal {
-  background-color: #DBEAFE;
-  color: #1E3A8A;
+  background-color: var(--surface-badge-normal);
+  color: var(--color-text-badge-normal);
 }
 
 #taskListContainer .task-card__badge.task-card__badge--category {
-  background-color: #F1F5F9;
-  color: #334155;
+  background-color: var(--surface-neutral-badge);
+  color: var(--color-text-neutral-badge);
 }
 
 #taskListContainer .task-card__badge.task-card__badge--time {
-  background-color: #F8FAFC;
-  color: #334155;
+  background-color: var(--surface-neutral-badge);
+  color: var(--color-text-neutral-badge);
 }
 
 #taskListContainer .task-card__badge.task-card__badge--distant {
-  background-color: #E2E8F0;
-  color: #334155;
+  background-color: var(--surface-badge-distant);
+  color: var(--color-text-badge-distant);
 }
 
 #taskListContainer .task-card__badge.task-card__badge--completed {
@@ -1118,24 +1136,24 @@ html[data-theme="dark"] body .task-controls__sort-button:hover {
 }
 
 html[data-theme="dark"] body #taskListContainer .task-card__badge.task-card__badge--urgent {
-  background-color: #B42318;
-  color: #ffffff;
+  background-color: var(--surface-badge-urgent);
+  color: var(--color-text-badge-urgent);
 }
 
 html[data-theme="dark"] body #taskListContainer .task-card__badge.task-card__badge--normal {
-  background-color: #1E3A8A;
-  color: #DBEAFE;
+  background-color: var(--surface-badge-normal);
+  color: var(--color-text-badge-normal);
 }
 
 html[data-theme="dark"] body #taskListContainer .task-card__badge.task-card__badge--category,
-html[data-theme="dark"] body #taskListContainer .task-card__badge.task-card__badge--distant {
-  background-color: #334155;
-  color: #F8FAFC;
+html[data-theme="dark"] body #taskListContainer .task-card__badge.task-card__badge--time {
+  background-color: var(--surface-neutral-badge);
+  color: var(--color-text-neutral-badge);
 }
 
-html[data-theme="dark"] body #taskListContainer .task-card__badge.task-card__badge--time {
-  background-color: #1F2937;
-  color: #F8FAFC;
+html[data-theme="dark"] body #taskListContainer .task-card__badge.task-card__badge--distant {
+  background-color: var(--surface-badge-distant);
+  color: var(--color-text-badge-distant);
 }
 
 html[data-theme="dark"] body #taskListContainer .task-card__badge.task-card__badge--completed {
@@ -1157,13 +1175,13 @@ html[data-theme="dark"] body #taskListContainer .task-card__badge.task-card__bad
   gap: 8px;
   margin-top: 12px;
   padding: 5px 12px;
-  background-color: #DBEAFE;
-  color: #1E3A8A;
+  background-color: var(--surface-follow-up);
+  color: var(--color-text-follow-up);
 }
 
 html[data-theme="dark"] body #taskListContainer .task-card__follow-up {
-  background-color: #1E3A8A;
-  color: #DBEAFE;
+  background-color: var(--surface-follow-up);
+  color: var(--color-text-follow-up);
 }
 
 #taskListContainer .task-card__subtasks {
@@ -1276,23 +1294,18 @@ html[data-theme="dark"] body #taskListContainer .task-card__action-menu [role="m
 }
 
 .task-card__badge.task-card__badge--urgent {
-  background-color: var(--badge-red-bg);
-  color: var(--bg-white);
+  background-color: var(--surface-badge-urgent);
+  color: var(--color-text-badge-urgent);
 }
 
 .task-card__badge.task-card__badge--normal {
-  background-color: var(--badge-blue-bg);
-  color: var(--color-white);
+  background-color: var(--surface-badge-normal);
+  color: var(--color-text-badge-normal);
 }
 
 .task-card__badge.task-card__badge--distant {
-  background-color: var(--badge-gray-bg);
-  color: var(--primary-blue);
-}
-
-html[data-theme="dark"] body .task-card__badge.task-card__badge--distant {
-  background-color: var(--surface-date);
-  color: var(--primary-blue);
+  background-color: var(--surface-badge-distant);
+  color: var(--color-text-badge-distant);
 }
 
 .task-card__badge.task-card__badge--completed {
@@ -1301,8 +1314,8 @@ html[data-theme="dark"] body .task-card__badge.task-card__badge--distant {
 }
 
 .task-card__badge.task-card__badge--category {
-  background-color: var(--badge-gray-bg);
-  color: var(--color-text-secondary-strong);
+  background-color: var(--surface-neutral-badge);
+  color: var(--color-text-neutral-badge);
 }
 
 .task-card__title {
@@ -1328,7 +1341,7 @@ html[data-theme="dark"] body .task-card__badge.task-card__badge--distant {
   padding: 5px 12px;
   border-radius: 999px;
   background-color: var(--surface-follow-up);
-  color: var(--primary-blue);
+  color: var(--color-text-follow-up);
   font-size: 13px;
   font-weight: 400;
   line-height: 1.4;
@@ -1336,6 +1349,7 @@ html[data-theme="dark"] body .task-card__badge.task-card__badge--distant {
 
 html[data-theme="dark"] body .task-card__follow-up {
   background-color: var(--surface-follow-up);
+  color: var(--color-text-follow-up);
 }
 
 .task-card__follow-up svg {

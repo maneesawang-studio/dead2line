@@ -691,15 +691,15 @@ function renderTasks() {
     );
     const taskCardsHTML = group.tasks.map(task => {
       const daysLeft = getDaysLeft(task.deadlineDate);
-      const isUrgent = daysLeft <= 3 && task.status === "in-progress";
+      const isUrgent = daysLeft <= 3;
       const isCompleted = task.status === "finish";
       const badgeClass = isCompleted
         ? "task-card__badge--completed"
         : isUrgent
           ? "task-card__badge--urgent"
-          : daysLeft > 14
-            ? "task-card__badge--distant"
-            : "task-card__badge--normal";
+          : daysLeft <= 7
+            ? "task-card__badge--normal"
+            : "task-card__badge--distant";
       const deadlineTime = typeof task.deadlineTime === "string" ? task.deadlineTime.trim() : "";
       const followUpDate = task.followUpDate
         ? new Intl.DateTimeFormat(currentLanguage === "th" ? "th-TH-u-ca-buddhist" : "en-US", {
